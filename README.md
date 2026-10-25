@@ -18,12 +18,25 @@ Los `~/.config/<x>` originales eran symlinks a `~/dotfiles`; acá se guarda el *
 
 ## Usar en la PC principal
 ```bash
-git clone git@github.com:Juani4312/Sync.git ~/Sync
+git clone https://github.com/Juani4312/Sync.git ~/Sync
 cd ~/Sync
-./install.sh -n      # dry-run: mira qué va a cambiar
-./install.sh -p      # instala todo (+ paquetes); sin -p no toca paquetes
+./install.sh -n      # solo revisión: nuevos/cambiados/iguales + diff de binds de hypr
+./install.sh         # revisa, pide confirmación, respalda y recién ahí instala
+./install.sh -p      # igual, y además instala los paquetes
 ```
-Lo que se pisa se respalda en `~/.local/state/sync-backup/<fecha>/`.
+
+### Backups y revert
+Antes de pisar nada, `install.sh` guarda en `backups/<fecha>/`:
+- `files/`: copia exacta de cada archivo que se iba a sobrescribir (misma ruta relativa a `~`)
+- `manifest.txt`: symlinks que había (ej. `~/.config/hypr -> ~/dotfiles/...`); se reemplazan por una copia real y el original no se toca
+- `created.txt`: archivos que no existían y creó la instalación
+- `review.txt`: la revisión completa (incluye qué binds se pierden y cuáles se agregan)
+
+```bash
+./revert.sh -l          # lista backups
+./revert.sh [fecha]     # restaura los archivos y borra los creados (sin fecha: el último)
+```
+`backups/` queda dentro del repo; commitealo si querés conservarlo en GitHub.
 
 ## Actualizar desde esta PC
 ```bash
