@@ -5,6 +5,7 @@
 hl.window_rule({ match = { tag = "multimedia_video" }, no_blur = true, opacity = "1.0" })
 hl.window_rule({ match = { tag = "settings" }, opacity = "0.8" })
 hl.window_rule({ match = { class = "^(org.gnome.Nautilus)$" }, opacity = "0.8" })
+hl.window_rule({ match = { class = "^(nemo)$" }, opacity = "0.8" })
 hl.window_rule({ match = { class = "^(gedit|org.gnome.TextEditor|mousepad)$" }, opacity = "0.9" })
 hl.window_rule({ match = { class = "^(org.pulseaudio.pavucontrol)$" }, opacity = "0.9" })
 hl.window_rule({ match = { class = "^(kitty)$" }, opacity = "0.9" })

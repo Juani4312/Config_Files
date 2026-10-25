@@ -5,7 +5,7 @@
 CONFIG_DIRS=(hypr waybar rofi kitty cava fastfetch gtk-3.0 gtk-4.0 swaync wlogout
              matugen spicetify vesktop yay)
 # Archivos sueltos de ~/.config
-CONFIG_FILES=(pavucontrol.ini QtProject.conf)
+CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list)
 # Dotfiles de la home
 HOME_FILES=(.bashrc .bash_profile .bash_logout .gitconfig)
 # Carpetas de la home (relativas a ~)

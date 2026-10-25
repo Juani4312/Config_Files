@@ -204,3 +204,79 @@ scrolledwindow, scrolledwindow > viewport, viewport.frame, scrolledwindow viewpo
 button.flat, button.image-button {
   background-color: transparent;
 }
+
+/* ---- Nemo: sigue la paleta de matugen (colors.css) ---- */
+.nemo-window, .nemo-window .view, .nemo-window iconview, .nemo-window treeview.view,
+.nemo-window .nemo-places-sidebar, .nemo-window .sidebar {
+  background-color: @window_bg_color;
+  color: @window_fg_color;
+}
+
+.nemo-window .sidebar, .nemo-window .nemo-places-sidebar, .nemo-window .sidebar .view {
+  background-color: @sidebar_bg_color;
+  color: @sidebar_fg_color;
+  border-color: @borders;
+}
+
+.nemo-window .sidebar row:selected, .nemo-window .sidebar .view:selected,
+.nemo-window .nemo-places-sidebar row:selected {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+.nemo-window .sidebar row:hover:not(:selected) {
+  background-color: alpha(@window_fg_color, 0.08);
+}
+
+.nemo-window toolbar, .nemo-window .toolbar, .nemo-window .primary-toolbar,
+.nemo-window .nemo-pathbar, .nemo-window .path-bar, .nemo-window statusbar {
+  background-image: none;
+  background-color: @headerbar_bg_color;
+  color: @headerbar_fg_color;
+  border-color: @borders;
+  box-shadow: none;
+}
+
+.nemo-window .path-bar button, .nemo-window .nemo-pathbar button {
+  background-image: none;
+  background-color: alpha(@window_fg_color, 0.08);
+  color: @window_fg_color;
+  border-color: @borders;
+}
+
+.nemo-window .path-bar button:checked, .nemo-window .nemo-pathbar button:checked,
+.nemo-window .path-bar button:active {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+.nemo-window iconview:selected, .nemo-window .view:selected, .nemo-window .view:selected:focus {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+.nemo-window .nemo-inactive-pane .view, .nemo-window .nemo-inactive-pane iconview {
+  background-color: alpha(@window_bg_color, 0.9);
+}
+
+.nemo-window .rubberband, .nemo-window iconview .rubberband {
+  background-color: alpha(@accent_bg_color, 0.25);
+  border: 1px solid @accent_bg_color;
+}
+
+.nemo-window paned > separator {
+  background-color: @borders;
+}
+
+.nemo-window toolbar button:checked, .nemo-window .toolbar button:checked,
+.nemo-window statusbar button:checked, .nemo-window button.toggle:checked,
+.nemo-window toolbar button:active, .nemo-window statusbar button:active {
+  background-image: none;
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+  -gtk-icon-effect: none;
+}
+
+.nemo-window toolbar button, .nemo-window statusbar button {
+  color: @window_fg_color;
+}

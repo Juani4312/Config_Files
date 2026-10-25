@@ -22,7 +22,7 @@ hl.monitor({
 ---------------------
 
 terminal    = "kitty"
-fileManager = "nautilus"
+fileManager = "nemo"
 menu        = "rofi -show drun"
 
 
