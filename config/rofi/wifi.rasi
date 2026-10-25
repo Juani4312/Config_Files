@@ -1,0 +1,99 @@
+/* Menu de wifi: mismos colores que el panel de notificaciones (swaync) */
+@theme "/dev/null"
+@import "colors.rasi"
+
+configuration {
+	font: "JetBrainsMono Nerd Font 11";
+	show-icons: false;
+}
+
+window {
+    transparency:     "real";
+    location:         north east;
+    anchor:           north east;
+    x-offset:         -12px;
+    y-offset:         52px;
+    width:            400px;
+    border:           1px solid;
+    border-color:     @outline-variant;
+    border-radius:    24px;
+    background-color: @surface-container-low;
+}
+
+mainbox {
+    spacing:          8px;
+    padding:          12px;
+    background-color: transparent;
+    children:         [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+    spacing:          10px;
+    padding:          10px 14px;
+    border:           1px solid;
+    border-color:     @outline-variant;
+    border-radius:    16px;
+    background-color: @surface-container-high;
+    text-color:       @on-surface;
+    children:         [ "prompt", "entry" ];
+}
+
+prompt {
+    background-color: inherit;
+    text-color:       @on-surface;
+}
+
+entry {
+    background-color:  inherit;
+    text-color:        inherit;
+    placeholder:       "Buscar red";
+    placeholder-color: @outline;
+}
+
+message {
+    background-color: transparent;
+}
+
+textbox {
+    padding:          10px 14px;
+    border-radius:    16px;
+    background-color: @surface-container-high;
+    text-color:       @on-surface;
+}
+
+listview {
+    columns:          1;
+    lines:            8;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        false;
+    fixed-height:     false;
+    spacing:          4px;
+    background-color: transparent;
+    text-color:       @on-surface;
+}
+
+element {
+    padding:          10px 12px;
+    border:           1px solid;
+    border-color:     @outline-variant;
+    border-radius:    16px;
+    background-color: @surface-container-high;
+    text-color:       @on-surface;
+}
+
+element normal.active {
+    background-color: @surface-container-highest;
+    text-color:       @on-surface;
+}
+
+element selected.normal, element selected.active {
+    background-color: @secondary-container;
+    text-color:       @on-secondary-container;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}

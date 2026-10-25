@@ -1,0 +1,190 @@
+/*
+* userChrome.css para Firefox/LibreWolf
+* Generated with Matugen
+*/
+:root {
+  --md-bg: #1a1110;
+  --md-bg-low: #231918;
+  --md-container: #271d1c;
+  --md-container-high: #322826;
+  --md-container-highest: #3d3231;
+  --md-fg: #f1dedc;
+  --md-fg-variant: #d8c2be;
+  --md-primary: #ffb4a9;
+  --md-on-primary: #561e18;
+  --md-primary-container: #73342c;
+  --md-on-primary-container: #ffdad5;
+  --md-secondary-container: #5d3f3b;
+  --md-outline: #a08c89;
+  --md-outline-variant: #534341;
+  --md-radius: 12px;
+
+  /* Variables nativas de Firefox */
+  --toolbar-bgcolor: var(--md-container) !important;
+  --toolbar-color: var(--md-fg) !important;
+  --toolbar-field-background-color: var(--md-bg-low) !important;
+  --toolbar-field-focus-background-color: var(--md-bg-low) !important;
+  --toolbar-field-color: var(--md-fg) !important;
+  --toolbar-field-focus-color: var(--md-fg) !important;
+  --toolbar-field-border-color: var(--md-outline-variant) !important;
+  --toolbar-field-focus-border-color: var(--md-primary) !important;
+  --tab-selected-bgcolor: var(--md-container-highest) !important;
+  --tab-selected-textcolor: var(--md-fg) !important;
+  --tab-loading-fill: var(--md-primary) !important;
+  --lwt-accent-color: var(--md-bg) !important;
+  --lwt-text-color: var(--md-fg) !important;
+  --arrowpanel-background: var(--md-container-high) !important;
+  --arrowpanel-color: var(--md-fg) !important;
+  --arrowpanel-border-color: var(--md-outline-variant) !important;
+  --sidebar-background-color: var(--md-bg-low) !important;
+  --sidebar-text-color: var(--md-fg) !important;
+  --urlbarView-highlight-background: var(--md-primary-container) !important;
+  --urlbarView-highlight-color: var(--md-on-primary-container) !important;
+  --focus-outline-color: var(--md-primary) !important;
+  --button-primary-bgcolor: var(--md-primary) !important;
+  --button-primary-color: var(--md-on-primary) !important;
+  --button-primary-hover-bgcolor: var(--md-primary) !important;
+  --button-primary-active-bgcolor: var(--md-primary) !important;
+  --button-primary-hover-color: var(--md-on-primary) !important;
+  --button-primary-active-color: var(--md-on-primary) !important;
+  --button-bgcolor: var(--md-container-highest) !important;
+  --button-color: var(--md-fg) !important;
+}
+
+/* Fondo general de la ventana y barra de pestañas */
+#main-window,
+#navigator-toolbox,
+#TabsToolbar {
+  background: var(--md-bg) !important;
+  color: var(--md-fg) !important;
+  border: none !important;
+  appearance: none !important;
+}
+
+/* Barra de navegación flotante y redondeada */
+#nav-bar {
+  background: var(--md-container) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: var(--md-radius) !important;
+  margin: 4px 8px !important;
+  padding: 2px 4px !important;
+}
+
+#PersonalToolbar {
+  background: transparent !important;
+  color: var(--md-fg-variant) !important;
+}
+
+/* Pestañas */
+.tabbrowser-tab .tab-background {
+  border-radius: 10px !important;
+  margin-block: 3px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.tabbrowser-tab:not([selected]):hover .tab-background {
+  background: var(--md-container-high) !important;
+}
+
+.tabbrowser-tab[selected] .tab-background {
+  background: var(--md-primary-container) !important;
+}
+
+.tabbrowser-tab[selected] .tab-label,
+.tabbrowser-tab[selected] .tab-icon-image,
+.tabbrowser-tab[selected] .tab-close-button {
+  color: var(--md-on-primary-container) !important;
+  fill: var(--md-on-primary-container) !important;
+}
+
+.tabbrowser-tab:not([selected]) .tab-label {
+  color: var(--md-fg-variant) !important;
+}
+
+.tab-context-line,
+.tab-loading-burst {
+  display: none !important;
+}
+
+/* Barra de direcciones */
+#urlbar-background {
+  background: var(--md-bg-low) !important;
+  border: 1px solid var(--md-outline-variant) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+#urlbar[focused="true"] > #urlbar-background,
+#urlbar[open] > #urlbar-background {
+  border-color: var(--md-primary) !important;
+  background: var(--md-bg-low) !important;
+}
+
+#urlbar[open] > .urlbarView {
+  background: var(--md-container-high) !important;
+  border-radius: 0 0 10px 10px !important;
+}
+
+.urlbarView-row[selected] > .urlbarView-row-inner,
+.urlbarView-row:hover > .urlbarView-row-inner {
+  background: var(--md-primary-container) !important;
+  color: var(--md-on-primary-container) !important;
+  border-radius: 8px !important;
+}
+
+/* Botones de la barra de herramientas */
+toolbarbutton:not(#tabs-newtab-button) > .toolbarbutton-icon,
+.toolbarbutton-1 > .toolbarbutton-icon {
+  border-radius: 8px !important;
+  fill: var(--md-fg-variant) !important;
+}
+
+toolbarbutton:hover > .toolbarbutton-icon,
+.toolbarbutton-1:hover > .toolbarbutton-icon {
+  background: var(--md-container-highest) !important;
+}
+
+/* Menús y paneles */
+menupopup,
+panel,
+.panel-arrowcontent {
+  --panel-background: var(--md-container-high) !important;
+  --panel-color: var(--md-fg) !important;
+  --panel-border-color: var(--md-outline-variant) !important;
+  --panel-border-radius: var(--md-radius) !important;
+  --arrowpanel-border-radius: var(--md-radius) !important;
+}
+
+menupopup {
+  border-radius: var(--md-radius) !important;
+}
+
+menuitem:hover,
+menu:hover,
+menuitem[_moz-menuactive="true"],
+menu[_moz-menuactive="true"] {
+  background: var(--md-primary-container) !important;
+  color: var(--md-on-primary-container) !important;
+}
+
+/* Barra lateral */
+#sidebar-box,
+#sidebar-header {
+  background: var(--md-bg-low) !important;
+  color: var(--md-fg) !important;
+  border: none !important;
+}
+
+/* Contenido: bordes redondeados alrededor de la página */
+#tabbrowser-tabpanels,
+#appcontent {
+  background: var(--md-bg) !important;
+}
+
+#tabbrowser-tabbox .browserContainer {
+  border-radius: var(--md-radius) !important;
+  overflow: hidden !important;
+  margin: 0 8px 8px 8px !important;
+}

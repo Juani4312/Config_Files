@@ -1,0 +1,206 @@
+@import 'colors.css';
+
+/* GTK3 Adwaita no lee los nombres libadwaita de matugen: se mapean a los de GTK3 */
+@define-color theme_bg_color @window_bg_color;
+@define-color theme_fg_color @window_fg_color;
+@define-color theme_base_color @view_bg_color;
+@define-color theme_text_color @view_fg_color;
+@define-color theme_selected_bg_color @accent_bg_color;
+@define-color theme_selected_fg_color @accent_fg_color;
+@define-color theme_unfocused_bg_color @window_bg_color;
+@define-color theme_unfocused_fg_color @window_fg_color;
+@define-color theme_unfocused_base_color @view_bg_color;
+@define-color theme_unfocused_text_color @view_fg_color;
+@define-color theme_unfocused_selected_bg_color @accent_bg_color;
+@define-color theme_unfocused_selected_fg_color @accent_fg_color;
+@define-color insensitive_bg_color @window_bg_color;
+@define-color insensitive_base_color @view_bg_color;
+@define-color borders alpha(@window_fg_color, 0.15);
+@define-color unfocused_borders alpha(@window_fg_color, 0.15);
+@define-color content_view_bg @view_bg_color;
+
+/* Reglas explicitas: el Adwaita-dark de GTK3 ignora los @define-color theme_* */
+window, .background, dialog, messagedialog {
+  background-color: @window_bg_color;
+  color: @window_fg_color;
+}
+
+headerbar, .titlebar, menubar, toolbar, statusbar, actionbar, .toolbar {
+  background-image: none;
+  background-color: @headerbar_bg_color;
+  color: @headerbar_fg_color;
+  border-color: @borders;
+  box-shadow: none;
+}
+
+treeview.view, iconview, textview, textview text, .view, list, listview, scrolledwindow, viewport {
+  background-color: @view_bg_color;
+  color: @view_fg_color;
+}
+
+treeview.view:selected, iconview:selected, .view:selected, row:selected, menuitem:hover, modelbutton:hover {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+treeview.view header button {
+  background-image: none;
+  background-color: @headerbar_bg_color;
+  color: @headerbar_fg_color;
+  border-color: @borders;
+}
+
+menu, .menu, popover, popover.background, .popup, tooltip {
+  background-color: @popover_bg_color;
+  color: @popover_fg_color;
+  border-color: @borders;
+}
+
+button, entry, spinbutton {
+  background-image: none;
+  background-color: alpha(@window_fg_color, 0.08);
+  color: @window_fg_color;
+  border-color: @borders;
+  box-shadow: none;
+}
+
+button:hover {
+  background-color: alpha(@window_fg_color, 0.16);
+}
+
+button:checked, button:active, button.suggested-action {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+button:disabled, entry:disabled {
+  color: alpha(@window_fg_color, 0.4);
+}
+
+entry:focus {
+  border-color: @accent_bg_color;
+}
+
+switch {
+  background-image: none;
+  background-color: alpha(@window_fg_color, 0.12);
+  border-color: @borders;
+}
+
+switch:checked {
+  background-color: @accent_bg_color;
+}
+
+switch slider {
+  background-image: none;
+  background-color: @window_fg_color;
+  border-color: transparent;
+}
+
+switch:checked slider {
+  background-color: @accent_fg_color;
+}
+
+separator {
+  background-color: @borders;
+}
+
+scrollbar slider {
+  background-color: alpha(@window_fg_color, 0.3);
+}
+
+selection {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+/* Acentos (pestañas, sliders, barras, checks) */
+notebook > header > tabs > tab:checked {
+  box-shadow: inset 0 -2px @accent_bg_color;
+  color: @window_fg_color;
+}
+
+notebook > header {
+  background-color: @headerbar_bg_color;
+  box-shadow: none;
+  border-color: @borders;
+}
+
+scale trough {
+  background-image: none;
+  background-color: alpha(@window_fg_color, 0.15);
+}
+
+scale highlight, progressbar progress, levelbar block.filled {
+  background-image: none;
+  background-color: @accent_bg_color;
+  border-color: transparent;
+}
+
+scale slider {
+  background-image: none;
+  background-color: @accent_bg_color;
+  border-color: @accent_bg_color;
+}
+
+progressbar trough, levelbar block.empty {
+  background-color: alpha(@window_fg_color, 0.15);
+}
+
+check:checked, radio:checked {
+  background-image: none;
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+  border-color: @accent_bg_color;
+}
+
+combobox button, combobox arrow {
+  color: @window_fg_color;
+}
+
+link, *:link {
+  color: @accent_color;
+}
+
+/* Selectores con la especificidad de Adwaita (pavucontrol y similares) */
+notebook, notebook > stack, notebook > header.top, notebook > header.bottom, notebook > header.left, notebook > header.right {
+  background-color: @window_bg_color;
+  background-image: none;
+  color: @window_fg_color;
+}
+
+notebook > header.top > tabs > tab:checked,
+notebook > header.top > tabs > tab:hover {
+  box-shadow: inset 0 -3px @accent_bg_color;
+  background-image: none;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+notebook > header.top > tabs > tab:hover:not(:checked) {
+  box-shadow: inset 0 -3px alpha(@accent_bg_color, 0.5);
+}
+
+scale slider, scale:hover slider, scale:active slider {
+  background-image: none;
+  background-color: @accent_bg_color;
+  border-color: @accent_bg_color;
+}
+
+scale trough highlight, scale.horizontal trough highlight {
+  background-image: none;
+  background-color: @accent_bg_color;
+}
+
+scale trough, scale.horizontal trough {
+  background-image: none;
+  background-color: alpha(@window_fg_color, 0.2);
+}
+
+scrolledwindow, scrolledwindow > viewport, viewport.frame, scrolledwindow viewport, stack, list, row {
+  background-color: @window_bg_color;
+}
+
+button.flat, button.image-button {
+  background-color: transparent;
+}
