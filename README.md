@@ -12,6 +12,38 @@ Mi customización de Arch + Hyprland, lista para clonar en otra PC.
 
 Los `~/.config/<x>` originales eran symlinks a `~/dotfiles`; acá se guarda el **contenido real** (rsync `-L`).
 
+## Aplicaciones que uso
+Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en `packages/`.
+
+| Rol | App | Config en el repo |
+|---|---|---|
+| Compositor / WM | [Hyprland](https://hypr.land) (config en Lua) | `config/hypr` |
+| Barra | Waybar | `config/waybar` |
+| Launcher | Rofi (`SUPER+R`, drun; menú de wifi propio) | `config/rofi` |
+| Notificaciones | SwayNC | `config/swaync` |
+| Menú de apagado | wlogout | `config/wlogout` |
+| Lockscreen / idle | hyprlock, hypridle | `config/hypr` |
+| Fondo de pantalla | awww (`awww-daemon`) | `config/hypr`, `home/Pictures/wallpapers` |
+| Paleta de colores | matugen (genera colores desde el wallpaper) | `config/matugen` |
+| Terminal | Kitty | `config/kitty` |
+| File manager | Nemo (default) · Yazi en terminal (`kitty yazi`) · Nautilus instalado de respaldo | `config/gtk-3.0/gtk.css`, `config/mimeapps.list` |
+| Navegadores | LibreWolf (con `userChrome`/`userContent` propios), Google Chrome | `extra/librewolf-chrome` |
+| Mensajería | ZapZap (WhatsApp) con tema de matugen | `extra/zapzap` |
+| Editor | Visual Studio Code, nano | — |
+| Monitor / info | btop, fastfetch, cava (visualizador de audio) | `config/fastfetch`, `config/cava` |
+| Audio | PipeWire + WirePlumber, pavucontrol, pamixer, playerctl | — |
+| Brillo / energía | brightnessctl, power-profiles-daemon | — |
+| Red / Bluetooth | NetworkManager (nm-applet, `nmcli`), BlueZ + Blueman | — |
+| Capturas / portapapeles | grim, slurp, wl-clipboard, hyprpicker | — |
+| Polkit / portal | hyprpolkitagent, xdg-desktop-portal-hyprland | — |
+| Impresión | CUPS, system-config-printer | — |
+| Fuentes | JetBrainsMono Nerd Font, Noto (+CJK, emoji), DejaVu, Liberation | — |
+| Gestión de paquetes | pacman, yay, GNU Stow | `config/yay` |
+| Git | git, GitHub CLI (`gh`) | `home/.gitconfig` |
+
+**Con tema pero sin instalar en esta PC:** Vesktop (`config/vesktop`) y Spicetify (`config/spicetify`).
+Matugen les genera el tema, pero las apps no figuran en `packages/`; instalalas aparte si las querés.
+
 ## NO se sincroniza (a propósito)
 `.ssh`, `.gnupg`, perfiles de Chrome/LibreWolf, sesiones de Vesktop/ZapZap, tokens de `gh`,
 `.bash_history`, `.cache`, `.claude`. Esos se reconfiguran a mano en cada PC.
