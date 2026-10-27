@@ -1,0 +1,39 @@
+{
+  "general": {
+    "accentColor": "#c695bd",
+    "checkForMillenniumUpdates": true,
+    "checkForPluginAndThemeUpdates": true,
+    "injectCSS": true,
+    "injectJavascript": true,
+    "millenniumUpdateChannel": "stable",
+    "onMillenniumUpdate": 1,
+    "shouldShowThemePluginUpdateNotifications": true
+  },
+  "misc": {
+    "hasShownWelcomeModal": true
+  },
+  "network": {
+    "proxy": "",
+    "proxyPassword": "",
+    "proxyUsername": ""
+  },
+  "notifications": {
+    "showNotifications": true,
+    "showPluginNotifications": true,
+    "showUpdateNotifications": true
+  },
+  "plugins": {
+    "enabledPlugins": [
+      "protondb",
+      "size-on-disk",
+      "fullscreen-notifications-fix",
+      "non-steam-playtimes",
+      "hltb-for-millennium"
+    ]
+  },
+  "themes": {
+    "activeTheme": "matugen",
+    "allowedScripts": true,
+    "allowedStyles": true
+  }
+}

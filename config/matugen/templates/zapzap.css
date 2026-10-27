@@ -1,99 +1,214 @@
-/* ZapZap / WhatsApp Web - generado con Matugen */
-:root, body, body.dark, html.dark {
-  /* rampa de grises -> superficies de la paleta */
-  --WDS-neutral-gray-1000: {{colors.surface_container_lowest.default.hex}} !important;
-  --WDS-neutral-gray-900: {{colors.surface.default.hex}} !important;
-  --WDS-neutral-gray-850: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-neutral-gray-800: {{colors.surface_container_high.default.hex}} !important;
-  --WDS-neutral-gray-700: {{colors.outline_variant.default.hex}} !important;
-  --WDS-neutral-gray-500: {{colors.outline.default.hex}} !important;
-  --WDS-neutral-gray-400: {{colors.on_surface_variant.default.hex}} !important;
-  --WDS-neutral-gray-300: {{colors.on_surface_variant.default.hex}} !important;
-  --WDS-neutral-gray-100: {{colors.on_surface.default.hex}} !important;
-  --WDS-neutral-gray-75: {{colors.on_surface.default.hex}} !important;
-  --WDS-neutral-gray-50: {{colors.on_surface.default.hex}} !important;
+/* =============================================
+   ZapZap / WhatsApp Web - generado con Matugen
+   Misma paleta y estilo que waybar / kitty / vesktop.
+   Pisa las variables CSS de WhatsApp (no las clases ofuscadas),
+   asi sobrevive a las actualizaciones de WhatsApp.
+   ============================================= */
 
-  /* rampa de verdes -> primario de la paleta */
-  --WDS-green-100: {{colors.primary_fixed.default.hex}} !important;
-  --WDS-green-200: {{colors.primary_fixed.default.hex}} !important;
-  --WDS-green-300: {{colors.primary_fixed_dim.default.hex}} !important;
-  --WDS-green-400: {{colors.primary.default.hex}} !important;
-  --WDS-green-450: {{colors.primary.default.hex}} !important;
-  --WDS-green-500: {{colors.primary.default.hex}} !important;
-  --WDS-green-600: {{colors.inverse_primary.default.hex}} !important;
-  --WDS-green-700: {{colors.on_primary_container.default.hex}} !important;
-  --WDS-green-750: {{colors.primary_container.default.hex}} !important;
-  --WDS-green-800: {{colors.secondary_container.default.hex}} !important;
-
-  /* tokens semanticos */
-  --WDS-accent: {{colors.primary.default.hex}} !important;
-  --WDS-accent-emphasized: {{colors.primary_fixed.default.hex}} !important;
-  --WDS-accent-deemphasized: {{colors.secondary_container.default.hex}} !important;
-  --WDS-content-on-accent: {{colors.on_primary.default.hex}} !important;
-  --WDS-content-action-emphasized: {{colors.primary.default.hex}} !important;
-  --WDS-content-external-link: {{colors.primary.default.hex}} !important;
-  --WDS-content-default: {{colors.on_surface.default.hex}} !important;
-  --WDS-content-action-default: {{colors.on_surface.default.hex}} !important;
-  --WDS-content-deemphasized: {{colors.on_surface_variant.default.hex}} !important;
-  --WDS-content-disabled: {{colors.outline_variant.default.hex}} !important;
-  --WDS-content-inverse: {{colors.surface.default.hex}} !important;
-  --WDS-surface-default: {{colors.surface.default.hex}} !important;
-  --WDS-surface-emphasized: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-surface-elevated-default: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-surface-elevated-emphasized: {{colors.surface_container_high.default.hex}} !important;
-  --WDS-surface-inverse: {{colors.inverse_surface.default.hex}} !important;
-  --WDS-app-wash: {{colors.surface_container.default.hex}} !important;
-  --WDS-background-wash-plain: {{colors.surface.default.hex}} !important;
-  --WDS-background-wash-inset: {{colors.surface.default.hex}} !important;
-  --WDS-background-elevated-wash-plain: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-background-elevated-wash-inset: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-components-surface-nav-bar: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-components-filter-surface-selected: {{colors.secondary_container.default.hex}} !important;
-  --WDS-lines-outline-default: {{colors.outline.default.hex}} !important;
-  --WDS-systems-bubble-surface-incoming: {{colors.surface_container_high.default.hex}} !important;
-  --WDS-systems-bubble-surface-outgoing: {{colors.primary_container.default.hex}} !important;
-  --WDS-systems-bubble-surface-system: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-systems-bubble-surface-e2e: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-systems-bubble-surface-business: {{colors.surface_container_low.default.hex}} !important;
-  --WDS-systems-chat-background-wallpaper: {{colors.surface.default.hex}} !important;
-  --WDS-systems-chat-surface-composer: {{colors.surface_container_high.default.hex}} !important;
-  --WDS-systems-chat-surface-tray: {{colors.surface.default.hex}} !important;
-
-  /* variables clasicas de WhatsApp Web */
-  --app-background: {{colors.surface.default.hex}} !important;
-  --app-background-deeper: {{colors.surface_container_lowest.default.hex}} !important;
-  --navbar-background: {{colors.surface_container_low.default.hex}} !important;
-  --panel-background: {{colors.surface.default.hex}} !important;
-  --panel-background-deep: {{colors.surface_container_lowest.default.hex}} !important;
-  --panel-input-background: {{colors.surface_container_high.default.hex}} !important;
-  --picker-background: {{colors.surface_container_high.default.hex}} !important;
-  --incoming-background: {{colors.surface_container_high.default.hex}} !important;
-  --outgoing-background: {{colors.primary_container.default.hex}} !important;
-  --avatar-background: {{colors.surface.default.hex}} !important;
-  --empty-state-background: {{colors.surface_container_low.default.hex}} !important;
-  --pill-background: {{colors.surface_container_low.default.hex}} !important;
-  --compose-panel-background-hover: {{colors.surface_container_low.default.hex}} !important;
-  --button-reject-background: {{colors.surface_container_high.default.hex}} !important;
-  --button-reject-background-hover: {{colors.surface_container_highest.default.hex}} !important;
-  --button-round-background-inverted: {{colors.surface_container_high.default.hex}} !important;
-  --chip-button-background: {{colors.surface_container_high.default.hex}} !important;
-  --input-border-active: {{colors.primary.default.hex}} !important;
-  --icon-primary: {{colors.primary.default.hex}} !important;
-  --icon-high-emphasis: {{colors.primary.default.hex}} !important;
-  --text-action: {{colors.primary.default.hex}} !important;
-  --link-alt: {{colors.primary.default.hex}} !important;
-  --status-ring-unread: {{colors.primary.default.hex}} !important;
-  --badge-pending: {{colors.primary.default.hex}} !important;
-  --qc-quantity-label-highlighted-background: {{colors.primary.default.hex}} !important;
-  --text-primary-strong: {{colors.on_surface.default.hex}} !important;
-  --text-muted: {{colors.on_surface_variant.default.hex}} !important;
-  --primary-muted: {{colors.on_surface_variant.default.hex}} !important;
-  --button-bubble: {{colors.primary_container.default.hex}} !important;
-  --audio-track-outgoing: {{colors.primary.default.hex}} !important;
-  --splashscreen-startup-background: {{colors.surface.default.hex}} !important;
-  --splashscreen-startup-background-plain: {{colors.surface.default.hex}} !important;
-  --splashscreen-progress-primary: {{colors.primary.default.hex}} !important;
+:root {
+    --sys-bg-deep: {{colors.surface_container_lowest.default.hex}};
+    --sys-bg-0:    {{colors.surface.default.hex}};
+    --sys-bg-1:    {{colors.surface_container_low.default.hex}};
+    --sys-bg-2:    {{colors.surface_container_high.default.hex}};
+    --sys-bg-3:    {{colors.surface_container_highest.default.hex}};
+    --sys-border:  {{colors.outline_variant.default.hex}};
+    --sys-fg:      {{colors.inverse_surface.default.hex}};
+    --sys-fg-1:    {{colors.secondary.default.hex}};
+    --sys-fg-2:    {{colors.on_surface_variant.default.hex}};
+    --sys-muted:   {{colors.outline.default.hex}};
+    --sys-accent:  {{colors.primary.default.hex}};
+    --sys-accent-h:{{colors.primary_fixed.default.hex}};
+    --sys-accent-d:{{colors.primary_container.default.hex}};
+    --sys-out:     {{colors.primary_container.default.hex}};
+    --sys-red:     {{colors.error.default.hex}};
+    --sys-green:   oklch(70% 0.11 150);
+    --sys-yellow:  {{colors.tertiary.default.hex}};
+    --sys-blue:    {{colors.primary_fixed_dim.default.hex}};
+    --sys-sel-bg:  {{colors.on_primary.default.hex}};
+    --sys-sel-fg:  {{colors.primary.default.hex}};
 }
 
-/* pestaña de chat seleccionada / scrollbars */
-::-webkit-scrollbar-thumb { background-color: {{colors.outline_variant.default.hex}} !important; }
+:root, :root * {
+    /* ── Surfaces ── */
+    --WDS-surface-default: var(--sys-bg-0) !important;
+    --WDS-surface-emphasized: var(--sys-bg-1) !important;
+    --WDS-surface-elevated-default: var(--sys-bg-1) !important;
+    --WDS-surface-elevated-emphasized: var(--sys-bg-2) !important;
+    --WDS-surface-highlight: rgba(255, 255, 255, .06) !important;
+    --WDS-surface-pressed: rgba(255, 255, 255, .10) !important;
+    --WDS-surface-inverse: var(--sys-fg) !important;
+    --WDS-app-wash: var(--sys-bg-deep) !important;
+    --WDS-background-wash-plain: var(--sys-bg-0) !important;
+    --WDS-background-wash-inset: var(--sys-bg-0) !important;
+    --WDS-background-elevated-wash-plain: var(--sys-bg-1) !important;
+    --WDS-background-elevated-wash-inset: var(--sys-bg-1) !important;
+    --WDS-components-surface-nav-bar: var(--sys-bg-1) !important;
+    --WDS-components-active-list-row: rgba(255, 255, 255, .08) !important;
+    --WDS-components-filter-surface-selected: var(--sys-accent-d) !important;
+    --WDS-components-badge-muted: var(--sys-bg-3) !important;
+    --WDS-components-badge-muted-dot: var(--sys-bg-3) !important;
+    --app-background: var(--sys-bg-deep) !important;
+    --app-background-deeper: var(--sys-bg-deep) !important;
+    --panel-background: var(--sys-bg-1) !important;
+    --panel-background-deep: var(--sys-bg-0) !important;
+    --panel-input-background: var(--sys-bg-2) !important;
+    --navbar-background: var(--sys-bg-1) !important;
+    --picker-background: var(--sys-bg-2) !important;
+    --modal-backdrop-solid: var(--sys-bg-0) !important;
+    --empty-state-background: var(--sys-bg-1) !important;
+    --pill-background: var(--sys-bg-2) !important;
+    --chip-button-background: var(--sys-bg-3) !important;
+    --chip-button-foreground: var(--sys-fg-1) !important;
+    --splashscreen-startup-background: var(--sys-bg-0) !important;
+    --splashscreen-startup-background-plain: var(--sys-bg-0) !important;
+    --splashscreen-progress-primary: var(--sys-accent) !important;
+
+    /* ── Text ── */
+    --WDS-content-default: var(--sys-fg) !important;
+    --WDS-content-deemphasized: var(--sys-fg-2) !important;
+    --WDS-content-disabled: var(--sys-muted) !important;
+    --WDS-content-action-default: var(--sys-fg) !important;
+    --WDS-content-action-emphasized: var(--sys-accent) !important;
+    --WDS-content-external-link: var(--sys-accent-h) !important;
+    --WDS-content-on-accent: var(--sys-bg-deep) !important;
+    --WDS-content-inverse: var(--sys-bg-deep) !important;
+    --WDS-content-read: var(--sys-accent-h) !important;
+    --primary: var(--sys-fg) !important;
+    --primary-strong: var(--sys-fg) !important;
+    --primary-stronger: var(--sys-fg) !important;
+    --primary-muted: var(--sys-muted) !important;
+    --secondary: var(--sys-fg-2) !important;
+    --secondary-lighter: var(--sys-fg-2) !important;
+    --secondary-stronger: var(--sys-fg-1) !important;
+    --message-primary: var(--sys-fg) !important;
+    --text-primary-strong: var(--sys-fg) !important;
+    --text-muted: var(--sys-fg-2) !important;
+    --text-action: var(--sys-accent) !important;
+    --input-placeholder: var(--sys-muted) !important;
+    --modal-title: var(--sys-fg) !important;
+    --pill-text: var(--sys-fg-2) !important;
+
+    /* ── Icons ── */
+    --icon: var(--sys-fg-1) !important;
+    --icon-primary: var(--sys-accent) !important;
+    --icon-high-emphasis: var(--sys-accent) !important;
+    --icon-ack: var(--sys-accent-h) !important;
+    --bubble-meta-icon: var(--sys-fg-2) !important;
+
+    /* ── Lines / borders ── */
+    --WDS-lines-divider: var(--sys-border) !important;
+    --WDS-lines-outline-deemphasized: var(--sys-border) !important;
+    --WDS-lines-outline-default: var(--sys-border) !important;
+    --input-border: var(--sys-border) !important;
+    --input-border-active: var(--sys-accent) !important;
+    --border-bubble: var(--sys-border) !important;
+
+    /* ── Accent (was WhatsApp green) ── */
+    --WDS-accent: var(--sys-accent) !important;
+    --WDS-accent-emphasized: var(--sys-accent-h) !important;
+    --WDS-accent-deemphasized: var(--sys-accent-d) !important;
+    --WDS-persistent-always-branded: var(--sys-accent) !important;
+    --WDS-persistent-activity-indicator: var(--sys-accent) !important;
+    --button-alternative: var(--sys-accent) !important;
+    --button-bubble: color-mix(in srgb, var(--sys-accent), transparent 30%) !important;
+    --badge-pending: var(--sys-accent) !important;
+    --status-ring-unread: var(--sys-accent) !important;
+    --link-alt: var(--sys-accent-h) !important;
+    --ptt-draft-thumb: var(--sys-accent) !important;
+    --ptt-green: var(--sys-accent) !important;
+    --ptt-thumb-incoming-unplayed: var(--sys-accent) !important;
+    --ptt-thumb-incoming-played: var(--sys-accent-h) !important;
+    --ptt-thumb-outgoing-played: var(--sys-accent-h) !important;
+    --ptt-blue: var(--sys-accent-h) !important;
+    --audio-progress-incoming: var(--sys-accent) !important;
+    --audio-progress-outgoing: var(--sys-accent-h) !important;
+    --audio-track-outgoing: var(--sys-bg-3) !important;
+    --audio-track-incoming: var(--sys-bg-3) !important;
+
+    /* ── Chat & bubbles ── */
+    --WDS-systems-chat-background-wallpaper: var(--sys-bg-0) !important;
+    --WDS-systems-chat-foreground-wallpaper: color-mix(in srgb, var(--sys-accent), transparent 95%) !important;
+    --WDS-systems-chat-surface-composer: var(--sys-bg-2) !important;
+    --WDS-systems-chat-surface-tray: var(--sys-bg-0) !important;
+    --WDS-systems-bubble-surface-incoming: var(--sys-bg-2) !important;
+    --WDS-systems-bubble-surface-outgoing: var(--sys-out) !important;
+    --WDS-systems-bubble-surface-system: var(--sys-bg-1) !important;
+    --WDS-systems-bubble-surface-business: var(--sys-bg-1) !important;
+    --WDS-systems-bubble-surface-e2e: var(--sys-bg-1) !important;
+    --WDS-systems-bubble-content-deemphasized: var(--sys-fg-2) !important;
+    --WDS-systems-bubble-content-e2e: var(--sys-yellow) !important;
+    --WDS-systems-bubble-content-business: var(--sys-accent-h) !important;
+    --WDS-systems-status-seen: var(--sys-muted) !important;
+    --incoming-background: var(--sys-bg-2) !important;
+    --outgoing-background: var(--sys-out) !important;
+    --bubble-meta: var(--sys-fg-2) !important;
+    --message-selection-highlight: color-mix(in srgb, var(--sys-accent), transparent 92%) !important;
+
+    /* ── Semantic ── */
+    --WDS-secondary-positive: var(--sys-green) !important;
+    --WDS-secondary-warning: var(--sys-yellow) !important;
+    --WDS-secondary-negative: var(--sys-red) !important;
+    --red: var(--sys-red) !important;
+    --orange: var(--sys-accent) !important;
+}
+
+:root, :root * {
+    /* Quoted "You" / own-name color */
+    --WDS-cobalt-300: var(--sys-accent-h) !important;
+    --x1e03607: var(--sys-accent-h) !important;
+}
+
+/* rampas de WhatsApp (verde -> primary, grises -> superficies) */
+:root, :root * {
+    --WDS-neutral-gray-1000: {{colors.surface_container_lowest.default.hex}} !important;
+    --WDS-neutral-gray-900: {{colors.surface.default.hex}} !important;
+    --WDS-neutral-gray-850: {{colors.surface_container_low.default.hex}} !important;
+    --WDS-neutral-gray-800: {{colors.surface_container_high.default.hex}} !important;
+    --WDS-neutral-gray-700: {{colors.outline_variant.default.hex}} !important;
+    --WDS-neutral-gray-500: {{colors.outline.default.hex}} !important;
+    --WDS-neutral-gray-400: {{colors.on_surface_variant.default.hex}} !important;
+    --WDS-neutral-gray-300: {{colors.on_surface_variant.default.hex}} !important;
+    --WDS-neutral-gray-100: {{colors.on_surface.default.hex}} !important;
+    --WDS-neutral-gray-75: {{colors.on_surface.default.hex}} !important;
+    --WDS-neutral-gray-50: {{colors.on_surface.default.hex}} !important;
+    --WDS-green-100: {{colors.primary_fixed.default.hex}} !important;
+    --WDS-green-200: {{colors.primary_fixed.default.hex}} !important;
+    --WDS-green-300: {{colors.primary_fixed_dim.default.hex}} !important;
+    --WDS-green-400: {{colors.primary.default.hex}} !important;
+    --WDS-green-450: {{colors.primary.default.hex}} !important;
+    --WDS-green-500: {{colors.primary.default.hex}} !important;
+    --WDS-green-600: {{colors.inverse_primary.default.hex}} !important;
+    --WDS-green-700: {{colors.on_primary_container.default.hex}} !important;
+    --WDS-green-750: {{colors.primary_container.default.hex}} !important;
+    --WDS-green-800: {{colors.secondary_container.default.hex}} !important;
+}
+
+/* Chat wallpaper: WhatsApp sets the user-picked color inline on #main */
+#main {
+    background-color: var(--sys-bg-0) !important;
+}
+#main div[style*="mask-image"] {
+    background-color: var(--sys-accent) !important;
+    opacity: .05 !important;
+}
+
+::selection {
+    background: var(--sys-sel-bg);
+    color: var(--sys-sel-fg);
+}
+
+/* Scrollbars */
+* {
+    scrollbar-color: var(--sys-border) transparent;
+}
+
+/* misma tipografia que waybar / kitty */
+html, body, input, textarea, button, [contenteditable] {
+    font-family: 'JetBrainsMono Nerd Font Propo', 'Noto Color Emoji', sans-serif !important;
+}
+body *:not(pre):not(code) {
+    font-family: inherit !important;
+}
+pre, code {
+    font-family: 'JetBrainsMono Nerd Font', monospace !important;
+}

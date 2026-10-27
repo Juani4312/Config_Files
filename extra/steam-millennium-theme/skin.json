@@ -1,0 +1,13 @@
+{
+	"name": "Matugen",
+	"author": "juano",
+	"description": "Colores del sistema generados por matugen (ver ~/.config/steam-theme)",
+	"version": "1.0.0",
+	"Patches": [
+		{
+			"MatchRegexString": "^(Steam|Steam Settings|Friends List)$|^.+ (Menu|Supernav)$",
+			"TargetCss": "client.css"
+		}
+	],
+	"Steam-WebKit": "webkit.css"
+}

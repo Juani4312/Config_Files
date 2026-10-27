@@ -1,99 +1,214 @@
-/* ZapZap / WhatsApp Web - generado con Matugen */
-:root, body, body.dark, html.dark {
-  /* rampa de grises -> superficies de la paleta */
-  --WDS-neutral-gray-1000: #140c0b !important;
-  --WDS-neutral-gray-900: #1a1110 !important;
-  --WDS-neutral-gray-850: #231918 !important;
-  --WDS-neutral-gray-800: #322826 !important;
-  --WDS-neutral-gray-700: #534341 !important;
-  --WDS-neutral-gray-500: #a08c89 !important;
-  --WDS-neutral-gray-400: #d8c2be !important;
-  --WDS-neutral-gray-300: #d8c2be !important;
-  --WDS-neutral-gray-100: #f1dedc !important;
-  --WDS-neutral-gray-75: #f1dedc !important;
-  --WDS-neutral-gray-50: #f1dedc !important;
+/* =============================================
+   ZapZap / WhatsApp Web - generado con Matugen
+   Misma paleta y estilo que waybar / kitty / vesktop.
+   Pisa las variables CSS de WhatsApp (no las clases ofuscadas),
+   asi sobrevive a las actualizaciones de WhatsApp.
+   ============================================= */
 
-  /* rampa de verdes -> primario de la paleta */
-  --WDS-green-100: #ffdad5 !important;
-  --WDS-green-200: #ffdad5 !important;
-  --WDS-green-300: #ffb4a9 !important;
-  --WDS-green-400: #ffb4a9 !important;
-  --WDS-green-450: #ffb4a9 !important;
-  --WDS-green-500: #ffb4a9 !important;
-  --WDS-green-600: #904a42 !important;
-  --WDS-green-700: #ffdad5 !important;
-  --WDS-green-750: #73342c !important;
-  --WDS-green-800: #5d3f3b !important;
-
-  /* tokens semanticos */
-  --WDS-accent: #ffb4a9 !important;
-  --WDS-accent-emphasized: #ffdad5 !important;
-  --WDS-accent-deemphasized: #5d3f3b !important;
-  --WDS-content-on-accent: #561e18 !important;
-  --WDS-content-action-emphasized: #ffb4a9 !important;
-  --WDS-content-external-link: #ffb4a9 !important;
-  --WDS-content-default: #f1dedc !important;
-  --WDS-content-action-default: #f1dedc !important;
-  --WDS-content-deemphasized: #d8c2be !important;
-  --WDS-content-disabled: #534341 !important;
-  --WDS-content-inverse: #1a1110 !important;
-  --WDS-surface-default: #1a1110 !important;
-  --WDS-surface-emphasized: #231918 !important;
-  --WDS-surface-elevated-default: #231918 !important;
-  --WDS-surface-elevated-emphasized: #322826 !important;
-  --WDS-surface-inverse: #f1dedc !important;
-  --WDS-app-wash: #271d1c !important;
-  --WDS-background-wash-plain: #1a1110 !important;
-  --WDS-background-wash-inset: #1a1110 !important;
-  --WDS-background-elevated-wash-plain: #231918 !important;
-  --WDS-background-elevated-wash-inset: #231918 !important;
-  --WDS-components-surface-nav-bar: #231918 !important;
-  --WDS-components-filter-surface-selected: #5d3f3b !important;
-  --WDS-lines-outline-default: #a08c89 !important;
-  --WDS-systems-bubble-surface-incoming: #322826 !important;
-  --WDS-systems-bubble-surface-outgoing: #73342c !important;
-  --WDS-systems-bubble-surface-system: #231918 !important;
-  --WDS-systems-bubble-surface-e2e: #231918 !important;
-  --WDS-systems-bubble-surface-business: #231918 !important;
-  --WDS-systems-chat-background-wallpaper: #1a1110 !important;
-  --WDS-systems-chat-surface-composer: #322826 !important;
-  --WDS-systems-chat-surface-tray: #1a1110 !important;
-
-  /* variables clasicas de WhatsApp Web */
-  --app-background: #1a1110 !important;
-  --app-background-deeper: #140c0b !important;
-  --navbar-background: #231918 !important;
-  --panel-background: #1a1110 !important;
-  --panel-background-deep: #140c0b !important;
-  --panel-input-background: #322826 !important;
-  --picker-background: #322826 !important;
-  --incoming-background: #322826 !important;
-  --outgoing-background: #73342c !important;
-  --avatar-background: #1a1110 !important;
-  --empty-state-background: #231918 !important;
-  --pill-background: #231918 !important;
-  --compose-panel-background-hover: #231918 !important;
-  --button-reject-background: #322826 !important;
-  --button-reject-background-hover: #3d3231 !important;
-  --button-round-background-inverted: #322826 !important;
-  --chip-button-background: #322826 !important;
-  --input-border-active: #ffb4a9 !important;
-  --icon-primary: #ffb4a9 !important;
-  --icon-high-emphasis: #ffb4a9 !important;
-  --text-action: #ffb4a9 !important;
-  --link-alt: #ffb4a9 !important;
-  --status-ring-unread: #ffb4a9 !important;
-  --badge-pending: #ffb4a9 !important;
-  --qc-quantity-label-highlighted-background: #ffb4a9 !important;
-  --text-primary-strong: #f1dedc !important;
-  --text-muted: #d8c2be !important;
-  --primary-muted: #d8c2be !important;
-  --button-bubble: #73342c !important;
-  --audio-track-outgoing: #ffb4a9 !important;
-  --splashscreen-startup-background: #1a1110 !important;
-  --splashscreen-startup-background-plain: #1a1110 !important;
-  --splashscreen-progress-primary: #ffb4a9 !important;
+:root {
+    --sys-bg-deep: #140c0b;
+    --sys-bg-0:    #1a1110;
+    --sys-bg-1:    #231918;
+    --sys-bg-2:    #322826;
+    --sys-bg-3:    #3d3231;
+    --sys-border:  #534341;
+    --sys-fg:      #f1dedc;
+    --sys-fg-1:    #e7bdb7;
+    --sys-fg-2:    #d8c2be;
+    --sys-muted:   #a08c89;
+    --sys-accent:  #ffb4a9;
+    --sys-accent-h:#ffdad5;
+    --sys-accent-d:#73342c;
+    --sys-out:     #73342c;
+    --sys-red:     #ffb4ab;
+    --sys-green:   oklch(70% 0.11 150);
+    --sys-yellow:  #dfc38c;
+    --sys-blue:    #ffb4a9;
+    --sys-sel-bg:  #561e18;
+    --sys-sel-fg:  #ffb4a9;
 }
 
-/* pestaña de chat seleccionada / scrollbars */
-::-webkit-scrollbar-thumb { background-color: #534341 !important; }
+:root, :root * {
+    /* ── Surfaces ── */
+    --WDS-surface-default: var(--sys-bg-0) !important;
+    --WDS-surface-emphasized: var(--sys-bg-1) !important;
+    --WDS-surface-elevated-default: var(--sys-bg-1) !important;
+    --WDS-surface-elevated-emphasized: var(--sys-bg-2) !important;
+    --WDS-surface-highlight: rgba(255, 255, 255, .06) !important;
+    --WDS-surface-pressed: rgba(255, 255, 255, .10) !important;
+    --WDS-surface-inverse: var(--sys-fg) !important;
+    --WDS-app-wash: var(--sys-bg-deep) !important;
+    --WDS-background-wash-plain: var(--sys-bg-0) !important;
+    --WDS-background-wash-inset: var(--sys-bg-0) !important;
+    --WDS-background-elevated-wash-plain: var(--sys-bg-1) !important;
+    --WDS-background-elevated-wash-inset: var(--sys-bg-1) !important;
+    --WDS-components-surface-nav-bar: var(--sys-bg-1) !important;
+    --WDS-components-active-list-row: rgba(255, 255, 255, .08) !important;
+    --WDS-components-filter-surface-selected: var(--sys-accent-d) !important;
+    --WDS-components-badge-muted: var(--sys-bg-3) !important;
+    --WDS-components-badge-muted-dot: var(--sys-bg-3) !important;
+    --app-background: var(--sys-bg-deep) !important;
+    --app-background-deeper: var(--sys-bg-deep) !important;
+    --panel-background: var(--sys-bg-1) !important;
+    --panel-background-deep: var(--sys-bg-0) !important;
+    --panel-input-background: var(--sys-bg-2) !important;
+    --navbar-background: var(--sys-bg-1) !important;
+    --picker-background: var(--sys-bg-2) !important;
+    --modal-backdrop-solid: var(--sys-bg-0) !important;
+    --empty-state-background: var(--sys-bg-1) !important;
+    --pill-background: var(--sys-bg-2) !important;
+    --chip-button-background: var(--sys-bg-3) !important;
+    --chip-button-foreground: var(--sys-fg-1) !important;
+    --splashscreen-startup-background: var(--sys-bg-0) !important;
+    --splashscreen-startup-background-plain: var(--sys-bg-0) !important;
+    --splashscreen-progress-primary: var(--sys-accent) !important;
+
+    /* ── Text ── */
+    --WDS-content-default: var(--sys-fg) !important;
+    --WDS-content-deemphasized: var(--sys-fg-2) !important;
+    --WDS-content-disabled: var(--sys-muted) !important;
+    --WDS-content-action-default: var(--sys-fg) !important;
+    --WDS-content-action-emphasized: var(--sys-accent) !important;
+    --WDS-content-external-link: var(--sys-accent-h) !important;
+    --WDS-content-on-accent: var(--sys-bg-deep) !important;
+    --WDS-content-inverse: var(--sys-bg-deep) !important;
+    --WDS-content-read: var(--sys-accent-h) !important;
+    --primary: var(--sys-fg) !important;
+    --primary-strong: var(--sys-fg) !important;
+    --primary-stronger: var(--sys-fg) !important;
+    --primary-muted: var(--sys-muted) !important;
+    --secondary: var(--sys-fg-2) !important;
+    --secondary-lighter: var(--sys-fg-2) !important;
+    --secondary-stronger: var(--sys-fg-1) !important;
+    --message-primary: var(--sys-fg) !important;
+    --text-primary-strong: var(--sys-fg) !important;
+    --text-muted: var(--sys-fg-2) !important;
+    --text-action: var(--sys-accent) !important;
+    --input-placeholder: var(--sys-muted) !important;
+    --modal-title: var(--sys-fg) !important;
+    --pill-text: var(--sys-fg-2) !important;
+
+    /* ── Icons ── */
+    --icon: var(--sys-fg-1) !important;
+    --icon-primary: var(--sys-accent) !important;
+    --icon-high-emphasis: var(--sys-accent) !important;
+    --icon-ack: var(--sys-accent-h) !important;
+    --bubble-meta-icon: var(--sys-fg-2) !important;
+
+    /* ── Lines / borders ── */
+    --WDS-lines-divider: var(--sys-border) !important;
+    --WDS-lines-outline-deemphasized: var(--sys-border) !important;
+    --WDS-lines-outline-default: var(--sys-border) !important;
+    --input-border: var(--sys-border) !important;
+    --input-border-active: var(--sys-accent) !important;
+    --border-bubble: var(--sys-border) !important;
+
+    /* ── Accent (was WhatsApp green) ── */
+    --WDS-accent: var(--sys-accent) !important;
+    --WDS-accent-emphasized: var(--sys-accent-h) !important;
+    --WDS-accent-deemphasized: var(--sys-accent-d) !important;
+    --WDS-persistent-always-branded: var(--sys-accent) !important;
+    --WDS-persistent-activity-indicator: var(--sys-accent) !important;
+    --button-alternative: var(--sys-accent) !important;
+    --button-bubble: color-mix(in srgb, var(--sys-accent), transparent 30%) !important;
+    --badge-pending: var(--sys-accent) !important;
+    --status-ring-unread: var(--sys-accent) !important;
+    --link-alt: var(--sys-accent-h) !important;
+    --ptt-draft-thumb: var(--sys-accent) !important;
+    --ptt-green: var(--sys-accent) !important;
+    --ptt-thumb-incoming-unplayed: var(--sys-accent) !important;
+    --ptt-thumb-incoming-played: var(--sys-accent-h) !important;
+    --ptt-thumb-outgoing-played: var(--sys-accent-h) !important;
+    --ptt-blue: var(--sys-accent-h) !important;
+    --audio-progress-incoming: var(--sys-accent) !important;
+    --audio-progress-outgoing: var(--sys-accent-h) !important;
+    --audio-track-outgoing: var(--sys-bg-3) !important;
+    --audio-track-incoming: var(--sys-bg-3) !important;
+
+    /* ── Chat & bubbles ── */
+    --WDS-systems-chat-background-wallpaper: var(--sys-bg-0) !important;
+    --WDS-systems-chat-foreground-wallpaper: color-mix(in srgb, var(--sys-accent), transparent 95%) !important;
+    --WDS-systems-chat-surface-composer: var(--sys-bg-2) !important;
+    --WDS-systems-chat-surface-tray: var(--sys-bg-0) !important;
+    --WDS-systems-bubble-surface-incoming: var(--sys-bg-2) !important;
+    --WDS-systems-bubble-surface-outgoing: var(--sys-out) !important;
+    --WDS-systems-bubble-surface-system: var(--sys-bg-1) !important;
+    --WDS-systems-bubble-surface-business: var(--sys-bg-1) !important;
+    --WDS-systems-bubble-surface-e2e: var(--sys-bg-1) !important;
+    --WDS-systems-bubble-content-deemphasized: var(--sys-fg-2) !important;
+    --WDS-systems-bubble-content-e2e: var(--sys-yellow) !important;
+    --WDS-systems-bubble-content-business: var(--sys-accent-h) !important;
+    --WDS-systems-status-seen: var(--sys-muted) !important;
+    --incoming-background: var(--sys-bg-2) !important;
+    --outgoing-background: var(--sys-out) !important;
+    --bubble-meta: var(--sys-fg-2) !important;
+    --message-selection-highlight: color-mix(in srgb, var(--sys-accent), transparent 92%) !important;
+
+    /* ── Semantic ── */
+    --WDS-secondary-positive: var(--sys-green) !important;
+    --WDS-secondary-warning: var(--sys-yellow) !important;
+    --WDS-secondary-negative: var(--sys-red) !important;
+    --red: var(--sys-red) !important;
+    --orange: var(--sys-accent) !important;
+}
+
+:root, :root * {
+    /* Quoted "You" / own-name color */
+    --WDS-cobalt-300: var(--sys-accent-h) !important;
+    --x1e03607: var(--sys-accent-h) !important;
+}
+
+/* rampas de WhatsApp (verde -> primary, grises -> superficies) */
+:root, :root * {
+    --WDS-neutral-gray-1000: #140c0b !important;
+    --WDS-neutral-gray-900: #1a1110 !important;
+    --WDS-neutral-gray-850: #231918 !important;
+    --WDS-neutral-gray-800: #322826 !important;
+    --WDS-neutral-gray-700: #534341 !important;
+    --WDS-neutral-gray-500: #a08c89 !important;
+    --WDS-neutral-gray-400: #d8c2be !important;
+    --WDS-neutral-gray-300: #d8c2be !important;
+    --WDS-neutral-gray-100: #f1dedc !important;
+    --WDS-neutral-gray-75: #f1dedc !important;
+    --WDS-neutral-gray-50: #f1dedc !important;
+    --WDS-green-100: #ffdad5 !important;
+    --WDS-green-200: #ffdad5 !important;
+    --WDS-green-300: #ffb4a9 !important;
+    --WDS-green-400: #ffb4a9 !important;
+    --WDS-green-450: #ffb4a9 !important;
+    --WDS-green-500: #ffb4a9 !important;
+    --WDS-green-600: #904a42 !important;
+    --WDS-green-700: #ffdad5 !important;
+    --WDS-green-750: #73342c !important;
+    --WDS-green-800: #5d3f3b !important;
+}
+
+/* Chat wallpaper: WhatsApp sets the user-picked color inline on #main */
+#main {
+    background-color: var(--sys-bg-0) !important;
+}
+#main div[style*="mask-image"] {
+    background-color: var(--sys-accent) !important;
+    opacity: .05 !important;
+}
+
+::selection {
+    background: var(--sys-sel-bg);
+    color: var(--sys-sel-fg);
+}
+
+/* Scrollbars */
+* {
+    scrollbar-color: var(--sys-border) transparent;
+}
+
+/* misma tipografia que waybar / kitty */
+html, body, input, textarea, button, [contenteditable] {
+    font-family: 'JetBrainsMono Nerd Font Propo', 'Noto Color Emoji', sans-serif !important;
+}
+body *:not(pre):not(code) {
+    font-family: inherit !important;
+}
+pre, code {
+    font-family: 'JetBrainsMono Nerd Font', monospace !important;
+}

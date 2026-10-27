@@ -1,0 +1,234 @@
+/* =============================================
+   CREAM-ORANGE THEME FOR TIDAL-HIFI
+   Settings → Theming → Choose File
+   ============================================= */
+
+:root {
+    --cream-bg-0: #2a2018;
+    --cream-bg-1: #332619;
+    --cream-bg-2: #3d2e1e;
+    --cream-bg-3: #4a3826;
+    --cream-text-0: #f5ede0;
+    --cream-text-1: #d4b896;
+    --cream-text-2: #8a7060;
+    --cream-accent: #e08030;
+    --cream-accent-h: #f09040;
+    --cream-border: #5a4030;
+}
+
+/* ── App background ── */
+body,
+#app,
+.app-container,
+[class*="mainContainer"],
+[class*="pageContainer"] {
+    background-color: var(--cream-bg-0) !important;
+    color: var(--cream-text-0) !important;
+}
+
+/* ── Sidebar ── */
+[class*="sidebar"],
+[class*="sideBar"],
+[class*="leftPanel"],
+nav {
+    background-color: var(--cream-bg-1) !important;
+    border-right: 1px solid var(--cream-border) !important;
+}
+
+/* sidebar items */
+[class*="sidebar"] a,
+[class*="sidebar"] span,
+[class*="sideBar"] a,
+nav a {
+    color: var(--cream-text-1) !important;
+}
+
+[class*="sidebar"] a:hover,
+nav a:hover {
+    color: var(--cream-accent-h) !important;
+    background-color: var(--cream-bg-2) !important;
+    border-radius: 6px !important;
+}
+
+/* active nav item */
+[class*="sidebar"] [class*="active"],
+nav [class*="active"] {
+    color: var(--cream-accent) !important;
+}
+
+/* ── Top bar / header ── */
+[class*="topBar"],
+[class*="header"],
+header {
+    background-color: var(--cream-bg-1) !important;
+    border-bottom: 1px solid var(--cream-border) !important;
+}
+
+/* ── Main content area ── */
+[class*="content"],
+[class*="mainContent"],
+main {
+    background-color: var(--cream-bg-0) !important;
+}
+
+/* ── Cards (albums, playlists) ── */
+[class*="card"],
+[class*="Card"],
+[class*="gridItem"],
+[class*="mediaCard"] {
+    background-color: var(--cream-bg-2) !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--cream-border) !important;
+}
+
+[class*="card"]:hover,
+[class*="Card"]:hover,
+[class*="gridItem"]:hover {
+    background-color: var(--cream-bg-3) !important;
+    border-color: var(--cream-accent) !important;
+}
+
+/* ── Text ── */
+[class*="title"],
+[class*="heading"],
+h1, h2, h3, h4 {
+    color: var(--cream-text-0) !important;
+}
+
+[class*="subtitle"],
+[class*="artist"],
+[class*="description"],
+p, span {
+    color: var(--cream-text-1) !important;
+}
+
+/* ── Player bar (bottom) ── */
+[class*="player"],
+[class*="playbackControls"],
+[class*="footerPlayer"],
+[class*="playerBar"] {
+    background-color: var(--cream-bg-1) !important;
+    border-top: 1px solid var(--cream-border) !important;
+}
+
+/* track name in player */
+[class*="player"] [class*="title"],
+[class*="trackName"] {
+    color: var(--cream-text-0) !important;
+}
+
+[class*="player"] [class*="artist"],
+[class*="artistName"] {
+    color: var(--cream-text-1) !important;
+}
+
+/* ── Progress bar ── */
+[class*="progressBar"],
+[class*="seekBar"] {
+    background-color: var(--cream-bg-3) !important;
+}
+
+[class*="progressBar"] [class*="fill"],
+[class*="progressBar"] [class*="progress"],
+[class*="elapsed"] {
+    background-color: var(--cream-accent) !important;
+}
+
+/* ── Buttons ── */
+button[class*="play"],
+button[class*="pause"],
+[class*="playButton"] {
+    background-color: var(--cream-accent) !important;
+    color: #1a1208 !important;
+    border-radius: 50% !important;
+}
+
+button[class*="play"]:hover,
+[class*="playButton"]:hover {
+    background-color: var(--cream-accent-h) !important;
+}
+
+/* icon buttons */
+button[class*="control"],
+[class*="iconButton"],
+[class*="controlButton"] {
+    color: var(--cream-text-1) !important;
+}
+
+button[class*="control"]:hover,
+[class*="iconButton"]:hover {
+    color: var(--cream-accent) !important;
+}
+
+/* ── Volume slider ── */
+[class*="volume"] [class*="fill"],
+[class*="volumeBar"] [class*="progress"] {
+    background-color: var(--cream-accent) !important;
+}
+
+/* ── Search bar ── */
+[class*="search"] input,
+input[type="search"],
+input[type="text"] {
+    background-color: var(--cream-bg-2) !important;
+    color: var(--cream-text-0) !important;
+    border: 1px solid var(--cream-border) !important;
+    border-radius: 20px !important;
+}
+
+[class*="search"] input:focus,
+input[type="search"]:focus {
+    border-color: var(--cream-accent) !important;
+    outline: none !important;
+}
+
+/* ── Track list ── */
+[class*="trackList"] [class*="row"],
+[class*="tableRow"],
+[class*="listItem"] {
+    border-bottom: 1px solid var(--cream-border) !important;
+}
+
+[class*="trackList"] [class*="row"]:hover,
+[class*="tableRow"]:hover,
+[class*="listItem"]:hover {
+    background-color: var(--cream-bg-2) !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+    width: 6px !important;
+}
+::-webkit-scrollbar-track {
+    background: var(--cream-bg-1) !important;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--cream-border) !important;
+    border-radius: 3px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cream-accent) !important;
+}
+
+/* ── Dropdown menus ── */
+[class*="dropdown"],
+[class*="menu"],
+[class*="contextMenu"] {
+    background-color: var(--cream-bg-2) !important;
+    border: 1px solid var(--cream-border) !important;
+    border-radius: 8px !important;
+}
+
+[class*="dropdown"] [class*="item"]:hover,
+[class*="menu"] [class*="item"]:hover {
+    background-color: var(--cream-bg-3) !important;
+    color: var(--cream-accent) !important;
+}
+
+/* ── Heart / like button active ── */
+[class*="favorite"][class*="active"],
+[class*="heart"][class*="active"],
+[aria-label*="favorite"] svg {
+    color: var(--cream-accent) !important;
+    fill: var(--cream-accent) !important;
+}

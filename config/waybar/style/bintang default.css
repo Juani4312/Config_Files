@@ -73,39 +73,39 @@ tooltip label{
 	color: @outline;
     box-shadow: none;
 	text-shadow: none;
-    padding: 0px;
+    font-family: "Noto Sans CJK JP", "JetBrainsMono Nerd Font Propo";
+    min-width: 22px;
+    padding: 0px 6px;
+    margin: 0px 1px;
     border-radius: 9px;
-    padding-left: 4px;
-    padding-right: 4px;
-    animation: gradient_f 20s ease-in infinite;
-    transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
+    border: none;
+    background: transparent;
+    transition: color 0.2s ease, background 0.2s ease;
 }
 #taskbar button:hover,
 #workspaces button:hover {
-    color: @on_secondary_fixed_variant;
-    border-radius: 20px;
- 	padding-left: 2px;
-    padding-right: 2px;
-    animation: gradient_f 20s ease-in infinite;
-    transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
+    color: @primary;
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+#taskbar button:active,
+#workspaces button:active {
+    color: @primary_fixed;
+    background: rgba(255, 255, 255, 0.10);
+    border: none;
+    box-shadow: none;
 }
 
 #taskbar button.active,
 #workspaces button.active {
 	color: @inverse_surface;
-    padding-left: 8px;
-    padding-right: 8px;
-    animation: gradient_f 20s ease-in infinite;
-    transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
 }
 
 #workspaces button.urgent {
-    color: @on_secondary;
-    border-radius: 10px;
-}
-
-#workspaces button.persistent {
-	border-radius: 10px;
+    color: @error;
 }
 
 #backlight,
@@ -213,4 +213,36 @@ tooltip label{
 #pulseaudio-slider highlight {
 	min-height: 10px;
 	border-radius: 5px;
+}
+
+/*-----workspaces kanji (custom/ws)----*/
+#custom-ws {
+	color: @outline;
+	font-family: "Noto Sans CJK JP", "JetBrainsMono Nerd Font Propo";
+	min-width: 22px;
+	padding: 0px 6px;
+	margin: 0px 1px;
+	border-radius: 9px;
+	background: transparent;
+	transition: color 0.2s ease, background 0.2s ease;
+}
+#custom-ws.occupied {
+	color: @on_surface_variant;
+}
+#custom-ws.active {
+	color: @secondary;
+	box-shadow: inset 0 0 0 1px @secondary;
+}
+#custom-ws.focused {
+	color: @on_primary;
+	background: @primary;
+	font-weight: bold;
+}
+#custom-ws.focused:hover {
+	color: @on_primary;
+	background: @primary;
+}
+#custom-ws:hover {
+	color: @primary;
+	background: rgba(255, 255, 255, 0.06);
 }

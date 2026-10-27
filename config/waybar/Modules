@@ -103,8 +103,7 @@
 	"format-alt": " {:%H:%M   %Y, %d %B, %A}",
 	"tooltip-format": "<tt><small>{calendar}</small></tt>",
 	"calendar": {
-		"mode": "year",
-		"mode-mon-col": 3,
+		"mode": "month",
 		"weeks-pos": "right",
 		"on-scroll": 1,
 		"format": {
@@ -114,15 +113,15 @@
 			"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
 			"today": "<span color='#ff6699'><b><u>{}</u></b></span>"
 		}
+	},
+	// rueda sobre la hora: cambia de mes; click del medio: vuelve al mes actual
+	"actions": {
+		"on-click-middle": "shift_reset",
+		"on-click-forward": "tz_up",
+		"on-click-backward": "tz_down",
+		"on-scroll-up": "shift_down",
+		"on-scroll-down": "shift_up"
 	}
-},
-
-"actions": {
-	"on-click-right": "mode",
-	"on-click-forward": "tz_up",
-	"on-click-backward": "tz_down",
-	"on-scroll-up": "shift_up",
-	"on-scroll-down": "shift_down"
 },
 
 "clock#2": {
@@ -335,10 +334,10 @@
 		],
 	},
 	"scroll-step": 5.0,
-	"on-click": "$HOME/.config/hypr/scripts/volume.sh --toggle",
-	"on-click-right": "pavucontrol -t 3",
-	"on-scroll-up": "$HOME/.config/hypr/scripts/volume.sh --inc",
-	"on-scroll-down": "$HOME/.config/hypr/scripts/volume.sh --dec",
+	"on-click": "pavucontrol",
+	"on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+	"on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+	"on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
 	"tooltip-format": "{icon} {desc} | {volume}%",
 	"smooth-scrolling-threshold": 1,
 },
@@ -367,10 +366,10 @@
 	"format": "{format_source}",
 	"format-source": " {volume}%",
 	"format-source-muted": "",
-	"on-click": "$HOME/.config/hypr/scripts/volume.sh --toggle-mic",
+	"on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
 	"on-click-right": "pavucontrol -t 4",
-	"on-scroll-up": "$HOME/.config/hypr/scripts/volume.sh --mic-inc",
-	"on-scroll-down": "$HOME/.config/hypr/scripts/volume.sh --mic-dec",
+	"on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+",
+	"on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
 	"tooltip-format": "{source_desc} | {source_volume}%",
 	"scroll-step": 5,
 },

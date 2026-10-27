@@ -9,12 +9,37 @@
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 -- El repo original usa: output = "eDP-1", mode = "1920x1080@60", position = "0x0", scale = 1
+-- PC: Samsung (HDMI-A-1) a la izquierda, LG UltraGear (DP-3) a la derecha
+hl.monitor({
+    output   = "HDMI-A-1",
+    mode     = "1920x1080@75",
+    position = "0x0",
+    scale    = 1,
+})
+
+hl.monitor({
+    output   = "DP-3",
+    mode     = "1920x1080@144",
+    position = "1920x0",
+    scale    = 1,
+})
+
+-- Cualquier otro monitor
 hl.monitor({
     output   = "",
     mode     = "preferred",
     position = "auto",
     scale    = "auto",
 })
+
+-- Workspaces por monitor (PC): DP-3 = 1-5, HDMI-A-1 = 6-10
+for i = 1, 10 do
+    hl.workspace_rule({
+        workspace = tostring(i),
+        monitor   = i <= 5 and "DP-3" or "HDMI-A-1",
+        default   = (i == 1 or i == 6),
+    })
+end
 
 
 ---------------------
@@ -37,6 +62,8 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("swaync")
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
     hl.exec_cmd("hypridle")
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
 end)
 
 
@@ -46,6 +73,7 @@ end)
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("TERMINAL", "kitty")
 
 
 -----------------

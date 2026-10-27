@@ -1,0 +1,58 @@
+/*
+* Steam (Millennium quick.css) Colors
+* Generated with Matugen — mismo mapeo que gtk-colors.css
+* Las reglas que usan estas variables salen de ~/.config/steam-theme/rules.css
+*/
+
+:root
+{
+	--m-primary: #ffb4a9;
+	--m-on-primary: #3b0906;
+	--m-primary-container: #73342c;
+	--m-tertiary: #dfc38c;
+	--m-on-tertiary: #3e2e04;
+	--m-tertiary-container: #574419;
+	--m-error: #ffb4ab;
+
+	--m-surface-lowest: #140c0b;
+	--m-surface-dim: #1a1110;
+	--m-surface-low: #231918;
+	--m-surface-container: #271d1c;
+	--m-surface-high: #322826;
+	--m-surface-highest: #3d3231;
+
+	--m-outline-variant: #534341;
+	--m-outline: #a08c89;
+	--m-on-surface-variant: #d8c2be;
+	--m-on-surface: #f1dedc;
+}
+
+/* misma tipografia que waybar / kitty */
+body, button, input, textarea, .DialogButton
+{
+	font-family: "JetBrainsMono Nerd Font Propo", sans-serif !important;
+}
+
+/* bordes redondeados como waybar */
+button.DialogButton, .DialogInput, .DialogDropDown
+{
+	border-radius: 10px !important;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: var(--m-outline-variant) !important;
+	border-radius: 10px !important;
+}
+
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner
+{
+	background-color: transparent !important;
+}
+
+::selection
+{
+	background-color: var(--m-primary) !important;
+	color: var(--m-on-primary) !important;
+}
+

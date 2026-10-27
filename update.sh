@@ -19,20 +19,33 @@ for f in "${CONFIG_FILES[@]}"; do copy_file "$HOME/.config/$f" "$REPO/config/$f"
 for f in "${HOME_FILES[@]}"; do copy_file "$HOME/$f" "$REPO/home/$f"; done
 for d in "${HOME_DIRS[@]}"; do copy_tree "$HOME/$d" "$REPO/home/$d" delete; done
 for e in "${EXTRA_FILES[@]}"; do copy_file "$HOME/${e%%|*}" "$REPO/${e##*|}"; done
+for e in "${EXTRA_DIRS[@]}"; do copy_tree "$HOME/${e%%|*}" "$REPO/${e##*|}" delete; done
 
-# Temas de LibreWolf (solo chrome/*.css, nunca el perfil)
-for css in "$HOME"/.config/librewolf/librewolf/*.default-release/chrome/*.css; do
-  [ -e "$css" ] && copy_file "$css" "$REPO/extra/librewolf-chrome/$(basename "$css")"
-done
+# Temas de LibreWolf del perfil activo (solo chrome/*.css, nunca el perfil)
+if prof=$(librewolf_profile); then
+  for css in "$prof"/chrome/*.css; do
+    [ -e "$css" ] && copy_file "$css" "$REPO/extra/librewolf-chrome/$(basename "$css")"
+  done
+fi
 
 [ "$DRY" -eq 1 ] && { echo "(dry-run: nada copiado)"; exit 0; }
 
-# Los symlinks absolutos se reemplazan: current_wallpaper lo crea install.sh,
-# y los de waybar pasan a ser relativos.
+# Tema GTK / íconos / cursor / fuentes
+command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$REPO/extra/dconf-interface.ini"
+
+# Los symlinks absolutos se reemplazan: current_wallpaper lo crea install.sh.
 rm -f "$REPO/config/hypr/current_wallpaper"
+# waybar: config y style.css son hardlinks (o symlinks) a un archivo de configs/ y style/;
+# en el repo quedan como symlink relativo a ese archivo.
+link_variant() { # <archivo> <subcarpeta>
+  local f="$REPO/config/waybar/$1" src="$HOME/.config/waybar/$1" v
+  [ -e "$src" ] || return 0
+  v=$(find -L "$HOME/.config/waybar/$2" -maxdepth 1 -type f -samefile "$(readlink -f "$src")" -printf '%f' -quit 2>/dev/null)
+  [ -n "$v" ] && ln -sfn "$2/$v" "$f"
+}
 if [ -d "$REPO/config/waybar" ]; then
-  ln -sfn "style/bintang default.css" "$REPO/config/waybar/style.css"
-  ln -sfn "configs/bintang default"   "$REPO/config/waybar/config"
+  link_variant style.css style
+  link_variant config configs
 fi
 
 # Lista de paquetes para reinstalar

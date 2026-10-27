@@ -16,14 +16,16 @@ bind(mod("SHIFT + Return"), hl.dsp.exec_cmd(terminal, { float = true, size = "80
 bind(mod("C"),              hl.dsp.window.close())
 bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 bind(mod("E"),              hl.dsp.exec_cmd(fileManager))
-bind(mod("V"),              hl.dsp.window.float({ action = "toggle" }))
+bind(mod("V"),              hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p clipboard -display-columns 2 | cliphist decode | wl-copy")) -- historial del portapapeles
+bind(mod("SHIFT + V"),      hl.dsp.window.float({ action = "toggle" }))
 bind(mod("Space"),          hl.dsp.exec_cmd(scripts .. "SwitchLayout.sh")) -- alternar us / latam + notificación
 bind(mod("P"),              hl.dsp.window.pseudo())  -- dwindle
 bind(mod("J"),              hl.dsp.layout("togglesplit")) -- dwindle
 bind(mod("R"),              hl.dsp.exec_cmd(menu))
 bind(mod("SHIFT + R"),      hl.dsp.exec_cmd(scripts .. "wbrestart.sh"))
 bind(mod("K"),              hl.dsp.exec_cmd("pavucontrol"))  -- control de sonido
-bind(mod("B"),              hl.dsp.exec_cmd('xdg-open "https://"')) -- default browser
+bind(mod("M"),              hl.dsp.exec_cmd(scripts .. "mic-mute.sh")) -- mute micrófono + notificación
+bind(mod("B"),              hl.dsp.exec_cmd("librewolf")) -- browser
 bind(mod("L"),              hl.dsp.exec_cmd("pidof hyprlock || hyprlock")) -- bloquear pantalla
 bind(mod("F"),              hl.dsp.window.fullscreen())
 bind(mod("SHIFT + S"),      hl.dsp.exec_cmd(scripts .. "screenshot.sh"))

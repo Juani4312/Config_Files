@@ -1,0 +1,30 @@
+{
+    "name": "Matugen",
+    "widgets": "Fusion",
+    "qssFilePath": "themeStyle.css",
+    "colors": {
+        "Window": "{{colors.surface_dim.default.hex}}",
+        "WindowText": "{{colors.on_surface.default.hex}}",
+        "Base": "{{colors.surface_container_low.default.hex}}",
+        "AlternateBase": "{{colors.surface_container.default.hex}}",
+        "ToolTipBase": "{{colors.surface_container_highest.default.hex}}",
+        "ToolTipText": "{{colors.on_surface.default.hex}}",
+        "Text": "{{colors.on_surface.default.hex}}",
+        "Button": "{{colors.surface_container_high.default.hex}}",
+        "ButtonText": "{{colors.on_surface.default.hex}}",
+        "BrightText": "{{colors.error.default.hex}}",
+        "Link": "{{colors.primary_fixed_dim.default.hex}}",
+        "Highlight": "{{colors.primary_fixed_dim.default.hex}}",
+        "HighlightedText": "{{colors.on_primary_fixed.default.hex}}",
+        "fadeColor": "{{colors.surface_dim.default.hex}}",
+        "fadeAmount": 0.5
+    },
+    "logColors": {
+        "Launcher": "{{colors.primary_fixed_dim.default.hex}}",
+        "Message": "{{colors.on_surface.default.hex}}",
+        "Debug": "{{colors.outline.default.hex}}",
+        "Warning": "{{colors.tertiary.default.hex}}",
+        "Error": "{{colors.error.default.hex}}",
+        "Fatal": "{{colors.error.default.hex}}"
+    }
+}

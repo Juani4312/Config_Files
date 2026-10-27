@@ -46,11 +46,11 @@ output_path = '~/.config/vesktop/themes/matugen.css'
 
 [templates.librewolf-chrome]
 input_path = '~/.config/matugen/templates/firefox-userChrome.css'
-output_path = '~/.config/librewolf/librewolf/nj178lyy.default-release/chrome/userChrome.css'
+output_path = '~/.librewolf/l1vipx6v.default-default/chrome/userChrome.css'
 
 [templates.librewolf-content]
 input_path = '~/.config/matugen/templates/firefox-userContent.css'
-output_path = '~/.config/librewolf/librewolf/nj178lyy.default-release/chrome/userContent.css'
+output_path = '~/.librewolf/l1vipx6v.default-default/chrome/userContent.css'
 
 [templates.hyprland-lua]
 input_path = '~/.config/matugen/templates/hyprland-colors.lua'
@@ -60,3 +60,34 @@ post_hook = 'hyprctl reload'
 [templates.zapzap]
 input_path = '~/.config/matugen/templates/zapzap.css'
 output_path = '~/.local/share/ZapZap/customizations/global/css/matugen.css'
+
+[templates.tidal-hifi]
+input_path = '~/.config/matugen/templates/tidal-hifi.css'
+output_path = '~/.config/tidal-hifi/themes/matugen.css'
+
+[templates.btop]
+input_path = '~/.config/matugen/templates/btop.theme'
+output_path = '~/.config/btop/themes/matugen.theme'
+
+[templates.vscode]
+input_path = '~/.config/matugen/templates/vscode-theme.json'
+output_path = '~/.vscode/extensions/local.matugen-theme-1.0.0/themes/matugen-color-theme.json'
+
+[templates.qalculate]
+input_path = '~/.config/matugen/templates/qalculate-colors.sh'
+output_path = '~/.config/matugen/scripts/qalculate-colors.sh'
+post_hook = 'sh ~/.config/matugen/scripts/qalculate-colors.sh'
+
+
+[templates.steam]
+input_path = '~/.config/matugen/templates/steam-millennium.css'
+output_path = '~/.config/steam-theme/colors.css'
+post_hook = 'sh ~/.config/steam-theme/build.sh'
+
+[templates.prismlauncher-theme]
+input_path = '~/.config/matugen/templates/prismlauncher-theme.json'
+output_path = '~/.local/share/PrismLauncher/themes/matugen/theme.json'
+
+[templates.prismlauncher-style]
+input_path = '~/.config/matugen/templates/prismlauncher-style.css'
+output_path = '~/.local/share/PrismLauncher/themes/matugen/themeStyle.css'

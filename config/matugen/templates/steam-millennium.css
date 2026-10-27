@@ -1,0 +1,58 @@
+/*
+* Steam (tema "matugen" de Millennium) Colors
+* Generated with Matugen — mismo mapeo que gtk-colors.css
+* Las reglas que usan estas variables salen de ~/.config/steam-theme/rules-*.css
+*/
+
+:root
+{
+	--m-primary: {{colors.primary_fixed_dim.default.hex}};
+	--m-on-primary: {{colors.on_primary_fixed.default.hex}};
+	--m-primary-container: {{colors.primary_container.default.hex}};
+	--m-tertiary: {{colors.tertiary.default.hex}};
+	--m-on-tertiary: {{colors.on_tertiary.default.hex}};
+	--m-tertiary-container: {{colors.tertiary_container.default.hex}};
+	--m-error: {{colors.error.default.hex}};
+
+	--m-surface-lowest: {{colors.surface_container_lowest.default.hex}};
+	--m-surface-dim: {{colors.surface_dim.default.hex}};
+	--m-surface-low: {{colors.surface_container_low.default.hex}};
+	--m-surface-container: {{colors.surface_container.default.hex}};
+	--m-surface-high: {{colors.surface_container_high.default.hex}};
+	--m-surface-highest: {{colors.surface_container_highest.default.hex}};
+
+	--m-outline-variant: {{colors.outline_variant.default.hex}};
+	--m-outline: {{colors.outline.default.hex}};
+	--m-on-surface-variant: {{colors.on_surface_variant.default.hex}};
+	--m-on-surface: {{colors.on_surface.default.hex}};
+}
+
+/* misma tipografia que waybar / kitty */
+body, button, input, textarea, .DialogButton
+{
+	font-family: "JetBrainsMono Nerd Font Propo", sans-serif !important;
+}
+
+/* bordes redondeados como waybar */
+button.DialogButton, .DialogInput, .DialogDropDown
+{
+	border-radius: 10px !important;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: var(--m-outline-variant) !important;
+	border-radius: 10px !important;
+}
+
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner
+{
+	background-color: transparent !important;
+}
+
+::selection
+{
+	background-color: var(--m-primary) !important;
+	color: var(--m-on-primary) !important;
+}
+

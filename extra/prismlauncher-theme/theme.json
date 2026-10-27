@@ -1,0 +1,30 @@
+{
+    "name": "Matugen",
+    "widgets": "Fusion",
+    "qssFilePath": "themeStyle.css",
+    "colors": {
+        "Window": "#1a1110",
+        "WindowText": "#f1dedc",
+        "Base": "#231918",
+        "AlternateBase": "#271d1c",
+        "ToolTipBase": "#3d3231",
+        "ToolTipText": "#f1dedc",
+        "Text": "#f1dedc",
+        "Button": "#322826",
+        "ButtonText": "#f1dedc",
+        "BrightText": "#ffb4ab",
+        "Link": "#ffb4a9",
+        "Highlight": "#ffb4a9",
+        "HighlightedText": "#3b0906",
+        "fadeColor": "#1a1110",
+        "fadeAmount": 0.5
+    },
+    "logColors": {
+        "Launcher": "#ffb4a9",
+        "Message": "#f1dedc",
+        "Debug": "#a08c89",
+        "Warning": "#dfc38c",
+        "Error": "#ffb4ab",
+        "Fatal": "#ffb4ab"
+    }
+}

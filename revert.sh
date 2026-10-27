@@ -9,6 +9,8 @@
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$REPO/backups"
+# shellcheck source=lib.sh
+source "$REPO/lib.sh"
 
 if [ "${1:-}" = "-l" ]; then ls -1 "$ROOT" 2>/dev/null || echo "(no hay backups)"; exit 0; fi
 
@@ -29,6 +31,11 @@ read -rp "¿Revertir? [s/N] " ans
 done
 # borrar lo que no existía antes
 while IFS= read -r f; do [ -n "$f" ] && rm -f "$HOME/$f"; done < "$B/created.txt"
+
+# dconf (tema GTK, íconos, cursor)
+if [ -f "$B/dconf-interface.ini" ] && command -v dconf >/dev/null; then
+  dconf load "$DCONF_PATH" < "$B/dconf-interface.ini"
+fi
 
 echo "Restaurado."
 if [ -s "$B/manifest.txt" ]; then

@@ -30,9 +30,9 @@ for f in "${CONFIG_FILES[@]}"; do PAIRS+=("f|$REPO/config/$f|$HOME/.config/$f");
 for f in "${HOME_FILES[@]}"; do PAIRS+=("f|$REPO/home/$f|$HOME/$f"); done
 for d in "${HOME_DIRS[@]}"; do PAIRS+=("d|$REPO/home/$d|$HOME/$d"); done
 for e in "${EXTRA_FILES[@]}"; do PAIRS+=("f|$REPO/${e##*|}|$HOME/${e%%|*}"); done
-for prof in "$HOME"/.config/librewolf/librewolf/*.default-release; do
-  [ -d "$prof" ] && [ -d "$REPO/extra/librewolf-chrome" ] && PAIRS+=("d|$REPO/extra/librewolf-chrome|$prof/chrome")
-done
+for e in "${EXTRA_DIRS[@]}"; do PAIRS+=("d|$REPO/${e##*|}|$HOME/${e%%|*}"); done
+LW_PROFILE=$(librewolf_profile || true)
+[ -n "$LW_PROFILE" ] && [ -d "$REPO/extra/librewolf-chrome" ] && PAIRS+=("d|$REPO/extra/librewolf-chrome|$LW_PROFILE/chrome")
 
 # Archivos (rutas relativas) de una carpeta origen, separados por NUL
 list_rel() { (cd "$1" && find . \( -type f -o -type l \) -printf '%P\0'); }
@@ -122,6 +122,8 @@ backup() {
       esac
     fi
   done
+  # dconf actual (tema GTK, íconos, cursor), para que revert.sh lo pueda restaurar
+  command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$BACKUP/dconf-interface.ini"
   # Copia de la revisión junto al backup
   review > "$BACKUP/review.txt" 2>&1
 }
@@ -150,13 +152,25 @@ for pair in "${PAIRS[@]}"; do
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi
 done
 
+# Tema GTK / íconos / cursor / fuentes
+if [ -f "$REPO/extra/dconf-interface.ini" ] && command -v dconf >/dev/null; then
+  dconf load "$DCONF_PATH" < "$REPO/extra/dconf-interface.ini" && echo "ok    dconf $DCONF_PATH"
+fi
+
+# matugen escribe los temas de LibreWolf en un perfil concreto: apuntarlo al perfil de esta máquina
+if [ -n "$LW_PROFILE" ] && [ -f "$HOME/.config/matugen/config.toml" ]; then
+  sed -i -E "s#~/(\.librewolf|\.config/librewolf/librewolf)/[^/']+/chrome#~/${LW_PROFILE#"$HOME"/}/chrome#" \
+    "$HOME/.config/matugen/config.toml"
+fi
+
 # Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper
 wp="$HOME/Pictures/wallpapers/pacman-ghosts.png"
 [ -e "$wp" ] || wp="$(find "$HOME/Pictures/wallpapers" -maxdepth 1 -type f 2>/dev/null | head -1)"
 [ -n "$wp" ] && ln -sfn "$wp" "$HOME/.config/hypr/current_wallpaper"
 
 chmod +x "$HOME"/.config/hypr/scripts/* "$HOME"/.config/hypr/UserScripts/* \
-         "$HOME"/.config/rofi/*.sh 2>/dev/null || true
+         "$HOME"/.config/rofi/*.sh "$HOME"/.config/viegphunt/*.sh "$HOME"/.config/steam-theme/*.sh \
+         "$HOME"/.config/matugen/scripts/*.sh "$HOME"/.config/waybar/scripts/* 2>/dev/null || true
 
 echo "Listo. Para deshacer: $REPO/revert.sh $(basename "$BACKUP")"
 echo "Recargá: hyprctl reload; reiniciá waybar. Para instalar paquetes: ./install.sh -p"

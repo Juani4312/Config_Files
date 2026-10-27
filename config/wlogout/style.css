@@ -28,7 +28,7 @@ button {
     animation: gradient_f 20s ease-in infinite;
 }
 
-button:hover,button:focus {
+button:hover {
     background-color: @on_secondary_fixed_variant;
     background-size: 30%;
     animation: gradient_f 20s ease-in infinite;

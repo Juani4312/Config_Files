@@ -5,12 +5,17 @@ Mi customización de Arch + Hyprland, lista para clonar en otra PC.
 ## Qué contiene
 | Carpeta | Va a |
 |---|---|
-| `config/<x>` | `~/.config/<x>` (hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, vesktop, yay) |
-| `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.gitconfig`, ...) y `Pictures/wallpapers` |
-| `extra/` | temas de ZapZap y `userChrome/userContent.css` de LibreWolf |
+| `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/themes` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, ...) |
+| `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.zshrc`, `.zshenv`, `.nanorc`, `.tmux.conf`, `.gitconfig`, ...), `.tmux/`, `.fonts/`, `.icons/` y `Pictures/wallpapers` |
+| `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher y `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) |
 | `packages/` | `pacman.txt` (explícitos) y `aur.txt` (foreign) |
 
-Los `~/.config/<x>` originales eran symlinks a `~/dotfiles`; acá se guarda el **contenido real** (rsync `-L`).
+Varios `~/.config/<x>` (nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt) y `.zshrc`, `.tmux.conf`, `.tmux`
+son symlinks a `~/dotfiles`; acá se guarda el **contenido real** (`tar -h` / `cp -L`).
+
+LibreWolf: se usa el perfil activo (`Default=` de `installs.ini`, en `~/.librewolf` o `~/.config/librewolf/librewolf`).
+Al instalar, `install.sh` copia ahí los `chrome/*.css` y reescribe las rutas de LibreWolf en `~/.config/matugen/config.toml`
+para que apunten al perfil de esa máquina.
 
 ## Aplicaciones que uso
 Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en `packages/`.
@@ -25,12 +30,15 @@ Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en
 | Lockscreen / idle | hyprlock, hypridle | `config/hypr` |
 | Fondo de pantalla | awww (`awww-daemon`) | `config/hypr`, `home/Pictures/wallpapers` |
 | Paleta de colores | matugen (genera colores desde el wallpaper) | `config/matugen` |
-| Terminal | Kitty | `config/kitty` |
+| Terminal | Kitty (Ghostty configurado) | `config/kitty`, `config/ghostty` |
+| Shell | zsh (zinit, fzf, zoxide, oh-my-posh), bash | `home/.zshrc`, `home/.zshenv`, `config/ohmyposh`, `home/.bashrc` |
+| Multiplexor | tmux + tpm | `home/.tmux.conf`, `home/.tmux` |
 | File manager | Nemo (default) · Yazi en terminal (`kitty yazi`) · Nautilus instalado de respaldo | `config/gtk-3.0/gtk.css`, `config/mimeapps.list` |
 | Navegadores | LibreWolf (con `userChrome`/`userContent` propios), Google Chrome | `extra/librewolf-chrome` |
 | Mensajería | ZapZap (WhatsApp) con tema de matugen | `extra/zapzap` |
-| Editor | Visual Studio Code, nano | — |
-| Monitor / info | btop, fastfetch, cava (visualizador de audio) | `config/fastfetch`, `config/cava` |
+| Editor | Visual Studio Code (tema matugen), Neovim, nano | `extra/vscode-matugen-theme`, `config/nvim`, `home/.nanorc` |
+| Steam | Millennium con tema `matugen` (generado por `steam-theme/build.sh`) | `config/steam-theme`, `config/millennium`, `extra/steam-millennium-theme` |
+| Monitor / info | btop, fastfetch, cava (visualizador de audio) | `config/btop`, `config/fastfetch`, `config/cava` |
 | Audio | PipeWire + WirePlumber, pavucontrol, pamixer, playerctl | — |
 | Brillo / energía | brightnessctl, power-profiles-daemon | — |
 | Red / Bluetooth | NetworkManager (nm-applet, `nmcli`), BlueZ + Blueman | — |
@@ -45,8 +53,10 @@ Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en
 Matugen les genera el tema, pero las apps no figuran en `packages/`; instalalas aparte si las querés.
 
 ## NO se sincroniza (a propósito)
-`.ssh`, `.gnupg`, perfiles de Chrome/LibreWolf, sesiones de Vesktop/ZapZap, tokens de `gh`,
-`.bash_history`, `.cache`, `.claude`. Esos se reconfiguran a mano en cada PC.
+`.ssh`, `.gnupg`, perfiles de Chrome/LibreWolf/Zen, sesiones de Vesktop/ZapZap/TIDAL, tokens de `gh` y `tidal_dl_ng`,
+Bitwarden, Proton Authenticator, nicotine, OrpheusDL, REAPER, `.bash_history`, `.cache`, `.claude`,
+y los scripts sueltos de la home (`mountWin.sh`, `reset-alien.sh`, ...) que dependen de discos/juegos de esta PC.
+Esos se reconfiguran a mano en cada PC.
 
 ## Usar en la PC principal
 ```bash

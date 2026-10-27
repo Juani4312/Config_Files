@@ -99,7 +99,7 @@
 
 "custom/lock": {
 	"format": "󰌾",
-	"on-click": "$HOME/.config/hypr/scripts/LockScreen.sh",
+	"on-click": "$HOME/.config/hypr/scripts/hyprlock.sh",
 	"tooltip": true,
 	"tooltip-format": "󰷛 Screen Lock",
 },
