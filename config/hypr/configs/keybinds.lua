@@ -69,9 +69,11 @@ for i = 1, 10 do
     bind(mod("SHIFT + " .. key), hl.dsp.window.move({ workspace = i }))
 end
 
--- Workspace especial (scratchpad): SUPER+S lo muestra/oculta, SUPER+SHIFT+S manda la ventana activa
+-- Workspace especial (scratchpad): SUPER+S lo muestra/oculta.
+-- SUPER+SHIFT+S manda la ventana activa al especial (recordando de dónde vino);
+-- si la ventana ya está en el especial, la devuelve a ese workspace.
 bind(mod("S"),         hl.dsp.workspace.toggle_special("magic"))
-bind(mod("SHIFT + S"), hl.dsp.window.move({ workspace = "special:magic" }))
+bind(mod("SHIFT + S"), hl.dsp.exec_cmd(scripts .. "special-move.sh"))
 
 -- Scroll through existing workspaces with mainMod + scroll
 bind(mod("mouse_down"), hl.dsp.focus({ workspace = "e+1" }))
