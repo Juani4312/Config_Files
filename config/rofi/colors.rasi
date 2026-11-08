@@ -44,4 +44,14 @@
     surface-container: #271d1c;
     surface-container-high: #322826;
     surface-container-highest: #3d3231;
+    /* translucent variants (spotlight launcher) */
+    surface-glass: #1a1110D9;
+    surface-container-glass: #322826B3;
+    primary-glass: #ffb4a933;
+    outline-glass: #a08c8955;
+}
+
+/* selected row gradient: rofi can't use @refs inside linear-gradient */
+element selected.normal, element selected.active {
+    background-image: linear-gradient(to right, #73342c, #5d3f3bE6);
 }

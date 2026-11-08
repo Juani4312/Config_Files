@@ -23,8 +23,8 @@ hl.window_rule({ match = { class = "^(zen)$" }, opacity = "0.9 override 0.7 over
 hl.layer_rule({ match = { namespace = "waybar" }, blur = true, ignore_alpha = 0.5 })
 hl.layer_rule({ match = { namespace = "logout_dialog" }, blur = true })
 
--- ROFI: sin animacion de fade/slide para que abra al instante
-hl.layer_rule({ match = { namespace = "^rofi$" }, no_anim = true })
+-- ROFI (spotlight): pop-in rapido con rebote + blur del fondo translucido
+hl.layer_rule({ match = { namespace = "^rofi$" }, animation = "popin 85%", blur = true, ignore_alpha = 0.3 })
 
 -- SWAYNC BLUR & XRAY
 hl.layer_rule({

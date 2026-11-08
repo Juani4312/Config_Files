@@ -48,7 +48,7 @@ end
 
 terminal    = "kitty"
 fileManager = "nemo"
-menu        = "rofi -show drun"
+menu        = "rofi -show drun -theme-str 'listview { require-input: true; }'"  -- spotlight: lista aparece al escribir
 
 
 -------------------

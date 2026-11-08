@@ -4,12 +4,16 @@
 import json
 import os
 import subprocess
+import threading
 
 STATE = os.path.expanduser("~/.cache/swaync-groups.json")
 
 groups = {}   # id de notificación -> clave de grupo
 pending = {}  # (sender, cookie) de un Notify -> clave de grupo
 count = dnd = cc_open = inhibited = False
+ring = None          # "ring-a"/"ring-b" mientras la campana suena (CSS de waybar)
+ring_timer = None
+lock = threading.Lock()
 
 
 def load_state():
@@ -40,9 +44,28 @@ def emit():
         "text": str(n) if n else "",
         "alt": alt,
         "tooltip": f"{count} Notifications ({n} grupos)" if count else "No Notifications",
-        "class": alt,
+        "class": [alt, ring] if ring else alt,
     }
-    print(json.dumps(out), flush=True)
+    with lock:
+        print(json.dumps(out), flush=True)
+
+
+def ring_bell():
+    # Alterna ring-a/ring-b para que la animación CSS reinicie con cada notificación
+    global ring, ring_timer
+    ring = "ring-b" if ring == "ring-a" else "ring-a"
+    emit()
+    if ring_timer:
+        ring_timer.cancel()
+    ring_timer = threading.Timer(2.0, stop_ring)
+    ring_timer.daemon = True
+    ring_timer.start()
+
+
+def stop_ring():
+    global ring
+    ring = None
+    emit()
 
 
 def initial_data():
@@ -104,11 +127,15 @@ def main():
                 emit()
 
         elif msg["type"] == "signal" and member == "SubscribeV2":
+            prev = count
             count, dnd, cc_open, inhibited = data
             if count == 0 and groups:
                 groups = {}
                 save_state()
-            emit()
+            if count > prev and not dnd and not cc_open:
+                ring_bell()
+            else:
+                emit()
 
 
 if __name__ == "__main__":

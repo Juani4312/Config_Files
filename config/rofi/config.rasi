@@ -1,186 +1,171 @@
+/*
+ * Spotlight-style launcher.
+ * Search bar floats top-center; results drop in below it.
+ * The app launcher (hyprland.lua `menu`) adds `listview { require-input: true; }`
+ * so the list only appears once you start typing. dmenu scripts (clipboard,
+ * waybar menus, wallpaper picker) use this same look with the list visible.
+ * Colors come from matugen (colors.rasi). Open/close animation is a Hyprland
+ * layer rule (configs/windowrules.lua, namespace "rofi").
+ * Previous theme: config.rasi.bak-spotlight
+ */
 @theme "/dev/null"
 @import "colors.rasi"
 
 configuration {
-	modi: "window,run,drun";
-	display-drun: "Applications";
-	display-window: "Windows";
-	display-run: "Run";
-	drun-display-format: "{icon} {name}";
-	font: "JetBrainsMono Nerd Font 10";
-	show-icons: true;
-	icon-theme: "Colloid";
+    modi:                "drun,run,window";
+    display-drun:        "Apps";
+    display-run:         "Run";
+    display-window:      "Windows";
+    drun-display-format: "{name}[<span size='small' alpha='55%'>   {generic}</span>]";
+    font:                "JetBrainsMono Nerd Font Propo 11";
+    show-icons:          true;
+    icon-theme:          "Colloid";
+    matching:            "fuzzy";
+    sort:                true;
+    sorting-method:      "fzf";
+    scroll-method:       1;
+    hover-select:        true;
+    me-select-entry:     "MousePrimary";
+    me-accept-entry:     "!MousePrimary";
+}
+
+* {
+    background-color:    transparent;
+    text-color:          @on-surface;
 }
 
 window {
-    /* properties for window widget */
-    transparency:                "real";
-    location:                    center;
-    anchor:                      center;
-    fullscreen:                  false;
-    width:                       1000px;
-    x-offset:                    0px;
-    y-offset:                    0px;
-
-    /* properties for all widgets */
-    enabled:                     true;
-    border:			 2px solid;
-    border-color:		 @outline-variant;
-    border-radius:               15px;
-    cursor:                      "default";
-    background-color:            @surface;
+    transparency:        "real";
+    location:            north;
+    anchor:              north;
+    y-offset:            18%;
+    width:               720px;
+    border:              1px solid;
+    border-color:        @outline-glass;
+    border-radius:       26px;
+    background-color:    @surface-glass;
+    padding:             10px;
+    cursor:              "default";
 }
 
 mainbox {
-    enabled:                     true;
-    spacing:                     0px;
-    background-color:            transparent;
-    orientation:                 horizontal;
-    children:                    [ "imagebox", "listbox" ];
+    orientation:         vertical;
+    spacing:             0px;
+    children:            [ "inputbar", "message", "listview" ];
 }
 
-imagebox {
-    padding:                     20px;
-    background-color:            transparent;
-    background-image:            url("~/.config/hypr/current_wallpaper", height);
-    orientation:                 vertical;
-    children:                    [ "inputbar", "dummy", "mode-switcher" ];
-}
-
-listbox {
-    spacing:                     20px;
-    padding:                     20px;
-    background-color:            transparent;
-    orientation:                 vertical;
-    children:                    [ "message", "listview" ];
-}
-
-dummy {
-    background-color:            transparent;
-}
-
+/* ---------------------------------------------------------- search bar -- */
 inputbar {
-    enabled:                     true;
-    spacing:                     10px;
-    padding:                     15px;
-    border-radius:               10px;
-    background-color:		 @surface-container-high;
-    text-color:			 @on-surface;
-    children:                    [ "textbox-prompt-colon", "entry" ];
+    spacing:             14px;
+    padding:             12px 16px;
+    border-radius:       18px;
+    background-color:    @surface-container-glass;
+    children:            [ "textbox-search", "entry", "mode-pill" ];
 }
-textbox-prompt-colon {
-    enabled:                     true;
-    expand:                      false;
-    str:                         "  ";
-    background-color:            inherit;
-    text-color:                  inherit;
+textbox-search {
+    expand:              false;
+    str:                 "";
+    font:                "JetBrainsMono Nerd Font Propo 18";
+    text-color:          @primary;
+    vertical-align:      0.5;
 }
 entry {
-    enabled:                     true;
-    background-color:            inherit;
-    text-color:                  inherit;
-    cursor:                      text;
-    placeholder:                 "Search";
-    placeholder-color:           inherit;
+    font:                "JetBrainsMono Nerd Font Propo 17";
+    placeholder:         "Search";
+    placeholder-color:   @on-surface-variant;
+    cursor:              text;
+    vertical-align:      0.5;
+}
+mode-pill {
+    expand:              false;
+    orientation:         horizontal;
+    children:            [ "prompt" ];
+    padding:             5px 12px;
+    border-radius:       100px;
+    background-color:    @primary-glass;
+    vertical-align:      0.5;
+}
+prompt {
+    font:                "JetBrainsMono Nerd Font Propo Bold 9";
+    text-color:          @primary;
+    vertical-align:      0.5;
 }
 
-mode-switcher{
-    enabled:                     true;
-    spacing:                     20px;
-    background-color:            transparent;
-    text-color:                  @on-surface-variant;
-}
-button {
-    padding:                     15px;
-    border-radius:               10px;
-    background-color:            @surface-container-high;
-    text-color:                  inherit;
-    cursor:                      pointer;
-}
-button selected {
-    background-color:            @secondary-container;
-    text-color:                  @on-secondary-container;
-}
-
+/* ------------------------------------------------------------- results -- */
 listview {
-    enabled:                     true;
-    columns:                     1;
-    lines:                       8;
-    cycle:                       true;
-    dynamic:                     true;
-    scrollbar:                   false;
-    layout:                      vertical;
-    reverse:                     false;
-    fixed-height:                true;
-    fixed-columns:               true;
-    
-    spacing:                     10px;
-    background-color:            transparent;
-    text-color:                  @on-surface;
-    cursor:                      "default";
+    columns:             1;
+    lines:               7;
+    cycle:               true;
+    dynamic:             true;
+    fixed-height:        false;
+    fixed-columns:       true;
+    scrollbar:           false;
+    spacing:             4px;
+    margin:              10px 0px 0px 0px;
+    padding:             10px 0px 0px 0px;
+    border:              1px 0px 0px 0px;
+    border-color:        @outline-glass;
 }
 
 element {
-    enabled:                     true;
-    spacing:                     15px;
-    padding:                     8px;
-    border-radius:               10px;
-    background-color:            transparent;
-    text-color:                  @on-surface;
-    cursor:                      pointer;
+    spacing:             14px;
+    padding:             9px 14px;
+    border-radius:       14px;
+    cursor:              pointer;
 }
-element normal.normal {
-    background-color:            inherit;
-    text-color:                  inherit;
+element normal.normal,
+element alternate.normal {
+    background-color:    transparent;
+    text-color:          @on-surface;
 }
-element normal.urgent {
-    background-color:            @error-container;
-    text-color:                  @on-error-container;
+element normal.active,
+element alternate.active {
+    text-color:          @primary;
 }
-element normal.active {
-    background-color:            transparent;
-    text-color:                  @primary;
+element normal.urgent,
+element alternate.urgent {
+    background-color:    @error-container;
+    text-color:          @on-error-container;
 }
-element selected.normal {
-    background-color:            @secondary-container;
-    text-color:                  @on-secondary-container;
+element selected.normal,
+element selected.active {
+    /* gradient background comes from colors.rasi (needs literal colors) */
+    text-color:          @on-primary-container;
+    border:              0px 0px 0px 3px;
+    border-color:        @primary;
 }
 element selected.urgent {
-    background-color:            @error-container;
-    text-color:                  @on-error-container;
-}
-element selected.active {
-    background-color:            @secondary-container;
-    text-color:                  @primary;
+    background-color:    @error-container;
+    text-color:          @on-error-container;
 }
 element-icon {
-    background-color:            transparent;
-    text-color:                  inherit;
-    size:                        32px;
-    cursor:                      inherit;
+    size:                30px;
+    text-color:          inherit;
+    cursor:              inherit;
+    vertical-align:      0.5;
 }
 element-text {
-    background-color:            transparent;
-    text-color:                  inherit;
-    cursor:                      inherit;
-    vertical-align:              0.5;
-    horizontal-align:            0.0;
+    text-color:          inherit;
+    cursor:              inherit;
+    vertical-align:      0.5;
+    horizontal-align:    0.0;
 }
 
+/* ------------------------------------------------------ messages/errors -- */
 message {
-    background-color:            transparent;
+    margin:              10px 0px 0px 0px;
 }
 textbox {
-    padding:                     15px;
-    border-radius:               10px;
-    background-color:            @surface-container-high;
-    text-color:                  @on-surface;
-    vertical-align:              0.5;
-    horizontal-align:            0.0;
+    padding:             12px 16px;
+    border-radius:       14px;
+    background-color:    @surface-container-glass;
+    text-color:          @on-surface;
+    vertical-align:      0.5;
+    horizontal-align:    0.0;
 }
 error-message {
-    padding:                     15px;
-    border-radius:               20px;
-    background-color:            @surface-container-high;
-    text-color:                  @on-surface;
+    padding:             16px;
+    border-radius:       20px;
+    background-color:    @surface-glass;
+    text-color:          @on-surface;
 }
