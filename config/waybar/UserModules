@@ -80,7 +80,7 @@
 		"return-type": "json",
 		"interval": "once",
 		"signal": 8,
-		"on-click": "hyprctl dispatch 'hl.dsp.workspace.toggle_special(\"magic\")'"
+		"on-click": "~/.config/waybar/scripts/ws-special.sh DP-3 click"
 	},
 	"custom/special-pad#dp3": {
 		"exec": "~/.config/waybar/scripts/ws-special.sh DP-3 pad",
@@ -94,7 +94,7 @@
 		"return-type": "json",
 		"interval": "once",
 		"signal": 8,
-		"on-click": "hyprctl dispatch 'hl.dsp.workspace.toggle_special(\"magic\")'"
+		"on-click": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 click"
 	},
 	"custom/special-pad#hdmi": {
 		"exec": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 pad",
