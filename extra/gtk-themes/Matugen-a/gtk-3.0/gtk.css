@@ -1,0 +1,4 @@
+/* adw-gtk3-dark + paleta de matugen. theme-reload.sh alterna Matugen-a/Matugen-b
+   para que GTK3 relea colors.css sin reiniciar las apps. */
+@import url("file:///usr/share/themes/adw-gtk3-dark/gtk-3.0/gtk.css");
+@import url("file:///home/juano/.config/gtk-3.0/colors.css");

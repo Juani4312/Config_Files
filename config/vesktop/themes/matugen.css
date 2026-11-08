@@ -8,7 +8,10 @@
 
 /* IMPORTANT: activar el modo oscuro en Discord para que el tema aplique bien */
 
-/* @import url('https://refact0r.github.io/midnight-discord/build/midnight.css'); (clases viejas, ver template) */
+/* Discord cambio el formato de los nombres de clase (2026-11-06) y el build de upstream
+   todavia usa los viejos. Se usa una copia local traducida; para volver a upstream,
+   restaurar la linea comentada.
+   @import url('https://refact0r.github.io/midnight-discord/build/midnight.css'); */
 @import url('lib/midnight-fixed.css');
 
 body {
@@ -52,7 +55,7 @@ body {
     --remove-bg-layer: off;
     --panel-blur: off;
     --blur-amount: 12px;
-    --bg-floating: #271d1c;
+    --bg-floating: #251f17;
 
     --custom-chatbar: separated;
     --chatbar-height: 47px;
@@ -64,29 +67,29 @@ body {
     --colors: on;
 
     /* text colors (waybar: secondary / outline / inverse_surface) */
-    --text-0: #561e18;            /* text on colored elements */
-    --text-1: #f1dedc;       /* other normally white text */
-    --text-2: #f1dedc;            /* headings and important text */
-    --text-3: #e7bdb7;             /* normal text */
-    --text-4: #a08c89;               /* icon buttons and channels */
-    --text-5: #534341;       /* muted channels/chats and timestamps */
+    --text-0: #462a00;            /* text on colored elements */
+    --text-1: #ede0d4;       /* other normally white text */
+    --text-2: #ede0d4;            /* headings and important text */
+    --text-3: #dec2a2;             /* normal text */
+    --text-4: #9c8e80;               /* icon buttons and channels */
+    --text-5: #4f4539;       /* muted channels/chats and timestamps */
 
     /* backgrounds (kitty: background = surface) */
-    --bg-1: #3d3231; /* dark buttons when clicked */
-    --bg-2: #322826;    /* dark buttons */
-    --bg-3: #140c0b;  /* spacing, secondary elements */
-    --bg-4: #1a1110;                   /* main background color */
+    --bg-1: #3b342b; /* dark buttons when clicked */
+    --bg-2: #302921;    /* dark buttons */
+    --bg-3: #130d07;  /* spacing, secondary elements */
+    --bg-4: #18120c;                   /* main background color */
     --hover: rgba(255, 255, 255, 0.06);                       /* igual que el hover de waybar */
     --active: rgba(255, 255, 255, 0.10);                      /* igual que el active de waybar */
     --active-2: rgba(255, 255, 255, 0.14);
     --message-hover: rgba(0, 0, 0, 0.15);
 
     /* accent colors */
-    --accent-1: #dfc38c;            /* links and other accent text */
-    --accent-2: #ffb4a9;             /* small accent elements */
-    --accent-3: #ffb4a9;             /* accent buttons */
-    --accent-4: #ffdad5;       /* accent buttons when hovered */
-    --accent-5: #904a42;     /* accent buttons when clicked */
+    --accent-1: #bacd9f;            /* links and other accent text */
+    --accent-2: #f6bc70;             /* small accent elements */
+    --accent-3: #f6bc70;             /* accent buttons */
+    --accent-4: #ffddb6;       /* accent buttons when hovered */
+    --accent-5: #815512;     /* accent buttons when clicked */
     --accent-new: #ffb4ab;             /* mute/deafen, etc. */
     --mention: linear-gradient(to right, color-mix(in srgb, var(--accent-2), transparent 88%) 40%, transparent);
     --mention-hover: linear-gradient(to right, color-mix(in srgb, var(--accent-2), transparent 93%) 40%, transparent);
@@ -96,22 +99,22 @@ body {
     /* status indicator colors */
     --online: var(--green-2);
     --dnd: #ffb4ab;
-    --idle: #dfc38c;
+    --idle: #bacd9f;
     --streaming: var(--purple-2);
     --offline: var(--text-4);
 
     /* border colors */
     --border-light: var(--hover);
-    --border: #534341;
-    --border-hover: #a08c89;
+    --border: #4f4539;
+    --border-hover: #9c8e80;
     --button-border: rgba(255, 255, 255, 0.08);
 
     /* base colors: los "azules" de midnight pasan a ser el primary de matugen */
-    --blue-1: #ffdad5;
-    --blue-2: #ffb4a9;
-    --blue-3: #ffb4a9;
-    --blue-4: #ffb4a9;
-    --blue-5: #904a42;
+    --blue-1: #ffddb6;
+    --blue-2: #f6bc70;
+    --blue-3: #f6bc70;
+    --blue-4: #f6bc70;
+    --blue-5: #815512;
 
     --red-1: #ffdad6;
     --red-2: #ffb4ab;
@@ -119,11 +122,11 @@ body {
     --red-4: #93000a;
     --red-5: #93000a;
 
-    --yellow-1: #fcdfa6;
-    --yellow-2: #dfc38c;
-    --yellow-3: #dfc38c;
-    --yellow-4: #dfc38c;
-    --yellow-5: #574419;
+    --yellow-1: #d6e9ba;
+    --yellow-2: #bacd9f;
+    --yellow-3: #bacd9f;
+    --yellow-4: #bacd9f;
+    --yellow-5: #3c4c29;
 
     --green-1: oklch(75% 0.11 150);
     --green-2: oklch(70% 0.11 150);
@@ -140,6 +143,6 @@ body {
 
 /* seleccion de texto como kitty */
 ::selection {
-    background: #561e18;
-    color: #ffb4a9;
+    background: #462a00;
+    color: #f6bc70;
 }

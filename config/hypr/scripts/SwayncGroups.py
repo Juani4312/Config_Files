@@ -32,6 +32,22 @@ def save_state():
         pass
 
 
+COLORS = os.path.expanduser("~/.config/waybar/colors.css")
+BELL, BELL_DND, DOT = "\uf0a2", "\uf1f7", "\uf444"
+
+
+def dot_color():
+    # color del punto de "hay notificaciones": tertiary de matugen (sigue el wallpaper)
+    try:
+        for line in open(COLORS):
+            parts = line.split()
+            if len(parts) >= 3 and parts[0] == "@define-color" and parts[1] == "tertiary":
+                return parts[2].rstrip(";")
+    except OSError:
+        pass
+    return "red"
+
+
 def emit():
     # Notificaciones que existían antes de empezar a escuchar: cuentan como un grupo
     unknown = count - len(groups)
@@ -41,7 +57,8 @@ def emit():
     alt = ("dnd-" if dnd else "") + ("inhibited-" if inhibited else "")
     alt += "notification" if count else "none"
     out = {
-        "text": str(n) if n else "",
+        "text": (str(n) if n else "") + (BELL_DND if dnd else BELL)
+                + (f"<span foreground='{dot_color()}'><sup>{DOT}</sup></span>" if count else ""),
         "alt": alt,
         "tooltip": f"{count} Notifications ({n} grupos)" if count else "No Notifications",
         "class": [alt, ring] if ring else alt,

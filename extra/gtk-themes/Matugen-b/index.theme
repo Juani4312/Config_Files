@@ -1,0 +1,6 @@
+[X-GNOME-Metatheme]
+Name=Matugen-b
+Type=X-GNOME-Metatheme
+Comment=adw-gtk3-dark + colores de matugen (a/b se alternan para forzar recarga en vivo)
+Encoding=UTF-8
+GtkTheme=Matugen-b

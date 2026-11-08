@@ -17,6 +17,9 @@ SELECTED_PATH="$WALLPAPER_DIR/$SELECTED_WALL"
 # === SET WALLPAPER ===
 matugen image --source-color-index 0 "$SELECTED_PATH"
 
+# === RELOAD APP THEMES (gtk, btop, zapzap, tidal, librewolf...) ===
+"$HOME/.config/matugen/scripts/theme-reload.sh" &
+
 # === CREATE SYMLINK ===
 mkdir -p "$(dirname "$SYMLINK_PATH")"
 ln -sf "$SELECTED_PATH" "$SYMLINK_PATH"

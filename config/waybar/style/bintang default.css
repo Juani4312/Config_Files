@@ -109,7 +109,7 @@ tooltip label{
 }
 
 #workspaces button.urgent {
-    color: @error;
+    color: @tertiary;
 }
 
 #backlight,
@@ -203,15 +203,15 @@ tooltip label{
    sombras con la misma forma, si no salta de golpe */
 #custom-power {
 	color: @secondary;
-	box-shadow: 0 0 3px 0 alpha(@error, 0), inset 0 0 0 1px alpha(@error, 0);
+	box-shadow: 0 0 3px 0 alpha(@tertiary, 0), inset 0 0 0 1px alpha(@tertiary, 0);
 }
 #custom-swaync {
 	box-shadow: 0 0 3px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0);
 }
 #custom-power:hover {
-	color: @error;
-	background-color: alpha(@error, 0.15);
-	box-shadow: 0 0 3px 0 alpha(@error, 0.40), inset 0 0 0 1px alpha(@error, 0.35);
+	color: @tertiary;
+	background-color: alpha(@tertiary, 0.15);
+	box-shadow: 0 0 3px 0 alpha(@tertiary, 0.40), inset 0 0 0 1px alpha(@tertiary, 0.35);
 }
 
 /* tray */
@@ -398,13 +398,13 @@ tooltip label{
 	background-color: alpha(@primary, 0.10);
 }
 #custom-ws.urgent {
-	color: @error;
+	color: @tertiary;
 	animation: ws-urgent 0.8s ease-in-out infinite alternate;
 }
 
 @keyframes ws-urgent {
-	from { background-color: transparent;           box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@error, 0.3); }
-	to   { background-color: alpha(@error, 0.25); box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px @error; }
+	from { background-color: transparent;              box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@tertiary, 0.3); }
+	to   { background-color: alpha(@tertiary, 0.25); box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px @tertiary; }
 }
 
 

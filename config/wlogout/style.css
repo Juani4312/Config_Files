@@ -7,15 +7,15 @@
 @import '../../.config/waybar/colors.css';
 
 window {
-    background-color: rgba(17, 17, 17, 0.45)
+    background-color: alpha(@background, 0.55);
 }
 
 button {
     border-radius: 20px;
     margin: 16px;
-    color: @inverse_surface;
+    color: @on_surface;
     border-color: @inverse_surface;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: alpha(@surface_container, 0.75);
     outline-style: none;
     border-style: solid;
 	border-width: 0px;
@@ -29,7 +29,9 @@ button {
 }
 
 button:hover {
-    background-color: @on_secondary_fixed_variant;
+    background-color: @secondary_container;
+    color: @on_secondary_container;
+    box-shadow: inset 0 0 0 2px alpha(@primary, 0.6);
     background-size: 30%;
     animation: gradient_f 20s ease-in infinite;
     transition: all 0.3s cubic-bezier(.55,0.0,.28,1.682);
@@ -42,26 +44,26 @@ button span {
 
 
 #lock {
-    background-image: image(url("./icons/lock.png"));
+    background-image: image(url("./icons/matugen/lock.png"));
 }
 
 #logout {
-    background-image: image(url("./icons/logout.png"));
+    background-image: image(url("./icons/matugen/logout.png"));
 }
 
 #suspend {
-    background-image: image(url("./icons/sleep.png"));
+    background-image: image(url("./icons/matugen/sleep.png"));
 }
 
 #shutdown {
-    background-image: image(url("./icons/power.png"));
+    background-image: image(url("./icons/matugen/power.png"));
 }
 
 #reboot {
-    background-image: image(url("./icons/restart.png"));
+    background-image: image(url("./icons/matugen/restart.png"));
 }
 
 #hibernate {
-    background-image: image(url("./icons/hibernate.png"));
+    background-image: image(url("./icons/matugen/hibernate.png"));
 }
 

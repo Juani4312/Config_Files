@@ -22,6 +22,9 @@ EXTRA_DIRS=(
   ".vscode/extensions/local.matugen-theme-1.0.0|extra/vscode-matugen-theme"
   ".local/share/Steam/millennium/themes/matugen|extra/steam-millennium-theme"
   ".local/share/PrismLauncher/themes/matugen|extra/prismlauncher-theme"
+  # tema GTK = adw-gtk3-dark + colores de matugen; theme-reload.sh alterna a/b para recargar en vivo
+  ".local/share/themes/Matugen-a|extra/gtk-themes/Matugen-a"
+  ".local/share/themes/Matugen-b|extra/gtk-themes/Matugen-b"
 )
 # Claves de dconf (tema GTK, íconos, cursor, fuentes) que se guardan en extra/dconf-interface.ini
 DCONF_PATH=/org/gnome/desktop/interface/

@@ -6,26 +6,26 @@
    ============================================= */
 
 :root {
-    --sys-bg-deep: #140c0b;
-    --sys-bg-0:    #1a1110;
-    --sys-bg-1:    #231918;
-    --sys-bg-2:    #322826;
-    --sys-bg-3:    #3d3231;
-    --sys-border:  #534341;
-    --sys-fg:      #f1dedc;
-    --sys-fg-1:    #e7bdb7;
-    --sys-fg-2:    #d8c2be;
-    --sys-muted:   #a08c89;
-    --sys-accent:  #ffb4a9;
-    --sys-accent-h:#ffdad5;
-    --sys-accent-d:#73342c;
-    --sys-out:     #73342c;
+    --sys-bg-deep: #130d07;
+    --sys-bg-0:    #18120c;
+    --sys-bg-1:    #211b13;
+    --sys-bg-2:    #302921;
+    --sys-bg-3:    #3b342b;
+    --sys-border:  #4f4539;
+    --sys-fg:      #ede0d4;
+    --sys-fg-1:    #dec2a2;
+    --sys-fg-2:    #d3c4b4;
+    --sys-muted:   #9c8e80;
+    --sys-accent:  #f6bc70;
+    --sys-accent-h:#ffddb6;
+    --sys-accent-d:#643f00;
+    --sys-out:     #643f00;
     --sys-red:     #ffb4ab;
     --sys-green:   oklch(70% 0.11 150);
-    --sys-yellow:  #dfc38c;
-    --sys-blue:    #ffb4a9;
-    --sys-sel-bg:  #561e18;
-    --sys-sel-fg:  #ffb4a9;
+    --sys-yellow:  #bacd9f;
+    --sys-blue:    #f6bc70;
+    --sys-sel-bg:  #462a00;
+    --sys-sel-fg:  #f6bc70;
 }
 
 :root, :root * {
@@ -160,27 +160,27 @@
 
 /* rampas de WhatsApp (verde -> primary, grises -> superficies) */
 :root, :root * {
-    --WDS-neutral-gray-1000: #140c0b !important;
-    --WDS-neutral-gray-900: #1a1110 !important;
-    --WDS-neutral-gray-850: #231918 !important;
-    --WDS-neutral-gray-800: #322826 !important;
-    --WDS-neutral-gray-700: #534341 !important;
-    --WDS-neutral-gray-500: #a08c89 !important;
-    --WDS-neutral-gray-400: #d8c2be !important;
-    --WDS-neutral-gray-300: #d8c2be !important;
-    --WDS-neutral-gray-100: #f1dedc !important;
-    --WDS-neutral-gray-75: #f1dedc !important;
-    --WDS-neutral-gray-50: #f1dedc !important;
-    --WDS-green-100: #ffdad5 !important;
-    --WDS-green-200: #ffdad5 !important;
-    --WDS-green-300: #ffb4a9 !important;
-    --WDS-green-400: #ffb4a9 !important;
-    --WDS-green-450: #ffb4a9 !important;
-    --WDS-green-500: #ffb4a9 !important;
-    --WDS-green-600: #904a42 !important;
-    --WDS-green-700: #ffdad5 !important;
-    --WDS-green-750: #73342c !important;
-    --WDS-green-800: #5d3f3b !important;
+    --WDS-neutral-gray-1000: #130d07 !important;
+    --WDS-neutral-gray-900: #18120c !important;
+    --WDS-neutral-gray-850: #211b13 !important;
+    --WDS-neutral-gray-800: #302921 !important;
+    --WDS-neutral-gray-700: #4f4539 !important;
+    --WDS-neutral-gray-500: #9c8e80 !important;
+    --WDS-neutral-gray-400: #d3c4b4 !important;
+    --WDS-neutral-gray-300: #d3c4b4 !important;
+    --WDS-neutral-gray-100: #ede0d4 !important;
+    --WDS-neutral-gray-75: #ede0d4 !important;
+    --WDS-neutral-gray-50: #ede0d4 !important;
+    --WDS-green-100: #ffddb6 !important;
+    --WDS-green-200: #ffddb6 !important;
+    --WDS-green-300: #f6bc70 !important;
+    --WDS-green-400: #f6bc70 !important;
+    --WDS-green-450: #f6bc70 !important;
+    --WDS-green-500: #f6bc70 !important;
+    --WDS-green-600: #815512 !important;
+    --WDS-green-700: #ffddb6 !important;
+    --WDS-green-750: #643f00 !important;
+    --WDS-green-800: #57432b !important;
 }
 
 /* Chat wallpaper: WhatsApp sets the user-picked color inline on #main */

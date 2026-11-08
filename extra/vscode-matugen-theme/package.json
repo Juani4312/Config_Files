@@ -15,7 +15,8 @@
 			{
 				"label": "Matugen",
 				"uiTheme": "vs-dark",
-				"path": "./themes/matugen-color-theme.json"
+				"path": "./themes/matugen-color-theme.json",
+				"_watch": true
 			}
 		]
 	},

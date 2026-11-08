@@ -1,7 +1,7 @@
 @define-color text            @on_surface;
 @define-color background-alt  @secondary_container;
-@define-color selected        @outline;
-@define-color hover           alpha(@selected, 1);
+@define-color selected        alpha(@primary, 0.25);
+@define-color hover           alpha(@primary, 0.15);
 @define-color urgent          @error;
 
 * {
@@ -24,7 +24,7 @@
 .control-center {
   background-color: @surface_container_low;
   border-radius: 24px;
-  border: 1px solid @outline_variant;
+  border: 1px solid alpha(@primary, 0.25);
   box-shadow: 0 0 10px 0 rgba(0,0,0,.6);
   margin: 18px;
   padding: 12px;
@@ -55,17 +55,19 @@
 
 .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action {
   background: @secondary_container;
-  color: @text;
+  color: @on_secondary_container;
   border-radius: 12px;
   margin: 6px;
 }
 
 .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:hover {
-  background: @outline_variant;
+  background: @primary_container;
+  color: @on_primary_container;
 }
 
 .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
-  background-color: @outline_variant;
+  background-color: @primary;
+  color: @on_primary;
 }
 
 /* Buttons */
@@ -96,6 +98,10 @@ progressbar {
   background-color: @surface_container_highest;
 }
 
+progressbar progress {
+  background-color: @primary;
+}
+
 /* Notifications expanded-group */
 
 .notification-group {
@@ -105,7 +111,7 @@ progressbar {
 .notification-group-headers {
   font-weight: bold;
   font-size: 1.25rem;
-  color: @text;
+  color: @primary;
   letter-spacing: 2px;
 }
 
@@ -142,7 +148,8 @@ progressbar {
 }
 
 .widget-title button:hover {
-  background-color: @surface_bright;
+  background-color: @primary_container;
+  color: @on_primary_container;
 }
 
 .widget-title button:active {
@@ -168,11 +175,15 @@ progressbar {
 }
 
 .widget-dnd > switch:checked {
-  background: @primary_container;
+  background: @primary;
 }
 
 .widget-dnd > switch:checked:hover {
-  background: @on_primary_fixed_variant;
+  background: @primary_fixed_dim;
+}
+
+.widget-dnd > switch:checked slider {
+  background: @on_primary;
 }
 
 .widget-dnd > switch slider {
@@ -197,7 +208,8 @@ progressbar {
 }
 
 .widget-buttons-grid>flowbox>flowboxchild>button:hover {
-  background: @surface_bright;
+  background: alpha(@primary, 0.18);
+  color: @primary;
 }
 
 
@@ -227,7 +239,7 @@ progressbar {
 }
 
 .widget-mpris button:hover {
-  color: @text;
+  color: @primary;
 }
 
 .widget-mpris-album-art {

@@ -1,4 +1,5 @@
-@import 'colors.css';
+/* Los colores (colors.css) los carga el tema Matugen-a/b, no este archivo:
+   asi theme-reload.sh puede recargarlos en vivo alternando el tema. */
 
 /* GTK3 Adwaita no lee los nombres libadwaita de matugen: se mapean a los de GTK3 */
 @define-color theme_bg_color @window_bg_color;

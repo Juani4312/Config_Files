@@ -16,7 +16,7 @@ post_hook = "kill -SIGUSR1 $(pidof kitty)"
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland-colors.conf'
 output_path = '~/.config/hypr/colors.conf'
-post_hook = 'hyprctl reload'
+# solo lo usa hyprlock (lo lee al bloquear); el reload lo hace templates.hyprland-lua
 
 [templates.gtk3]
 input_path = '~/.config/matugen/templates/gtk-colors.css'

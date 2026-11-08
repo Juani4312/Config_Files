@@ -1,30 +1,30 @@
 /*
-* Steam (Millennium quick.css) Colors
+* Steam (tema "matugen" de Millennium) Colors
 * Generated with Matugen — mismo mapeo que gtk-colors.css
-* Las reglas que usan estas variables salen de ~/.config/steam-theme/rules.css
+* Las reglas que usan estas variables salen de ~/.config/steam-theme/rules-*.css
 */
 
 :root
 {
-	--m-primary: #ffb4a9;
-	--m-on-primary: #3b0906;
-	--m-primary-container: #73342c;
-	--m-tertiary: #dfc38c;
-	--m-on-tertiary: #3e2e04;
-	--m-tertiary-container: #574419;
+	--m-primary: #f6bc70;
+	--m-on-primary: #2a1800;
+	--m-primary-container: #643f00;
+	--m-tertiary: #bacd9f;
+	--m-on-tertiary: #263514;
+	--m-tertiary-container: #3c4c29;
 	--m-error: #ffb4ab;
 
-	--m-surface-lowest: #140c0b;
-	--m-surface-dim: #1a1110;
-	--m-surface-low: #231918;
-	--m-surface-container: #271d1c;
-	--m-surface-high: #322826;
-	--m-surface-highest: #3d3231;
+	--m-surface-lowest: #130d07;
+	--m-surface-dim: #18120c;
+	--m-surface-low: #211b13;
+	--m-surface-container: #251f17;
+	--m-surface-high: #302921;
+	--m-surface-highest: #3b342b;
 
-	--m-outline-variant: #534341;
-	--m-outline: #a08c89;
-	--m-on-surface-variant: #d8c2be;
-	--m-on-surface: #f1dedc;
+	--m-outline-variant: #4f4539;
+	--m-outline: #9c8e80;
+	--m-on-surface-variant: #d3c4b4;
+	--m-on-surface: #ede0d4;
 }
 
 /* misma tipografia que waybar / kitty */

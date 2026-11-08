@@ -157,23 +157,14 @@
 "custom/swaync": {
 	"tooltip": true,
 	"tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
-	"format": "{}{icon}",
-	"format-icons": {
-		"notification": "<span foreground='red'><sup></sup></span>",
-		"none": "",
-		"dnd-notification": "<span foreground='red'><sup></sup></span>",
-		"dnd-none": "",
-		"inhibited-notification": "<span foreground='red'><sup></sup></span>",
-		"inhibited-none": "",
-		"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-		"dnd-inhibited-none": ""
-	},
+	// el ícono (campana + punto con color de matugen) lo arma SwayncGroups.py
+	"format": "{}",
 	"return-type": "json",
 	"exec-if": "which swaync-client",
 	"exec": "$HOME/.config/hypr/scripts/SwayncWaybar.sh",
 	"on-click": "sleep 0.1 && swaync-client -t -sw",
 	"on-click-right": "swaync-client -d -sw",
-	"escape": true,
+	"escape": false,
 },
 // NOTE:! This is mainly for Arch and Arch Based Distros  depend: pacman-contrib
 // Other Distro dont have notifications but can use to check for update for any other distro
