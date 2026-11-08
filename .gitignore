@@ -6,3 +6,5 @@
 *cache*
 .env
 *.bak*
+# resolución/posición/scale de cada máquina (lo genera install.sh)
+config/hypr/monitors.lua

@@ -6,4 +6,4 @@ mkdir -p "$dir"
 file="$dir/$(date +%Y%m%d_%Hh%Mm%Ss).png"
 
 region=$(slurp) || exit 1
-grim -g "$region" "$file" && wl-copy < "$file" && notify-send -u low -i "$file" "Screenshot" "Guardada y copiada al portapapeles"
+grim -g "$region" "$file" && wl-copy < "$file" && notify-send -e -u low -i "$file" "Screenshot" "Guardada y copiada al portapapeles"

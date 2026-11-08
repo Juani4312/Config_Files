@@ -1,0 +1,144 @@
+/**
+ * @name matugen
+ * @description midnight (v2) con la paleta matugen del sistema (waybar / kitty).
+ * @author refact0r, matugen
+ * @version 2.1.1
+ * @source https://github.com/refact0r/midnight-discord
+*/
+
+/* IMPORTANT: activar el modo oscuro en Discord para que el tema aplique bien */
+
+@import url('https://refact0r.github.io/midnight-discord/build/midnight.css');
+
+body {
+    /* misma tipografia que waybar / kitty */
+    --font: 'JetBrainsMono Nerd Font Propo';
+    --code-font: 'JetBrainsMono Nerd Font';
+    font-weight: 500;
+
+    --gap: 8px;
+    --divider-thickness: 3px;
+    --border-thickness: 1px;
+
+    --animations: on;
+    --list-item-transition: 0.2s ease;
+    --dms-icon-svg-transition: 0.4s ease;
+    --border-hover-transition: 0.2s ease;
+
+    --top-bar-height: var(--gap);
+    --top-bar-button-position: titlebar;
+    --top-bar-title-position: off;
+    --subtle-top-bar-title: off;
+
+    --custom-window-controls: on;
+    --window-control-size: 14px;
+
+    --custom-dms-icon: custom;
+    --dms-icon-svg-url: url('https://refact0r.github.io/midnight-discord/assets/Font_Awesome_5_solid_moon.svg');
+    --dms-icon-svg-size: 90%;
+    --dms-icon-color-before: var(--text-5);
+    --dms-icon-color-after: var(--accent-2);
+    --custom-dms-background: off;
+    --dms-background-image-url: url('');
+    --dms-background-image-size: cover;
+    --dms-background-color: var(--bg-3);
+
+    --background-image: off;
+    --background-image-url: url('');
+
+    /* la transparencia la pone Hyprland (igual que kitty) */
+    --transparency-tweaks: off;
+    --remove-bg-layer: off;
+    --panel-blur: off;
+    --blur-amount: 12px;
+    --bg-floating: {{colors.surface_container.default.hex}};
+
+    --custom-chatbar: separated;
+    --chatbar-height: 47px;
+
+    --small-user-panel: on;
+}
+
+:root {
+    --colors: on;
+
+    /* text colors (waybar: secondary / outline / inverse_surface) */
+    --text-0: {{colors.on_primary.default.hex}};            /* text on colored elements */
+    --text-1: {{colors.inverse_surface.default.hex}};       /* other normally white text */
+    --text-2: {{colors.on_surface.default.hex}};            /* headings and important text */
+    --text-3: {{colors.secondary.default.hex}};             /* normal text */
+    --text-4: {{colors.outline.default.hex}};               /* icon buttons and channels */
+    --text-5: {{colors.outline_variant.default.hex}};       /* muted channels/chats and timestamps */
+
+    /* backgrounds (kitty: background = surface) */
+    --bg-1: {{colors.surface_container_highest.default.hex}}; /* dark buttons when clicked */
+    --bg-2: {{colors.surface_container_high.default.hex}};    /* dark buttons */
+    --bg-3: {{colors.surface_container_lowest.default.hex}};  /* spacing, secondary elements */
+    --bg-4: {{colors.surface.default.hex}};                   /* main background color */
+    --hover: rgba(255, 255, 255, 0.06);                       /* igual que el hover de waybar */
+    --active: rgba(255, 255, 255, 0.10);                      /* igual que el active de waybar */
+    --active-2: rgba(255, 255, 255, 0.14);
+    --message-hover: rgba(0, 0, 0, 0.15);
+
+    /* accent colors */
+    --accent-1: {{colors.tertiary.default.hex}};            /* links and other accent text */
+    --accent-2: {{colors.primary.default.hex}};             /* small accent elements */
+    --accent-3: {{colors.primary.default.hex}};             /* accent buttons */
+    --accent-4: {{colors.primary_fixed.default.hex}};       /* accent buttons when hovered */
+    --accent-5: {{colors.inverse_primary.default.hex}};     /* accent buttons when clicked */
+    --accent-new: {{colors.error.default.hex}};             /* mute/deafen, etc. */
+    --mention: linear-gradient(to right, color-mix(in srgb, var(--accent-2), transparent 88%) 40%, transparent);
+    --mention-hover: linear-gradient(to right, color-mix(in srgb, var(--accent-2), transparent 93%) 40%, transparent);
+    --reply: linear-gradient(to right, color-mix(in srgb, var(--text-3), transparent 90%) 40%, transparent);
+    --reply-hover: linear-gradient(to right, color-mix(in srgb, var(--text-3), transparent 95%) 40%, transparent);
+
+    /* status indicator colors */
+    --online: var(--green-2);
+    --dnd: {{colors.error.default.hex}};
+    --idle: {{colors.tertiary.default.hex}};
+    --streaming: var(--purple-2);
+    --offline: var(--text-4);
+
+    /* border colors */
+    --border-light: var(--hover);
+    --border: {{colors.outline_variant.default.hex}};
+    --border-hover: {{colors.outline.default.hex}};
+    --button-border: rgba(255, 255, 255, 0.08);
+
+    /* base colors: los "azules" de midnight pasan a ser el primary de matugen */
+    --blue-1: {{colors.primary_fixed.default.hex}};
+    --blue-2: {{colors.primary.default.hex}};
+    --blue-3: {{colors.primary.default.hex}};
+    --blue-4: {{colors.primary_fixed_dim.default.hex}};
+    --blue-5: {{colors.inverse_primary.default.hex}};
+
+    --red-1: {{colors.on_error_container.default.hex}};
+    --red-2: {{colors.error.default.hex}};
+    --red-3: {{colors.error.default.hex}};
+    --red-4: {{colors.error_container.default.hex}};
+    --red-5: {{colors.error_container.default.hex}};
+
+    --yellow-1: {{colors.tertiary_fixed.default.hex}};
+    --yellow-2: {{colors.tertiary.default.hex}};
+    --yellow-3: {{colors.tertiary.default.hex}};
+    --yellow-4: {{colors.tertiary_fixed_dim.default.hex}};
+    --yellow-5: {{colors.tertiary_container.default.hex}};
+
+    --green-1: oklch(75% 0.11 150);
+    --green-2: oklch(70% 0.11 150);
+    --green-3: oklch(65% 0.11 150);
+    --green-4: oklch(60% 0.11 150);
+    --green-5: oklch(55% 0.11 150);
+
+    --purple-1: oklch(75% 0.11 310);
+    --purple-2: oklch(70% 0.11 310);
+    --purple-3: oklch(65% 0.11 310);
+    --purple-4: oklch(60% 0.11 310);
+    --purple-5: oklch(55% 0.11 310);
+}
+
+/* seleccion de texto como kitty */
+::selection {
+    background: {{colors.on_primary.default.hex}};
+    color: {{colors.primary.default.hex}};
+}

@@ -8,7 +8,11 @@
 
 /* IMPORTANT: activar el modo oscuro en Discord para que el tema aplique bien */
 
-@import url('https://refact0r.github.io/midnight-discord/build/midnight.css');
+/* Discord cambio el formato de los nombres de clase (2026-11-06) y el build de upstream
+   todavia usa los viejos. Se usa una copia local traducida; para volver a upstream,
+   restaurar la linea comentada.
+   @import url('https://refact0r.github.io/midnight-discord/build/midnight.css'); */
+@import url('lib/midnight-fixed.css');
 
 body {
     /* misma tipografia que waybar / kitty */

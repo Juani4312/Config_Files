@@ -1,2 +1,4 @@
 # symlink con ruta absoluta, depende de cada maquina
 current_wallpaper
+# monitores/scale propios de cada maquina
+monitors.lua

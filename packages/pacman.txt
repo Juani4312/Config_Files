@@ -45,6 +45,7 @@ firefox
 flatpak
 fuse2
 fzf
+ghidra
 git
 github-cli
 gnome-characters
@@ -86,7 +87,9 @@ loupe
 ltrace
 man-db
 matugen
+mingw-w64-gcc
 nano
+nasm
 nemo
 neovim
 network-manager-applet
@@ -118,9 +121,12 @@ power-profiles-daemon
 prismlauncher
 protontricks
 pwninit
+python-evdev
 python-pip
 python-pypresence
 qalculate-gtk
+qemu-base
+qemu-ui-gtk
 qt5-wayland
 qt5ct
 qt6-wayland
@@ -140,6 +146,7 @@ strace
 sudo
 swaync
 system-config-printer
+tailscale
 testdisk
 tk
 tmux

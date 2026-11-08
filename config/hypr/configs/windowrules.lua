@@ -25,6 +25,7 @@ hl.layer_rule({ match = { namespace = "logout_dialog" }, blur = true })
 
 -- ROFI (spotlight): pop-in rapido con rebote + blur del fondo translucido
 hl.layer_rule({ match = { namespace = "^rofi$" }, animation = "popin 85%", blur = true, ignore_alpha = 0.3 })
+hl.layer_rule({ match = { namespace = "^autoscroll-indicator$" }, no_anim = true })
 
 -- SWAYNC BLUR & XRAY
 hl.layer_rule({
@@ -75,7 +76,6 @@ hl.window_rule({ match = { class = "^(bitwarden)$" }, float = true, size = "550 
 hl.window_rule({
     match  = { class = "^(steam)$", initial_title = "^(.{0,4}|.{6,}|[^S].{4}|S[^t].{3}|St[^e].{2}|Ste[^a].|Stea[^m])$" },
     float  = true,
-    size   = "1000 560",
     center = true,
 })
 -- Lista de amigos: finita y vertical

@@ -35,6 +35,8 @@ command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$REPO/extra/dconf-int
 
 # Los symlinks absolutos se reemplazan: current_wallpaper lo crea install.sh.
 rm -f "$REPO/config/hypr/current_wallpaper"
+# monitors.lua (resolución, posición y scale/zoom) es propio de cada máquina: no se sincroniza.
+rm -f "$REPO/config/hypr/monitors.lua"
 # waybar: config y style.css son hardlinks (o symlinks) a un archivo de configs/ y style/;
 # en el repo quedan como symlink relativo a ese archivo.
 link_variant() { # <archivo> <subcarpeta>

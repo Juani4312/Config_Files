@@ -147,6 +147,28 @@ if [ "$PKG" -eq 1 ]; then
   else echo "yay no está instalado: instalalo y corré: yay -S --needed - < packages/aur.txt"; fi
 fi
 
+# Monitores / scale (zoom): ~/.config/hypr/monitors.lua es propio de cada máquina y nunca se pisa.
+# Si no existe, se genera con los monitores y el scale que esta máquina tiene AHORA
+# (antes de copiar, porque Hyprland recarga apenas cambia hyprland.lua).
+MON="$HOME/.config/hypr/monitors.lua"
+if [ ! -e "$MON" ]; then
+  mkdir -p "$(dirname "$MON")"
+  {
+    echo "-- Monitores de ESTA máquina (resolución, posición y scale/zoom)."
+    echo "-- No se sincroniza: update.sh no lo copia al repo e install.sh no lo pisa."
+    echo "-- See https://wiki.hypr.land/Configuring/Basics/Monitors/"
+    echo
+    if command -v hyprctl >/dev/null && command -v jq >/dev/null && hyprctl monitors -j >/dev/null 2>&1; then
+      echo "-- Generado por install.sh el $(date +%F) a partir de 'hyprctl monitors'"
+      hyprctl monitors -j | jq -r '.[] | "hl.monitor({\n    output   = \"\(.name)\",\n    mode     = \"\(.width)x\(.height)@\(.refreshRate * 1000 | round / 1000)\",\n    position = \"\(.x)x\(.y)\",\n    scale    = \(.scale),\n})\n"'
+    fi
+    echo "-- Cualquier otro monitor"
+    printf 'hl.monitor({\n    output   = "",\n    mode     = "preferred",\n    position = "auto",\n    scale    = "auto",\n})\n'
+  } > "$MON"
+  echo "${MON#"$HOME"/}" >> "$BACKUP/created.txt"
+  echo "ok    creado ${MON/#$HOME/~} (editá ahí el scale de esta máquina)"
+fi
+
 for pair in "${PAIRS[@]}"; do
   IFS='|' read -r kind src dst <<<"$pair"
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi

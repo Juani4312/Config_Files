@@ -33,7 +33,9 @@
 	],
 
 "modules-center": [
+	"custom/special#dp3",
 	"group/ws-dp3",
+	"custom/special-pad#dp3",
 	"custom/ws-listener",
 	],
 
@@ -77,7 +79,9 @@
 	],
 
 "modules-center": [
+	"custom/special#hdmi",
 	"group/ws-hdmi",
+	"custom/special-pad#hdmi",
 	],
 
 "modules-right": [

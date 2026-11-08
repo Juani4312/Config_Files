@@ -75,6 +75,7 @@ alias lla='eza --icons --color=always -la'
 alias lt='eza --icons --color=always -a --tree --level=1'
 alias grep='grep --color=always'
 alias vim='nvim'
+alias vk='NVIM_APPNAME=nvim-kickstart nvim'   # Neovim con kickstart.nvim (para aprender)
 alias lzg='lazygit'
 alias lzd='lazydocker'
 alias cbonsai='cbonsai -l -i -w 1'

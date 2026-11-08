@@ -6,7 +6,8 @@ STATE = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "waybar-ws.json"
 SOCK = os.path.join(os.environ["XDG_RUNTIME_DIR"], "hypr",
                     os.environ["HYPRLAND_INSTANCE_SIGNATURE"], ".socket2.sock")
 EVENTS = ("workspace", "focusedmon", "createworkspace", "destroyworkspace",
-          "moveworkspace", "openwindow", "closewindow", "movewindow", "urgent")
+          "moveworkspace", "openwindow", "closewindow", "movewindow", "urgent",
+          "activespecial", "activespecialv2")
 
 def hyprctl(what):
     return json.loads(subprocess.run(["hyprctl", "-j", what], capture_output=True, text=True).stdout)
@@ -32,6 +33,9 @@ def update():
         if i in URGENT:
             cls.append("urgent")
         state[str(i)] = cls
+    # workspace especial visible en cada monitor (indicador 特 de waybar)
+    state["special"] = {m["name"]: bool(m.get("specialWorkspace", {}).get("name"))
+                        for m in mons}
     tmp = STATE + ".tmp"
     with open(tmp, "w") as f:
         json.dump(state, f)

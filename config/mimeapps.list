@@ -14,5 +14,4 @@ application/x-xpinstall=librewolf.desktop
 application/pdf=librewolf.desktop
 
 [Added Associations]
-x-scheme-handler/bitwarden=bitwarden.desktop;
 text/markdown=code.desktop;

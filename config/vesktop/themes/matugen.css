@@ -8,7 +8,8 @@
 
 /* IMPORTANT: activar el modo oscuro en Discord para que el tema aplique bien */
 
-@import url('https://refact0r.github.io/midnight-discord/build/midnight.css');
+/* @import url('https://refact0r.github.io/midnight-discord/build/midnight.css'); (clases viejas, ver template) */
+@import url('lib/midnight-fixed.css');
 
 body {
     /* misma tipografia que waybar / kitty */

@@ -13,7 +13,11 @@ hl.config({
             inactive_border = colors.outline_variant,
         },
 
-        resize_on_border = false,
+        -- Arrastrar bordes/esquinas para redimensionar (area de agarre extendida
+        -- porque el borde es de solo 2px)
+        resize_on_border        = true,
+        extend_border_grab_area = 15,
+        hover_icon_on_border    = true,
         allow_tearing    = false,
 
         layout = "dwindle",

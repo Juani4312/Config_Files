@@ -1632,3 +1632,34 @@ a:hover {
   background-color: transparent !important;
   backdrop-filter: none !important;
 }
+
+/* ---- pagina de artista (rediseño "refreshed" de TIDAL) ----
+   Todo va dentro de ._theme_XXXX, que pinta el fondo con
+   var(--profile-background, var(--market-core-fill-black-color)) -> quedaba negro.
+   Ademas el hero usa degradados fijos a #0c0c0c y las reglas genericas de arriba
+   (_headerContainer_, _sectionHeader_, ...) dejaban rectangulos color surface encima. */
+[class*="_theme_"] {
+  --profile-background: #1a1110 !important;
+  --profile-foreground: #f1dedc !important;
+  background-color: #1a1110 !important;
+}
+[class*="_theme_"] [class*="_headerContainer_"],
+[class*="_theme_"] [class*="_sectionHeader_"],
+[class*="_theme_"] [class*="_container_"][class*="_header_"],
+[class*="_theme_"] [class*="_header_"],
+[class*="_theme_"] [class*="_stickyHeader_"],
+[class*="_theme_"] [class*="_dataContainer_"],
+[class*="_theme_"] [class*="_detailContainer_"],
+[class*="_theme_"] [class*="_headerContainer_"] > * {
+  background-color: transparent !important;
+}
+/* hero: degradado y fundido hacia surface en vez de #0c0c0c */
+[class*="_theme_"] [class*="_background_"] {
+  background-image: linear-gradient(color-mix(in srgb, #1a1110, transparent 60%) 0, #1a1110 100%) !important;
+}
+[class*="_theme_"] [class*="_background_"] [class*="_image_"]:not([class*="_mainImage_"])::before {
+  background-image: linear-gradient(180deg, color-mix(in srgb, #1a1110, transparent 30%) 0, #1a1110 100%), var(--img) !important;
+}
+[class*="_theme_"] [class*="_background_"] [class*="_mainImage_"]::after {
+  background-image: linear-gradient(180deg, color-mix(in srgb, #1a1110, transparent 80%) 0, #1a1110 100%), var(--img) !important;
+}

@@ -75,6 +75,34 @@
 		"signal": 8,
 		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'"
 	},
+	"custom/special#dp3": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh DP-3",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"on-click": "hyprctl dispatch 'hl.dsp.workspace.toggle_special(\"magic\")'"
+	},
+	"custom/special-pad#dp3": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh DP-3 pad",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"tooltip": false
+	},
+	"custom/special#hdmi": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"on-click": "hyprctl dispatch 'hl.dsp.workspace.toggle_special(\"magic\")'"
+	},
+	"custom/special-pad#hdmi": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 pad",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"tooltip": false
+	},
 	"group/ws-dp3": {
 		"orientation": "horizontal",
 		"modules": [

@@ -91,3 +91,8 @@ output_path = '~/.local/share/PrismLauncher/themes/matugen/theme.json'
 [templates.prismlauncher-style]
 input_path = '~/.config/matugen/templates/prismlauncher-style.css'
 output_path = '~/.local/share/PrismLauncher/themes/matugen/themeStyle.css'
+
+[templates.cursor]
+input_path = '~/.config/matugen/templates/cursor-colors.json'
+output_path = '~/.config/hypr/scripts/cursor/colors.json'
+post_hook = 'python3 ~/.config/hypr/scripts/cursor/build.py --apply'
