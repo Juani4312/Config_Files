@@ -6,7 +6,7 @@ Mi customización de Arch + Hyprland, lista para clonar en otra PC.
 | Carpeta | Va a |
 |---|---|
 | `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/themes` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, ...) |
-| `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.zshrc`, `.zshenv`, `.nanorc`, `.tmux.conf`, `.gitconfig`, ...), `.tmux/`, `.fonts/`, `.icons/` y `Pictures/wallpapers` |
+| `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.zshrc`, `.zshenv`, `.nanorc`, `.tmux.conf`, `.gitconfig`, ...), `.tmux/`, `.fonts/`, `.icons/` y `Pictures/Wallpapers` (sueltos + `Set/`) |
 | `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher y `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) |
 | `packages/` | `pacman.txt` (explícitos) y `aur.txt` (foreign) |
 
@@ -28,7 +28,7 @@ Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en
 | Notificaciones | SwayNC | `config/swaync` |
 | Menú de apagado | wlogout | `config/wlogout` |
 | Lockscreen / idle | hyprlock, hypridle | `config/hypr` |
-| Fondo de pantalla | awww (`awww-daemon`) | `config/hypr`, `home/Pictures/wallpapers` |
+| Fondo de pantalla | awww (`awww-daemon`); `SUPER+W` abre un selector en rofi con carpetas (`Set/` primero, `..` vuelve) | `config/hypr`, `home/Pictures/Wallpapers` |
 | Paleta de colores | matugen (genera colores desde el wallpaper) | `config/matugen` |
 | Terminal | Kitty (Ghostty configurado) | `config/kitty`, `config/ghostty` |
 | Shell | zsh (zinit, fzf, zoxide, oh-my-posh), bash | `home/.zshrc`, `home/.zshenv`, `config/ohmyposh`, `home/.bashrc` |

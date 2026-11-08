@@ -186,8 +186,8 @@ if [ -n "$LW_PROFILE" ] && [ -f "$HOME/.config/matugen/config.toml" ]; then
 fi
 
 # Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper
-wp="$HOME/Pictures/wallpapers/pacman-ghosts.png"
-[ -e "$wp" ] || wp="$(find "$HOME/Pictures/wallpapers" -maxdepth 1 -type f 2>/dev/null | head -1)"
+wp="$HOME/Pictures/Wallpapers/Set/pacman-ghosts.png"
+[ -e "$wp" ] || wp="$(find "$HOME/Pictures/Wallpapers" -type f 2>/dev/null | head -1)"
 [ -n "$wp" ] && ln -sfn "$wp" "$HOME/.config/hypr/current_wallpaper"
 
 chmod +x "$HOME"/.config/hypr/scripts/* "$HOME"/.config/hypr/UserScripts/* \

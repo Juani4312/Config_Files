@@ -19,7 +19,7 @@ configuration {
     drun-display-format: "{name}[<span size='small' alpha='55%'>   {generic}</span>]";
     font:                "JetBrainsMono Nerd Font Propo 11";
     show-icons:          true;
-    icon-theme:          "Colloid";
+    icon-theme:          "WhiteSur-dark";
     matching:            "fuzzy";
     sort:                true;
     sorting-method:      "fzf";

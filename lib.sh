@@ -13,7 +13,7 @@ CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list st
 # Dotfiles de la home
 HOME_FILES=(.bashrc .bash_profile .bash_logout .gitconfig .zshrc .zshenv .nanorc .tmux.conf)
 # Carpetas de la home (relativas a ~)
-HOME_DIRS=(Pictures/wallpapers .tmux .fonts .icons)
+HOME_DIRS=(Pictures/Wallpapers .tmux .fonts .icons)
 # Temas de apps que viven en perfiles/datos propios: <origen relativo a ~>|<destino en el repo>
 EXTRA_FILES=(
   ".local/share/ZapZap/customizations/global/css/matugen.css|extra/zapzap/matugen.css"
