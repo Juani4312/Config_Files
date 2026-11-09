@@ -101,3 +101,13 @@ post_hook = 'python3 ~/.config/hypr/scripts/cursor/build.py --apply'
 input_path = '~/.config/matugen/templates/ohmyposh-palette.json'
 output_path = '~/.config/ohmyposh/matugen-palette.json'
 post_hook = 'python3 ~/.config/matugen/scripts/ohmyposh-build.py'
+
+# YouTube (Enhancer for YouTube): se generan aca y theme-reload.sh los escribe
+# en el storage de la extension (con LibreWolf cerrado) via youtube-enhancer-apply.sh
+[templates.youtube-enhancer-css]
+input_path = '~/.config/matugen/templates/youtube-enhancer.css'
+output_path = '~/.config/youtube-enhancer/custom.css'
+
+[templates.youtube-enhancer-colors]
+input_path = '~/.config/matugen/templates/youtube-enhancer-colors.json'
+output_path = '~/.config/youtube-enhancer/colors.json'

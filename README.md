@@ -35,6 +35,7 @@ Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en
 | Multiplexor | tmux + tpm | `home/.tmux.conf`, `home/.tmux` |
 | File manager | Nemo (default) · Yazi en terminal (`kitty yazi`) · Nautilus instalado de respaldo | `config/gtk-3.0/gtk.css`, `config/mimeapps.list` |
 | Navegadores | LibreWolf (con `userChrome`/`userContent` propios), Google Chrome | `extra/librewolf-chrome` |
+| YouTube | Enhancer for YouTube (extensión de LibreWolf) con CSS + paleta de matugen; `theme-reload.sh` los escribe en el storage de la extensión al reiniciar LibreWolf (`youtube-enhancer-apply.sh` + `moz_ext_storage.py`, solo con LibreWolf cerrado) | `config/matugen/templates/youtube-enhancer*`, `config/matugen/scripts` |
 | Mensajería | ZapZap (WhatsApp) con tema de matugen | `extra/zapzap` |
 | Editor | Visual Studio Code (tema matugen), Neovim (+ kickstart con `vk`), nano | `extra/vscode-matugen-theme`, `config/Code/User/settings.json`, `config/nvim`, `config/nvim-kickstart`, `home/.nanorc` |
 | Steam | Millennium con tema `matugen` (generado por `steam-theme/build.sh`) | `config/steam-theme`, `config/millennium`, `extra/steam-millennium-theme` |

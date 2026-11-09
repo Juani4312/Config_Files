@@ -6,25 +6,25 @@
 
 :root
 {
-	--m-primary: #99ccfa;
-	--m-on-primary: #001d32;
-	--m-primary-container: #084b72;
-	--m-tertiary: #d2bfe7;
-	--m-on-tertiary: #372a4a;
-	--m-tertiary-container: #4f4061;
+	--m-primary: #93cdf6;
+	--m-on-primary: #001e2e;
+	--m-primary-container: #004c6d;
+	--m-tertiary: #cdc0e9;
+	--m-on-tertiary: #342b4b;
+	--m-tertiary-container: #4b4263;
 	--m-error: #ffb4ab;
 
-	--m-surface-lowest: #0b0f12;
-	--m-surface-dim: #101418;
+	--m-surface-lowest: #0a0f12;
+	--m-surface-dim: #101417;
 	--m-surface-low: #181c20;
 	--m-surface-container: #1c2024;
-	--m-surface-high: #272a2e;
+	--m-surface-high: #262a2e;
 	--m-surface-highest: #313539;
 
-	--m-outline-variant: #42474e;
-	--m-outline: #8c9198;
-	--m-on-surface-variant: #c2c7ce;
-	--m-on-surface: #e0e2e8;
+	--m-outline-variant: #41484d;
+	--m-outline: #8b9198;
+	--m-on-surface-variant: #c1c7ce;
+	--m-on-surface: #dfe3e7;
 }
 
 /* misma tipografia que waybar / kitty */

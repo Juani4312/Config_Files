@@ -67,29 +67,29 @@ body {
     --colors: on;
 
     /* text colors (waybar: secondary / outline / inverse_surface) */
-    --text-0: #003351;            /* text on colored elements */
-    --text-1: #e0e2e8;       /* other normally white text */
-    --text-2: #e0e2e8;            /* headings and important text */
-    --text-3: #b8c8da;             /* normal text */
-    --text-4: #8c9198;               /* icon buttons and channels */
-    --text-5: #42474e;       /* muted channels/chats and timestamps */
+    --text-0: #00344d;            /* text on colored elements */
+    --text-1: #dfe3e7;       /* other normally white text */
+    --text-2: #dfe3e7;            /* headings and important text */
+    --text-3: #b7c9d8;             /* normal text */
+    --text-4: #8b9198;               /* icon buttons and channels */
+    --text-5: #41484d;       /* muted channels/chats and timestamps */
 
     /* backgrounds (kitty: background = surface) */
     --bg-1: #313539; /* dark buttons when clicked */
-    --bg-2: #272a2e;    /* dark buttons */
-    --bg-3: #0b0f12;  /* spacing, secondary elements */
-    --bg-4: #101418;                   /* main background color */
+    --bg-2: #262a2e;    /* dark buttons */
+    --bg-3: #0a0f12;  /* spacing, secondary elements */
+    --bg-4: #101417;                   /* main background color */
     --hover: rgba(255, 255, 255, 0.06);                       /* igual que el hover de waybar */
     --active: rgba(255, 255, 255, 0.10);                      /* igual que el active de waybar */
     --active-2: rgba(255, 255, 255, 0.14);
     --message-hover: rgba(0, 0, 0, 0.15);
 
     /* accent colors */
-    --accent-1: #d2bfe7;            /* links and other accent text */
-    --accent-2: #99ccfa;             /* small accent elements */
-    --accent-3: #99ccfa;             /* accent buttons */
-    --accent-4: #cde5ff;       /* accent buttons when hovered */
-    --accent-5: #2c638b;     /* accent buttons when clicked */
+    --accent-1: #cdc0e9;            /* links and other accent text */
+    --accent-2: #93cdf6;             /* small accent elements */
+    --accent-3: #93cdf6;             /* accent buttons */
+    --accent-4: #c8e6ff;       /* accent buttons when hovered */
+    --accent-5: #236488;     /* accent buttons when clicked */
     --accent-new: #ffb4ab;             /* mute/deafen, etc. */
     --mention: linear-gradient(to right, color-mix(in srgb, var(--accent-2), transparent 88%) 40%, transparent);
     --mention-hover: linear-gradient(to right, color-mix(in srgb, var(--accent-2), transparent 93%) 40%, transparent);
@@ -99,22 +99,22 @@ body {
     /* status indicator colors */
     --online: var(--green-2);
     --dnd: #ffb4ab;
-    --idle: #d2bfe7;
+    --idle: #cdc0e9;
     --streaming: var(--purple-2);
     --offline: var(--text-4);
 
     /* border colors */
     --border-light: var(--hover);
-    --border: #42474e;
-    --border-hover: #8c9198;
+    --border: #41484d;
+    --border-hover: #8b9198;
     --button-border: rgba(255, 255, 255, 0.08);
 
     /* base colors: los "azules" de midnight pasan a ser el primary de matugen */
-    --blue-1: #cde5ff;
-    --blue-2: #99ccfa;
-    --blue-3: #99ccfa;
-    --blue-4: #99ccfa;
-    --blue-5: #2c638b;
+    --blue-1: #c8e6ff;
+    --blue-2: #93cdf6;
+    --blue-3: #93cdf6;
+    --blue-4: #93cdf6;
+    --blue-5: #236488;
 
     --red-1: #ffdad6;
     --red-2: #ffb4ab;
@@ -122,11 +122,11 @@ body {
     --red-4: #93000a;
     --red-5: #93000a;
 
-    --yellow-1: #eddcff;
-    --yellow-2: #d2bfe7;
-    --yellow-3: #d2bfe7;
-    --yellow-4: #d2bfe7;
-    --yellow-5: #4f4061;
+    --yellow-1: #e9ddff;
+    --yellow-2: #cdc0e9;
+    --yellow-3: #cdc0e9;
+    --yellow-4: #cdc0e9;
+    --yellow-5: #4b4263;
 
     --green-1: oklch(75% 0.11 150);
     --green-2: oklch(70% 0.11 150);
@@ -143,6 +143,6 @@ body {
 
 /* seleccion de texto como kitty */
 ::selection {
-    background: #003351;
-    color: #99ccfa;
+    background: #00344d;
+    color: #93cdf6;
 }

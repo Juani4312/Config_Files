@@ -73,16 +73,31 @@ restart_app() {
   wait_exit "$proc" "$secs" || { echo "$app no cerro, SIGKILL"; pkill -KILL -x "$proc"; sleep 0.5; }
   # qalculate pisa su cfg al cerrar: re-aplicar los colores despues de que cierre
   [[ $app == qalculate ]] && sh ~/.config/matugen/scripts/qalculate-colors.sh
+  # Enhancer for YouTube guarda su CSS en la IndexedDB de la extension: solo se
+  # puede escribir con LibreWolf cerrado, justo antes de relanzarlo
+  [[ $app == librewolf ]] && ~/.config/matugen/scripts/youtube-enhancer-apply.sh
   launch_on "$ws" "$cmd"
   # La ventana de Steam la crea steamwebhelper (otro PID), asi que la regla de
-  # workspace de exec_cmd no le llega: esperarla y moverla sin cambiar el foco.
+  # workspace de exec_cmd no le llega. Ademas, despues del login Steam vuelve a
+  # mapear la ventana principal y Hyprland la pone en el workspace con foco
+  # (donde esta el cursor). Por eso se vigila un rato: cada vez que la ventana
+  # "Steam" no esta en $ws se mueve (por address, sin cambiar el foco), y se
+  # deja de vigilar cuando lleva ~10 s quieta en su lugar.
   if [[ $app == steam && -n $ws ]]; then
     (
-      for ((i = 0; i < 120; i++)); do
+      local stable=0 addr cur
+      for ((i = 0; i < 240 && stable < 20; i++)); do   # max 2 min
         sleep 0.5
-        hyprctl clients -j | jq -e '.[] | select(.class=="steam" and .title=="Steam")' >/dev/null || continue
-        hyprctl dispatch "hl.dsp.window.move({ workspace = \"$ws\", window = \"class:steam\", follow = false })" >/dev/null
-        echo "steam movido al workspace $ws"; break
+        read -r addr cur < <(hyprctl clients -j | jq -r \
+          '[.[] | select(.class=="steam" and .title=="Steam")][0] // empty | "\(.address) \(.workspace.name)"')
+        [[ -z $addr || $addr == null ]] && { stable=0; continue; }
+        if [[ $cur == "$ws" ]]; then
+          ((stable++))
+        else
+          stable=0
+          hyprctl dispatch "hl.dsp.window.move({ workspace = \"$ws\", window = \"address:$addr\", follow = false })" >/dev/null
+          echo "steam movido al workspace $ws (estaba en $cur)"
+        fi
       done
     ) &
   fi
@@ -104,6 +119,10 @@ swaync-client -rs >/dev/null && echo "swaync recargado"
 
 # wlogout: sus íconos son PNG, se re-tiñen con el primary nuevo
 ~/.config/wlogout/tint-icons.sh && echo "iconos de wlogout tenidos"
+
+# YouTube (Enhancer): si LibreWolf esta cerrado se escribe ya; si esta abierto,
+# se hace al reiniciarlo (restart_app)
+pgrep -x librewolf >/dev/null || ~/.config/matugen/scripts/youtube-enhancer-apply.sh
 
 # ---------- reinicios ----------
 for app in "${AUTO_RESTART[@]}"; do restart_app "$app"; done
