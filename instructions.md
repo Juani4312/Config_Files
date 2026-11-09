@@ -1,6 +1,6 @@
 # Instrucciones: instalar, aplicar, usar y desinstalar
 
-Guía operativa del repo `Sync` (Arch Linux + Hyprland con tema dinámico de matugen). Para *qué* contiene cada
+Guía operativa del repo `Config_Files` (Arch Linux + Hyprland con tema dinámico de matugen). Para *qué* contiene cada
 parte de la customización, ver [`README.md`](README.md). Este archivo dice *cómo* hacer cada cosa.
 
 Está escrito para que lo siga una persona o un agente (Claude Code). Los comandos asumen que el repo está en
