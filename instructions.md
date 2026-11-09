@@ -31,6 +31,10 @@ Leé esto antes de ejecutar nada.
    `git -C ~/Sync push` en su terminal.
 10. **Logs útiles:** `$XDG_RUNTIME_DIR/theme-reload.log` (cambio de tema), `journalctl --user -u autoscroll`
     (autoscroll), `hyprctl configerrors` (config de Hyprland).
+11. **tidal-hifi:** los `~/.config/tidal-hifi/userscripts/*.js` se recargan con `Ctrl+U` (sin reiniciar). Para
+    inspeccionar el DOM, relanzalo con `--remote-debugging-port=9222 --remote-debugging-address=127.0.0.1` y usá CDP
+    (`Runtime.evaluate`, `Input.dispatchKeyEvent` para probar teclas); el puerto 47836 es la API de tidal-hifi, no
+    DevTools. Al terminar, relanzalo sin el puerto. Las ventanas relanzadas abren en el workspace actual (va en el 7).
 
 ---
 
@@ -72,7 +76,9 @@ Qué hace, en orden:
 4. Carga `extra/dconf-interface.ini` (tema GTK, íconos, cursor, fuentes).
 5. Apunta las rutas de LibreWolf de `~/.config/matugen/config.toml` al perfil activo de esta máquina.
 6. Crea `~/.config/hypr/current_wallpaper` (por defecto, `Pictures/Wallpapers/Set/pacman-ghosts.png`).
-7. Instala con `sudo` (pregunta) los archivos de sistema que cambiaron: `/etc/udev/rules.d/70-mouse-uaccess.rules`.
+7. Instala con `sudo` (pregunta) los archivos de sistema que cambiaron: `/etc/udev/rules.d/70-mouse-uaccess.rules`,
+   `/usr/local/lib/tidal-hifi-userscripts/patch-asar.py` y `/etc/pacman.d/hooks/tidal-hifi-userscripts.hook`. Si
+   tidal-hifi está instalado y su `app.asar` no tiene el cargador, pregunta y lo parchea (navegación con flechas).
 8. Habilita `autoscroll.service` (systemd de usuario) y da permisos de ejecución a los scripts.
 
 ### 2.4 Paquetes
@@ -109,7 +115,7 @@ Estas cosas no se pueden copiar como archivos.
 | **Enhancer for YouTube** | Instalalo desde addons.mozilla.org en LibreWolf y abrí sus opciones una vez (eso crea su base de storage). El script activa solo el tema "DeepDark custom" y el CSS custom. El tema de matugen se escribe solo en el próximo cambio de fondo que reinicie LibreWolf; para forzarlo ahora: cerrá LibreWolf y corré `~/.config/matugen/scripts/youtube-enhancer-apply.sh`. |
 | **Steam (Millennium)** | `millennium` (AUR) instalado; abrí Steam una vez. El tema `matugen` ya queda activo por `~/.config/millennium/config.json`. Si falta CSS: `~/.config/steam-theme/build.sh --regen`. |
 | **VS Code** | La extensión `local.matugen-theme` se copia sola; si no aparece el tema, elegí "Matugen" en *Preferences: Color Theme*. |
-| **tidal-hifi** | En Settings → Theming elegí `matugen.css`. |
+| **tidal-hifi** | En Settings → Theming elegí `matugen.css`. Para las flechas: si tidal-hifi se instaló *después* de `install.sh`, corré `sudo python3 /usr/local/lib/tidal-hifi-userscripts/patch-asar.py` (o `config/tidal-hifi/userscripts/install/install.sh` con sudo) y reiniciá tidal-hifi. |
 | **Vesktop** (opcional) | Instalalo aparte; en Settings → Themes activá `matugen.css`. |
 | **Autoscroll** | La regla udev se aplica al reconectar el mouse o reiniciar. Comprobá con `systemctl --user status autoscroll`. |
 | **Shell** | `chsh -s /usr/bin/zsh`; zinit y los plugins se instalan solos en el primer zsh. tmux: `prefix + I` instala los plugins de tpm. |
@@ -214,6 +220,7 @@ Si Steam cambia sus clases CSS, el tema queda incompleto: `~/.config/steam-theme
 | Waybar no aparece | `waybar` en una terminal muestra el error; `SUPER+O` la reinicia. |
 | `hyprctl dispatch ...` da error | Usá la sintaxis Lua (`hl.dsp.*`). |
 | Steam tarda minutos en abrir | No pongas el CSS en quick.css de Millennium; el tema `matugen` lo inyecta por ventana. |
+| tidal-hifi: las flechas no hacen nada | `grep -c tidal-hifi-userscripts-loader /opt/tidal-hifi/resources/app.asar` debe dar ≥1; si da 0, corré el patcher con sudo y reiniciá tidal-hifi. El hook solo actúa en actualizaciones por pacman. |
 | `git push` → `Permission denied (publickey)` | La clave SSH tiene passphrase: corré el push desde tu terminal (o con `ssh-agent`). |
 
 ---
@@ -237,6 +244,10 @@ correlos si querés volver a ese estado.
   Si había una versión anterior, está en `backups/<fecha>/files/system_etc_udev_rules.d_70-mouse-uaccess.rules`;
   reponela con `sudo install -Dm644 <ese archivo> /etc/udev/rules.d/70-mouse-uaccess.rules`. Como `revert.sh` copia
   todo `files/` a `~`, ese archivo también aparece como `~/system_etc_udev_...`: borralo.
+- **El patch de tidal-hifi:** `sudo rm /etc/pacman.d/hooks/tidal-hifi-userscripts.hook && sudo rm -r
+  /usr/local/lib/tidal-hifi-userscripts` y reinstalá el paquete para recuperar el `app.asar` original
+  (`yay -S tidal-hifi-bin`). Para desactivar solo las flechas: borrá `~/.config/tidal-hifi/userscripts/arrow-nav.js`.
+  Igual que con la regla udev, `revert.sh` deja copias `~/system_...` de estos archivos si existían antes: borralas.
 - **Los paquetes** instalados con `-p`: desinstalalos a mano (`sudo pacman -Rns <paquete>`).
 - **El tema de Enhancer for YouTube:** en las opciones de la extensión, Theme → desactivá "Custom theme" o elegí otro
   tema. La base original quedó en `<perfil>/storage/default/moz-extension+++<uuid>*/idb/*.sqlite.bak-matugen`; se puede

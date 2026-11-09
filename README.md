@@ -27,17 +27,18 @@ workspace) lo que no.
 6. [Apps con tema propio](#apps-con-tema-propio)
 7. [Cursor, GTK, fuentes y shell](#cursor-gtk-fuentes-y-shell)
 8. [Autoscroll con el mouse](#autoscroll-con-el-mouse)
-9. [Atajos de teclado](#atajos-de-teclado)
-10. [Scripts del repo](#scripts-del-repo)
+9. [tidal-hifi: navegación con flechas](#tidal-hifi-navegación-con-flechas)
+10. [Atajos de teclado](#atajos-de-teclado)
+11. [Scripts del repo](#scripts-del-repo)
 
 ---
 
 ## Qué contiene el repo
 | Carpeta | Va a |
 |---|---|
-| `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/themes`, `nvim-kickstart` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, `qalculate/qalculate-gtk.cfg`, `Code/User/settings.json`, `systemd/user/autoscroll.service`, ...) |
+| `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/{themes,userscripts}`, `nvim-kickstart` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, `qalculate/qalculate-gtk.cfg`, `Code/User/settings.json`, `systemd/user/autoscroll.service`, ...) |
 | `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.zshrc`, `.zshenv`, `.nanorc`, `.tmux.conf`, `.gitconfig`, ...), `.tmux/`, `.fonts/`, `.icons/` y `Pictures/Wallpapers` (sueltos + `Set/`) |
-| `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher, temas GTK `Matugen-a/b`, cursor `Matu` (`~/.local/share/icons`), `bin/wivrn-dashboard-avahi` (`~/.local/bin`), `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) y `system/` (archivos de `/etc`: regla udev del autoscroll) |
+| `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher, temas GTK `Matugen-a/b`, cursor `Matu` (`~/.local/share/icons`), `bin/wivrn-dashboard-avahi` (`~/.local/bin`), `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) y `system/` (archivos fuera de `~`: regla udev del autoscroll; patcher del `app.asar` de tidal-hifi + hook de pacman) |
 | `packages/` | `pacman.txt` (paquetes explícitos) y `aur.txt` (AUR / foreign) |
 | `install.sh` · `update.sh` · `revert.sh` · `lib.sh` | instalar en una máquina · copiar esta máquina al repo · deshacer una instalación · listas compartidas (qué se sincroniza) |
 
@@ -204,6 +205,29 @@ GTK4 layer-shell muestra la burbuja. Los mouse se acceden con la regla udev `70-
 (sin meter al usuario en el grupo `input`). El estado de Shift llega desde binds de Hyprland, no leyendo el teclado.
 Si el mouse se porta raro, este daemon es el primer sospechoso: `journalctl --user -u autoscroll`.
 
+## tidal-hifi: navegación con flechas
+tidal-hifi no permite JS propio, así que `patch-asar.py` (Python puro, sin node) le agrega al final de
+`ts-dist/main.js` dentro de `/opt/tidal-hifi/resources/app.asar` un cargador chico: en cada carga de la página de
+TIDAL ejecuta todos los `~/.config/tidal-hifi/userscripts/*.js`. El patch es idempotente (marca
+`tidal-hifi-userscripts-loader`) y el hook `/etc/pacman.d/hooks/tidal-hifi-userscripts.hook` lo vuelve a aplicar
+cuando se actualiza `tidal-hifi-bin`. (Hace falta tocar el asar: en apps empaquetadas Electron ignora
+`NODE_OPTIONS=--require`.) Los fuentes y un `install.sh` están en `config/tidal-hifi/userscripts/install/`.
+
+`userscripts/arrow-nav.js` es una navegación espacial propia (la de Chromium, `--enable-spatial-navigation`, se
+trababa en el buscador):
+- **↑/↓/←/→** mueven un resaltado (contorno con el color del tema) entre botones, links, tarjetas y temas; la página
+  scrollea con él y nunca lo deja tapado por la barra del reproductor. Cada fila de tema y cada tarjeta
+  (álbum/playlist/atajo de la home) es una sola parada. Subiendo en un álbum se llega a Play/Shuffle/artista.
+- Si no hay nada enfocable en esa dirección, ↑/↓ scrollean la página. ←/→ siguen en la misma línea; desde el
+  borde saltan entre el sidebar y el contenido.
+- **Ctrl+↑ / Ctrl+↓**: primer / último tema de la lista. Las playlists largas se cargan de a ~20 filas, así que
+  Ctrl+↓ sigue bajando hasta que aparece la última (≈2 s para 519 temas). En páginas sin lista de temas Ctrl+↑/↓
+  sigue siendo el volumen de tidal-hifi.
+- **Enter** en un tema lo reproduce (en tarjetas/links los abre); **Esc** o un clic sacan el resaltado.
+- No interfiere al escribir (buscador), en menús contextuales ni con ←/→ sobre las barras de volumen/progreso.
+
+Editar el script no requiere reiniciar: `Ctrl+U` (hard reload de tidal-hifi) lo vuelve a cargar.
+
 ---
 
 ## Atajos de teclado
@@ -241,6 +265,8 @@ Si el mouse se porta raro, este daemon es el primer sospechoso: `journalctl --us
 | `CTRL+ALT+Supr` | salir de Hyprland |
 | Teclas multimedia | volumen, mic, brillo y reproducción (funcionan con la pantalla bloqueada) |
 | `Shift` + clic medio | autoscroll |
+| tidal-hifi: `↑/↓/←/→` · `Enter` · `Esc` | mover el resaltado · reproducir/abrir · soltar |
+| tidal-hifi: `Ctrl+↑/↓` | primer / último tema de la lista (sin lista: volumen) |
 
 ---
 

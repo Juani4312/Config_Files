@@ -1,0 +1,14 @@
+# Re-apply the userscripts loader after tidal-hifi updates
+# (loads ~/.config/tidal-hifi/userscripts/*.js into the TIDAL page).
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = tidal-hifi-bin
+Target = tidal-hifi
+Target = tidal-hifi-git
+
+[Action]
+Description = Patching tidal-hifi to load userscripts...
+When = PostTransaction
+Exec = /usr/bin/python3 /usr/local/lib/tidal-hifi-userscripts/patch-asar.py /opt/tidal-hifi/resources/app.asar

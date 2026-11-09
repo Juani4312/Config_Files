@@ -207,6 +207,15 @@ if [ ${#sys_todo[@]} -gt 0 ]; then
   fi
 fi
 
+# tidal-hifi: aplicar el patch del app.asar (si tidal-hifi está instalado y todavía no lo tiene).
+# Después lo re-aplica solo el hook de pacman en cada actualización.
+TIDAL_ASAR=/opt/tidal-hifi/resources/app.asar
+TIDAL_PATCH=/usr/local/lib/tidal-hifi-userscripts/patch-asar.py
+if [ -f "$TIDAL_ASAR" ] && [ -f "$TIDAL_PATCH" ] && ! grep -q "tidal-hifi-userscripts-loader" "$TIDAL_ASAR"; then
+  ans=s; [ "$YES" -eq 1 ] || read -rp "¿Parchear tidal-hifi para que cargue los userscripts (flechas)? [s/N] " ans
+  [[ "$ans" =~ ^[sSyY]$ ]] && sudo /usr/bin/python3 "$TIDAL_PATCH" "$TIDAL_ASAR"
+fi
+
 # Servicios de usuario (autoscroll): habilitarlos si vinieron en el repo
 if [ -f "$HOME/.config/systemd/user/autoscroll.service" ] && command -v systemctl >/dev/null; then
   systemctl --user daemon-reload && systemctl --user enable --now autoscroll.service && echo "ok    autoscroll.service"

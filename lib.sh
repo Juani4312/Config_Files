@@ -8,7 +8,8 @@ CONFIG_DIRS=(hypr waybar rofi kitty cava fastfetch gtk-3.0 gtk-4.0 swaync wlogou
              nvim ghostty ohmyposh colors fontconfig viegphunt
              steam-theme millennium ZapZap
              nvim-kickstart                # alias vk (NVIM_APPNAME=nvim-kickstart)
-             vesktop/themes vesktop/settings tidal-hifi/themes)
+             vesktop/themes vesktop/settings tidal-hifi/themes
+             tidal-hifi/userscripts)       # navegación con flechas (los carga el patch del asar)
 # Archivos sueltos de ~/.config
 CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list starship.toml
               qalculate/qalculate-gtk.cfg      # colores los pone matugen (qalculate-colors.sh)
@@ -37,6 +38,9 @@ EXTRA_DIRS=(
 # install.sh los instala con sudo solo si cambiaron (pide confirmación).
 SYSTEM_FILES=(
   /etc/udev/rules.d/70-mouse-uaccess.rules   # acceso a los mouse para el autoscroll (sin grupo input)
+  # tidal-hifi: patcher del app.asar (carga ~/.config/tidal-hifi/userscripts/*.js) + hook que lo re-aplica al actualizar
+  /usr/local/lib/tidal-hifi-userscripts/patch-asar.py
+  /etc/pacman.d/hooks/tidal-hifi-userscripts.hook
 )
 # Claves de dconf (tema GTK, íconos, cursor, fuentes) que se guardan en extra/dconf-interface.ini
 DCONF_PATH=/org/gnome/desktop/interface/
