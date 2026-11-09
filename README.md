@@ -249,10 +249,3 @@ Si el mouse se porta raro, este daemon es el primer sospechoso: `journalctl --us
 ```
 Qué se sincroniza se define en los arrays de `lib.sh` (`CONFIG_DIRS`, `CONFIG_FILES`, `HOME_FILES`, `HOME_DIRS`,
 `EXTRA_FILES`, `EXTRA_DIRS`, `SYSTEM_FILES`). Detalle completo en [`instructions.md`](instructions.md).
-
-## Qué NO se sincroniza
-`.ssh`, `.gnupg`, perfiles de Chrome/LibreWolf/Zen (salvo `chrome/*.css`), sesiones de Vesktop/ZapZap/TIDAL, tokens
-de `gh` y `tidal_dl_ng`, Bitwarden, Proton Authenticator, nicotine, OrpheusDL, REAPER, `.bash_history`, `.cache`,
-`.claude`, `monitors.lua`, `backups/`, y los scripts sueltos de la home (`mountWin.sh`, `reset-alien.sh`, ...) que
-dependen de discos/juegos de esta PC. Tampoco las extensiones de LibreWolf (Enhancer for YouTube se instala a mano).
-Esos se reconfiguran a mano en cada PC.
