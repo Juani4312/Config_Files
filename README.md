@@ -1,4 +1,4 @@
-# PC Config File
+# PC Config Files
 
 Mi customización de Arch Linux + Hyprland, lista para clonar en otra PC.
 
