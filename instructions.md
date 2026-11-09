@@ -51,7 +51,7 @@ Leé esto antes de ejecutar nada.
 ## 2. Instalación
 ### 2.1 Clonar
 ```bash
-git clone https://github.com/Juani4312/Sync.git ~/Sync
+git clone https://github.com/Juani4312/Config_Files.git ~/Sync
 cd ~/Sync
 ```
 
