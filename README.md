@@ -29,7 +29,6 @@ workspace) lo que no.
 8. [Autoscroll con el mouse](#autoscroll-con-el-mouse)
 9. [Atajos de teclado](#atajos-de-teclado)
 10. [Scripts del repo](#scripts-del-repo)
-11. [Qué NO se sincroniza](#qué-no-se-sincroniza)
 
 ---
 
