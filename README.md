@@ -7,6 +7,12 @@ Mi customización de Arch Linux + Hyprland, lista para clonar en otra PC.
 los temas de ~25 apps; después `theme-reload.sh` recarga en vivo lo que puede y reinicia (en su mismo
 workspace) lo que no.
 
+![Escritorio con paleta azul: fastfetch, cbonsai y btop en mosaico, con el selector de wallpapers (SUPER+W) abierto](screenshots/desktop.webp)
+
+![Paleta sepia: Steam con el tema de Millennium y el launcher rofi estilo Spotlight buscando "steam"](screenshots/steam-rofi.webp)
+
+<sub>Mismo sistema con dos fondos distintos: al elegir un wallpaper con <code>SUPER+W</code>, todo (barra, bordes, terminal, rofi, GTK, Steam, YouTube...) toma su paleta.</sub>
+
 > **Instalar, aplicar, usar y desinstalar:** ver [`instructions.md`](instructions.md). Está escrito para
 > leerse aparte, y para que un agente (Claude Code) lo pueda seguir paso a paso.
 
