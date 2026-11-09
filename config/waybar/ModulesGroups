@@ -57,7 +57,7 @@
 "group/audio": {
 	"orientation": "inherit",
 	"modules": [
-		"pulseaudio",
+		"custom/volume",
 		"pulseaudio#microphone",
 	]
 },

@@ -20,6 +20,7 @@ for f in "${HOME_FILES[@]}"; do copy_file "$HOME/$f" "$REPO/home/$f"; done
 for d in "${HOME_DIRS[@]}"; do copy_tree "$HOME/$d" "$REPO/home/$d" delete; done
 for e in "${EXTRA_FILES[@]}"; do copy_file "$HOME/${e%%|*}" "$REPO/${e##*|}"; done
 for e in "${EXTRA_DIRS[@]}"; do copy_tree "$HOME/${e%%|*}" "$REPO/${e##*|}" delete; done
+for f in "${SYSTEM_FILES[@]}"; do copy_file "$f" "$REPO/extra/system$f"; done
 
 # Temas de LibreWolf del perfil activo (solo chrome/*.css, nunca el perfil)
 if prof=$(librewolf_profile); then

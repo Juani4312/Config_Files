@@ -4,26 +4,26 @@
 */
 @-moz-document url(about:home), url(about:newtab), url(about:privatebrowsing), url(about:blank) {
   :root {
-    --newtab-background-color: #101417 !important;
+    --newtab-background-color: #101418 !important;
     --newtab-background-color-secondary: #1c2024 !important;
-    --newtab-text-primary-color: #e0e3e8 !important;
-    --newtab-text-secondary-color: #c1c7ce !important;
-    --newtab-primary-action-background: #95cdf7 !important;
-    --newtab-border-color: #41474d !important;
-    --in-content-page-background: #101417 !important;
-    --in-content-page-color: #e0e3e8 !important;
+    --newtab-text-primary-color: #e0e2e8 !important;
+    --newtab-text-secondary-color: #c2c7ce !important;
+    --newtab-primary-action-background: #99ccfa !important;
+    --newtab-border-color: #42474e !important;
+    --in-content-page-background: #101418 !important;
+    --in-content-page-color: #e0e2e8 !important;
   }
 
   body {
-    background-color: #101417 !important;
-    color: #e0e3e8 !important;
+    background-color: #101418 !important;
+    color: #e0e2e8 !important;
   }
 
   .search-handoff-button,
   .search-wrapper input {
     background-color: #181c20 !important;
-    color: #e0e3e8 !important;
-    border: 1px solid #41474d !important;
+    color: #e0e2e8 !important;
+    border: 1px solid #42474e !important;
     border-radius: 12px !important;
     box-shadow: none !important;
   }
@@ -36,32 +36,32 @@
 
   .top-site-outer:hover .tile,
   .top-site-outer:focus .tile {
-    background-color: #004b6f !important;
+    background-color: #084b72 !important;
   }
 
   .top-site-outer .title,
   .top-site-outer .title span {
-    color: #c1c7ce !important;
+    color: #c2c7ce !important;
   }
 }
 
 /* Páginas internas (about:preferences, about:addons, etc.) */
 @-moz-document regexp("^about:(?!blank|home|newtab|privatebrowsing).*") {
   :root {
-    --in-content-page-background: #101417 !important;
-    --in-content-page-color: #e0e3e8 !important;
+    --in-content-page-background: #101418 !important;
+    --in-content-page-color: #e0e2e8 !important;
     --in-content-box-background: #1c2024 !important;
-    --in-content-box-border-color: #41474d !important;
-    --in-content-primary-button-background: #95cdf7 !important;
-    --in-content-primary-button-text-color: #00344e !important;
-    --in-content-accent-color: #95cdf7 !important;
-    --in-content-border-color: #8b9198 !important;
-    --in-content-text-color: #e0e3e8 !important;
+    --in-content-box-border-color: #42474e !important;
+    --in-content-primary-button-background: #99ccfa !important;
+    --in-content-primary-button-text-color: #003351 !important;
+    --in-content-accent-color: #99ccfa !important;
+    --in-content-border-color: #8c9198 !important;
+    --in-content-text-color: #e0e2e8 !important;
   }
 }
 
 /* Scrollbars finas */
 :root {
-  scrollbar-color: #8b9198 transparent !important;
+  scrollbar-color: #8c9198 transparent !important;
   scrollbar-width: thin !important;
 }

@@ -8,3 +8,5 @@
 *.bak*
 # resolución/posición/scale de cada máquina (lo genera install.sh)
 config/hypr/monitors.lua
+# backups locales que crea install.sh (propios de cada máquina)
+backups/

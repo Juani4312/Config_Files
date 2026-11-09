@@ -12,6 +12,7 @@ x-scheme-handler/unknown=librewolf.desktop
 application/xhtml+xml=librewolf.desktop
 application/x-xpinstall=librewolf.desktop
 application/pdf=librewolf.desktop
+x-scheme-handler/stremio=stremio-enhanced.desktop
 
 [Added Associations]
 text/markdown=code.desktop;

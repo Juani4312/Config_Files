@@ -190,6 +190,29 @@ wp="$HOME/Pictures/Wallpapers/Set/pacman-ghosts.png"
 [ -e "$wp" ] || wp="$(find "$HOME/Pictures/Wallpapers" -type f 2>/dev/null | head -1)"
 [ -n "$wp" ] && ln -sfn "$wp" "$HOME/.config/hypr/current_wallpaper"
 
+# Archivos del sistema (extra/system/<ruta>): solo los que faltan o cambiaron, con sudo
+sys_todo=()
+for f in "${SYSTEM_FILES[@]}"; do
+  [ -f "$REPO/extra/system$f" ] && ! cmp -s "$REPO/extra/system$f" "$f" && sys_todo+=("$f")
+done
+if [ ${#sys_todo[@]} -gt 0 ]; then
+  echo "Archivos del sistema para instalar (necesitan sudo):"; printf '  %s\n' "${sys_todo[@]}"
+  ans=s; [ "$YES" -eq 1 ] || read -rp "¿Instalarlos? [s/N] " ans
+  if [[ "$ans" =~ ^[sSyY]$ ]]; then
+    for f in "${sys_todo[@]}"; do
+      [ -f "$f" ] && cp -a "$f" "$BACKUP/files/system$(echo "$f" | tr / _)" 2>/dev/null
+      sudo install -Dm644 "$REPO/extra/system$f" "$f" && echo "ok    $f"
+    done
+    case " ${sys_todo[*]} " in *udev/rules.d*) sudo udevadm control --reload && sudo udevadm trigger ;; esac
+  fi
+fi
+
+# Servicios de usuario (autoscroll): habilitarlos si vinieron en el repo
+if [ -f "$HOME/.config/systemd/user/autoscroll.service" ] && command -v systemctl >/dev/null; then
+  systemctl --user daemon-reload && systemctl --user enable --now autoscroll.service && echo "ok    autoscroll.service"
+fi
+
+chmod +x "$HOME"/.local/bin/wivrn-dashboard-avahi 2>/dev/null || true
 chmod +x "$HOME"/.config/hypr/scripts/* "$HOME"/.config/hypr/UserScripts/* \
          "$HOME"/.config/rofi/*.sh "$HOME"/.config/viegphunt/*.sh "$HOME"/.config/steam-theme/*.sh \
          "$HOME"/.config/matugen/scripts/*.sh "$HOME"/.config/waybar/scripts/* 2>/dev/null || true

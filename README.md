@@ -5,9 +5,9 @@ Mi customización de Arch + Hyprland, lista para clonar en otra PC.
 ## Qué contiene
 | Carpeta | Va a |
 |---|---|
-| `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/themes` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, ...) |
+| `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/themes`, `nvim-kickstart` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, `qalculate/qalculate-gtk.cfg`, `Code/User/settings.json`, `systemd/user/autoscroll.service`, ...) |
 | `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.zshrc`, `.zshenv`, `.nanorc`, `.tmux.conf`, `.gitconfig`, ...), `.tmux/`, `.fonts/`, `.icons/` y `Pictures/Wallpapers` (sueltos + `Set/`) |
-| `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher y `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) |
+| `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher, temas GTK `Matugen-a/b`, cursor `Matu` (`~/.local/share/icons`), `bin/wivrn-dashboard-avahi` (`~/.local/bin`), `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) y `system/` (archivos de `/etc`: regla udev del autoscroll; `install.sh` los instala con sudo si cambiaron) |
 | `packages/` | `pacman.txt` (explícitos) y `aur.txt` (foreign) |
 
 Varios `~/.config/<x>` (nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt) y `.zshrc`, `.tmux.conf`, `.tmux`
@@ -36,7 +36,7 @@ Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en
 | File manager | Nemo (default) · Yazi en terminal (`kitty yazi`) · Nautilus instalado de respaldo | `config/gtk-3.0/gtk.css`, `config/mimeapps.list` |
 | Navegadores | LibreWolf (con `userChrome`/`userContent` propios), Google Chrome | `extra/librewolf-chrome` |
 | Mensajería | ZapZap (WhatsApp) con tema de matugen | `extra/zapzap` |
-| Editor | Visual Studio Code (tema matugen), Neovim, nano | `extra/vscode-matugen-theme`, `config/nvim`, `home/.nanorc` |
+| Editor | Visual Studio Code (tema matugen), Neovim (+ kickstart con `vk`), nano | `extra/vscode-matugen-theme`, `config/Code/User/settings.json`, `config/nvim`, `config/nvim-kickstart`, `home/.nanorc` |
 | Steam | Millennium con tema `matugen` (generado por `steam-theme/build.sh`) | `config/steam-theme`, `config/millennium`, `extra/steam-millennium-theme` |
 | Monitor / info | btop, fastfetch, cava (visualizador de audio) | `config/btop`, `config/fastfetch`, `config/cava` |
 | Audio | PipeWire + WirePlumber, pavucontrol, pamixer, playerctl | — |

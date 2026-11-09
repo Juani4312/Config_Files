@@ -1,0 +1,10 @@
+[Unit]
+Description=Middle-click autoscroll (evdev/uinput)
+
+[Service]
+ExecStart=/usr/bin/python3 %h/.config/hypr/scripts/autoscroll.py
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

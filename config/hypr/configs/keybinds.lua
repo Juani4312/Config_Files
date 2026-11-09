@@ -22,6 +22,7 @@ bind(mod("Space"),          hl.dsp.exec_cmd(scripts .. "SwitchLayout.sh")) -- al
 bind(mod("J"),              hl.dsp.layout("togglesplit")) -- dwindle
 bind(mod("R"),              hl.dsp.exec_cmd(menu))
 bind(mod("SHIFT + R"),      hl.dsp.exec_cmd(scripts .. "wbrestart.sh"))
+bind(mod("O"),              hl.dsp.exec_cmd(scripts .. "reload-all.sh")) -- recargar Hyprland + swaync + waybar
 bind(mod("K"),              hl.dsp.exec_cmd("pavucontrol"))  -- control de sonido
 bind(mod("M"),              hl.dsp.exec_cmd(scripts .. "mic-mute.sh")) -- mute micrófono + notificación
 bind(mod("B"),              hl.dsp.exec_cmd("librewolf")) -- browser
@@ -88,7 +89,7 @@ local el = { locked = true, repeating = true }
 bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(scripts .. "volume.sh --inc"), el)
 bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(scripts .. "volume.sh --dec"), el)
 bind("XF86AudioMute",         hl.dsp.exec_cmd(scripts .. "volume.sh --toggle"), el)
-bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), el)
+bind("XF86AudioMicMute",      hl.dsp.exec_cmd(scripts .. "mic-mute.sh"), el)
 bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(scripts .. "brightness.sh --inc"), el)
 bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(scripts .. "brightness.sh --dec"), el)
 

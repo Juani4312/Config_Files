@@ -109,7 +109,7 @@ tooltip label{
 }
 
 #workspaces button.urgent {
-    color: @tertiary;
+    color: @primary;
 }
 
 #backlight,
@@ -128,6 +128,7 @@ tooltip label{
 #power-profiles-daemon,
 #pulseaudio,
 #pulseaudio-slider,
+#custom-volume,
 #taskbar,
 #temperature,
 #tray,
@@ -183,6 +184,7 @@ tooltip label{
 #bluetooth:hover,
 #battery:hover,
 #pulseaudio:hover,
+#custom-volume:hover,
 #custom-swaync:hover {
 	color: @primary;
 	background-color: alpha(@primary, 0.12);
@@ -203,15 +205,16 @@ tooltip label{
    sombras con la misma forma, si no salta de golpe */
 #custom-power {
 	color: @secondary;
-	box-shadow: 0 0 3px 0 alpha(@tertiary, 0), inset 0 0 0 1px alpha(@tertiary, 0);
+	box-shadow: 0 0 3px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0);
 }
 #custom-swaync {
 	box-shadow: 0 0 3px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0);
 }
 #custom-power:hover {
-	color: @tertiary;
-	background-color: alpha(@tertiary, 0.15);
-	box-shadow: 0 0 3px 0 alpha(@tertiary, 0.40), inset 0 0 0 1px alpha(@tertiary, 0.35);
+	color: @primary;
+	background-color: alpha(@primary, 0.15);
+	box-shadow: 0 0 3px 0 alpha(@primary, 0.40), inset 0 0 0 1px alpha(@primary, 0.35);
+	animation: power-glow 1.3s ease-in-out infinite alternate;
 }
 
 /* tray */
@@ -247,8 +250,26 @@ tooltip label{
 }
 
 #pulseaudio.muted,
-#pulseaudio.source-muted {
+#pulseaudio.source-muted,
+#custom-volume.muted {
 	color: #cc3436;
+}
+/* parlante: el script deja un glifo invisible y acá se dibuja el ícono
+   simbólico (toma el `color` del tema). Al pasar el mouse, las ondas "suenan". */
+#custom-volume.spk-0,
+#custom-volume.spk-1,
+#custom-volume.spk-2 {
+	background-repeat: no-repeat;
+	background-size: auto 14px;
+	background-position: 6px center;
+}
+#custom-volume.spk-0 { background-image: -gtk-icontheme("waybar-spk-0-symbolic"); }
+#custom-volume.spk-1 { background-image: -gtk-icontheme("waybar-spk-1-symbolic"); }
+#custom-volume.spk-2 { background-image: -gtk-icontheme("waybar-spk-2-symbolic"); }
+#custom-volume.spk-0:hover,
+#custom-volume.spk-1:hover,
+#custom-volume.spk-2:hover {
+	animation: spk-play 0.8s steps(4) 1;
 }
 #temperature.critical {
 	color: red;
@@ -302,6 +323,20 @@ tooltip label{
 	50%  { padding-left: 7px; padding-right: 5px; }
 	60%  { padding-left: 6px; padding-right: 6px; box-shadow: 0 0 3px 0 alpha(@primary, 0.35), inset 0 0 0 1px alpha(@primary, 0.20); }
 	100% { padding-left: 6px; padding-right: 6px; box-shadow: 0 0 3px 0 alpha(@primary, 0),    inset 0 0 0 1px alpha(@primary, 0); }
+}
+
+@keyframes spk-play {
+	0%   { background-image: -gtk-icontheme("waybar-spk-0-symbolic"); }
+	25%  { background-image: -gtk-icontheme("waybar-spk-1-symbolic"); }
+	50%  { background-image: -gtk-icontheme("waybar-spk-2-symbolic"); }
+	75%  { background-image: -gtk-icontheme("waybar-spk-2-symbolic"); }
+	100% { background-image: -gtk-icontheme("waybar-spk-2-symbolic"); }
+}
+
+/* power: el brillo late en el color del tema mientras está el mouse encima */
+@keyframes power-glow {
+	from { background-color: alpha(@primary, 0.10); box-shadow: 0 0 3px 0 alpha(@primary, 0.20), inset 0 0 0 1px alpha(@primary, 0.25); }
+	to   { background-color: alpha(@primary, 0.24); box-shadow: 0 0 3px 0 alpha(@primary, 0.80), inset 0 0 0 1px alpha(@primary, 0.65); }
 }
 
 @keyframes breathe {
@@ -398,13 +433,13 @@ tooltip label{
 	background-color: alpha(@primary, 0.10);
 }
 #custom-ws.urgent {
-	color: @tertiary;
+	color: @primary;
 	animation: ws-urgent 0.8s ease-in-out infinite alternate;
 }
 
 @keyframes ws-urgent {
-	from { background-color: transparent;              box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@tertiary, 0.3); }
-	to   { background-color: alpha(@tertiary, 0.25); box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px @tertiary; }
+	from { background-color: transparent;            box-shadow: 0 0 5px 0 alpha(@primary, 0),    inset 0 0 0 1px alpha(@primary, 0.3); }
+	to   { background-color: alpha(@primary, 0.22); box-shadow: 0 0 5px 0 alpha(@primary, 0.35), inset 0 0 0 1px @primary; }
 }
 
 

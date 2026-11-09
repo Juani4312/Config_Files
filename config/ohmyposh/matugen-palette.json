@@ -1,0 +1,17 @@
+{
+    "primary":                "#99ccfa",
+    "on_primary":             "#003351",
+    "primary_container":      "#084b72",
+    "on_primary_container":   "#cde5ff",
+    "secondary":              "#b8c8da",
+    "secondary_container":    "#394857",
+    "on_secondary_container": "#d4e4f6",
+    "tertiary":               "#d2bfe7",
+    "tertiary_container":     "#4f4061",
+    "on_tertiary_container":  "#eddcff",
+    "error":                  "#ffb4ab",
+    "surface_high":           "#272a2e",
+    "on_surface":             "#e0e2e8",
+    "on_surface_variant":     "#c2c7ce",
+    "outline":                "#8c9198"
+}

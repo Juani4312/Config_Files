@@ -11,8 +11,10 @@
 #   GTK3     -> alterna el tema Matugen-a/Matugen-b: GTK relee colors.css en vivo
 #   btop     -> SIGUSR2 (relee config + tema)
 #   AUTO     -> apps que se reinician solas si estan abiertas (vuelven a su workspace)
-#   ASK      -> apps donde reiniciar molesta: notificacion con boton "Reiniciar"
+#   ASK      -> apps donde reiniciar molesta: un popup "Reiniciar todo / Ignorar"
+#               + una notificacion por app en el panel de swaync (boton "Reiniciar")
 #   Tidal    -> se reinicia solo si NO esta sonando; si suena, pregunta
+#   Steam    -> se reinicia solo si NO hay un juego abierto; si hay, pregunta
 #
 # Log: $XDG_RUNTIME_DIR/theme-reload.log
 
@@ -49,9 +51,9 @@ launch_on() {  # launch_on <workspace|""> <comando...>
   fi
 }
 
-wait_exit() {  # espera hasta ~15s a que el proceso termine
+wait_exit() {  # wait_exit <proceso> [segundos=15]: espera a que el proceso termine
   local i
-  for ((i = 0; i < 75; i++)); do pgrep -x "$1" >/dev/null || return 0; sleep 0.2; done
+  for ((i = 0; i < ${2:-15} * 5; i++)); do pgrep -x "$1" >/dev/null || return 0; sleep 0.2; done
   return 1
 }
 
@@ -60,15 +62,30 @@ restart_app() {
   running "$app" || return 0
   ws=$(ws_of "${CLASS[$app]}")
   echo "reiniciando $app (workspace: ${ws:-ninguno})"
+  local cmd=${CMD[$app]} secs=15
   if [[ $app == steam ]]; then
     steam -shutdown >/dev/null 2>&1
+    secs=40                              # Steam tarda en cerrar (sync de nube, etc.)
+    [[ -z $ws ]] && cmd="steam -silent"  # estaba en la bandeja: que vuelva ahi
   else
     kill -TERM "$(pgrep -o -x "$proc")"   # proceso principal: cierre limpio
   fi
-  wait_exit "$proc" || { echo "$app no cerro, SIGKILL"; pkill -KILL -x "$proc"; sleep 0.5; }
+  wait_exit "$proc" "$secs" || { echo "$app no cerro, SIGKILL"; pkill -KILL -x "$proc"; sleep 0.5; }
   # qalculate pisa su cfg al cerrar: re-aplicar los colores despues de que cierre
   [[ $app == qalculate ]] && sh ~/.config/matugen/scripts/qalculate-colors.sh
-  launch_on "$ws" "${CMD[$app]}"
+  launch_on "$ws" "$cmd"
+  # La ventana de Steam la crea steamwebhelper (otro PID), asi que la regla de
+  # workspace de exec_cmd no le llega: esperarla y moverla sin cambiar el foco.
+  if [[ $app == steam && -n $ws ]]; then
+    (
+      for ((i = 0; i < 120; i++)); do
+        sleep 0.5
+        hyprctl clients -j | jq -e '.[] | select(.class=="steam" and .title=="Steam")' >/dev/null || continue
+        hyprctl dispatch "hl.dsp.window.move({ workspace = \"$ws\", window = \"class:steam\", follow = false })" >/dev/null
+        echo "steam movido al workspace $ws"; break
+      done
+    ) &
+  fi
 }
 
 tidal_playing() {
@@ -91,11 +108,82 @@ swaync-client -rs >/dev/null && echo "swaync recargado"
 # ---------- reinicios ----------
 for app in "${AUTO_RESTART[@]}"; do restart_app "$app"; done
 
+steam_ingame() {  # los juegos (nativos y Proton) corren bajo "reaper SteamLaunch AppId=N"
+  pgrep -f 'SteamLaunch AppId=' >/dev/null
+}
+
+# ---------- notificaciones de reinicio ----------
+# Un popup resumen (Reiniciar todo / Ignorar) + una notificacion por app que va
+# directo al panel sin popup. Las reglas estan en ~/.config/swaync/config.json
+# (notification-visibility): category theme.summary -> transient (solo popup),
+# theme.app -> muted (solo panel).
+STATE="${XDG_RUNTIME_DIR:-/tmp}/theme-reload"
+mkdir -p "$STATE"
+
+close_notif() {
+  gdbus call --session --dest org.freedesktop.Notifications \
+    --object-path /org/freedesktop/Notifications \
+    --method org.freedesktop.Notifications.CloseNotification "$1" >/dev/null 2>&1
+}
+
+# Las de un cambio de fondo anterior ya no sirven: cerrarlas (sus procesos
+# notify-send reciben "cerrada" y terminan sin hacer nada).
+if [[ -f $STATE/ids ]]; then
+  while read -r id; do [[ -n $id ]] && close_notif "$id"; done <"$STATE/ids"
+fi
+rm -f "$STATE"/ids "$STATE"/*.id "$STATE"/*.done
+
+ask_app() {  # notificacion individual de una app (queda en el panel)
+  local app=$1 id action
+  notify-send -p -a "Tema · ${NAME[$app]}" -c theme.app -i "${ICON[$app]}" \
+    "${NAME[$app]}" "Reiniciar para tomar los colores nuevos." \
+    -A "restart=Reiniciar" | {
+    read -r id
+    echo "$id" >>"$STATE/ids"; echo "$id" >"$STATE/$app.id"
+    read -r action
+    if [[ $action == restart && ! -e $STATE/$app.done ]]; then
+      touch "$STATE/$app.done"
+      echo "eleccion: $app (panel)"
+      restart_app "$app"
+    fi
+  }
+}
+
+ask_summary() {  # popup unico: Reiniciar todo / Ignorar
+  local names body id action a
+  names=$(for a in "$@"; do printf '%s, ' "${NAME[$a]}"; done); names=${names%, }
+  if [[ $# -eq 1 ]]; then
+    body="$names necesita reiniciarse para tomar los colores nuevos."
+  else
+    body="$names necesitan reiniciarse para tomar los colores nuevos."
+  fi
+  notify-send -p -a "Tema" -c theme.summary -t 15000 -i preferences-desktop-theme \
+    "Colores nuevos" "$body" \
+    -A "all=Reiniciar todo" -A "ignore=Ignorar" 2>/dev/null | {
+    read -r id
+    echo "$id" >>"$STATE/ids"
+    read -r action
+    echo "eleccion: ${action:-ninguna} (resumen)"
+    [[ $action == all ]] || return 0   # Ignorar / vencida: quedan las del panel
+    for a in "$@"; do
+      [[ -e $STATE/$a.done ]] && continue
+      touch "$STATE/$a.done"
+      [[ -f $STATE/$a.id ]] && close_notif "$(<"$STATE/$a.id")"
+      restart_app "$a"
+    done
+  }
+}
+
+declare -A ICON=( [tidal]=tidal-hifi [librewolf]=librewolf [steam]=steam
+                  [prism]=org.prismlauncher.PrismLauncher )
+
 pending=()
 for app in "${ASK_RESTART[@]}"; do
   running "$app" || continue
   if [[ $app == tidal ]] && ! tidal_playing; then
     restart_app tidal          # pausado: reiniciar no corta nada
+  elif [[ $app == steam ]] && ! steam_ingame; then
+    restart_app steam          # sin juego abierto: reiniciar no corta nada
   else
     pending+=("$app")
   fi
@@ -103,28 +191,9 @@ done
 
 [[ ${#pending[@]} -eq 0 ]] && exit 0
 
-# Notificacion con botones; corre en segundo plano y espera la respuesta.
-(
-  names=$(for a in "${pending[@]}"; do printf '%s, ' "${NAME[$a]}"; done); names=${names%, }
-  actions=()
-  if [[ ${#pending[@]} -eq 1 ]]; then
-    actions+=(-A "${pending[0]}=Reiniciar ${NAME[${pending[0]}]}")
-  else
-    for a in "${pending[@]}"; do actions+=(-A "$a=${NAME[$a]}"); done
-    actions+=(-A "all=Reiniciar todas")
-  fi
-  if [[ ${#pending[@]} -eq 1 ]]; then
-    body="Para que $names tome los colores nuevos hay que reiniciarla."
-  else
-    body="Para que $names tomen los colores nuevos hay que reiniciarlas."
-  fi
-  choice=$(notify-send -a "Tema" -i preferences-desktop-theme \
-    "Colores nuevos aplicados" "$body" "${actions[@]}")
-  echo "eleccion: ${choice:-ninguna}"
-  case $choice in
-    all) for a in "${pending[@]}"; do restart_app "$a"; done ;;
-    "")  ;;
-    *)   restart_app "$choice" ;;
-  esac
-) &
-disown
+# Las individuales primero (asi el resumen puede cerrarlas), despues el popup.
+# Todo en segundo plano: cada notify-send espera la respuesta.
+for app in "${pending[@]}"; do ask_app "$app" & done
+sleep 0.3
+ask_summary "${pending[@]}" &
+disown -a

@@ -30,7 +30,7 @@
         },
         {
             "type": "packages",
-            "format": "{} (pacman)",
+            "format": "{pacman} (pacman)",
             "key": "pkgs  ", 
         },
         {   "type": "shell",
@@ -53,6 +53,11 @@
         {
             "type": "memory",
             "key": "memory",
+        },
+        {
+            "type": "disk",
+            "key": "disk  ",
+            "format": "{size-used} / {size-total} ({size-percentage}) {mountpoint}",
         },
         "break",
         {

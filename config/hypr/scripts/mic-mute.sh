@@ -1,11 +1,6 @@
 #!/bin/bash
+# Super+M / tecla de mute de mic: alterna el microfono y notifica
 pactl set-source-mute @DEFAULT_SOURCE@ toggle
 sleep 0.1
-
-if pactl get-source-mute @DEFAULT_SOURCE@ | grep -q yes; then
-    notify-send -e -i microphone-sensitivity-muted "Microphone" "Muted"
-else
-    notify-send -e -i microphone-sensitivity-high "Microphone" "Unmuted"
-fi
-
+"$HOME/.config/hypr/scripts/mute-notify.sh" mic
 swaync-client --reload-css

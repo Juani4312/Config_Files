@@ -1,0 +1,129 @@
+{
+  "Created": "Phunt_Vieg_",
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "_comment": "Diseño base. La paleta la reemplaza matugen -> matugen.omp.json (ver ~/.config/matugen/scripts/ohmyposh-build.py). Esta paleta es solo fallback.",
+  "palette": {
+    "primary": "#99ccfa",
+    "on_primary": "#003351",
+    "primary_container": "#084b72",
+    "on_primary_container": "#cde5ff",
+    "secondary": "#b8c8da",
+    "secondary_container": "#394857",
+    "on_secondary_container": "#d4e4f6",
+    "tertiary": "#d2bfe7",
+    "tertiary_container": "#4f4061",
+    "on_tertiary_container": "#eddcff",
+    "error": "#ffb4ab",
+    "surface_high": "#272a2e",
+    "on_surface": "#e0e2e8",
+    "on_surface_variant": "#c2c7ce",
+    "outline": "#8c9198"
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "p:outline",
+          "template": "╭─"
+        },
+        {
+          "type": "session",
+          "style": "diamond",
+          "background": "p:primary",
+          "foreground": "p:on_primary",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "{{ if ne (.Segments.Contains \"Python\") true }}  {{ .UserName }} {{ end }}"
+        },
+        {
+          "type": "python",
+          "style": "diamond",
+          "background": "p:primary",
+          "foreground": "p:on_primary",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "properties": {
+            "display_mode": "environment",
+            "home_enabled": true,
+            "folder_name_fallback": false
+          },
+          "template": "  {{ .Venv }} "
+        },
+        {
+          "type": "path",
+          "style": "diamond",
+          "background": "p:secondary_container",
+          "foreground": "p:on_secondary_container",
+          "leading_diamond": " ",
+          "trailing_diamond": "",
+          "properties": {
+            "style": "full"
+          },
+          "template": "   {{ .Path }} "
+        },
+        {
+          "type": "git",
+          "style": "diamond",
+          "background": "p:tertiary_container",
+          "foreground": "p:on_tertiary_container",
+          "leading_diamond": " ",
+          "trailing_diamond": "",
+          "properties": {
+            "branch_icon": "",
+            "fetch_stash_count": true,
+            "fetch_status": false,
+            "fetch_upstream_icon": true
+          },
+          "template": " {{ .UpstreamIcon }}  {{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} "
+        },
+        {
+          "type": "time",
+          "style": "diamond",
+          "background": "p:surface_high",
+          "foreground": "p:tertiary",
+          "leading_diamond": " ",
+          "trailing_diamond": "",
+          "properties": {
+            "time_format": "15:04"
+          },
+          "template": "{{ if ne (.Segments.Contains \"Git\") true }} {{ .CurrentDate | date .Format }} {{ end }}"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "p:outline",
+          "template": "╰─"
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "p:primary",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:error{{ end }}"
+          ],
+          "properties": {
+            "always_enabled": true
+          },
+          "template": "⚡"
+        }
+      ]
+    }
+  ],
+  "transient_prompt": {
+    "template": "<p:primary> </><p:secondary></><p:tertiary></> "
+  },
+  "final_space": true,
+  "version": 8
+}

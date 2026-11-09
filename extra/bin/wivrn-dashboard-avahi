@@ -1,0 +1,5 @@
+#!/bin/sh
+if ! systemctl is-active --quiet avahi-daemon; then
+    pkexec systemctl enable --now avahi-daemon || exit 1
+fi
+exec wivrn-dashboard "$@"

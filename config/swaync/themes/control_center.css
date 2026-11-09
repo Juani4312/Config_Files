@@ -35,9 +35,10 @@
 .control-center .notification-row .notification-background .notification.critical {
   background-color: @surface_container_high;
   border: 1px solid @outline_variant;
-  border-radius: 16px;
+  border-radius: 12px;
   margin: 4px 0px;
   padding: 4px;
+  min-height: 84px;
 }
 
 .control-center .notification-row .notification-background .notification.critical {
@@ -266,3 +267,26 @@ progressbar progress {
   border-radius: 6px;
 }
 
+
+/* Flechas para agrandar/achicar el panel (scripts/resize.sh): sutiles hasta el hover */
+.widget-menubar {
+  margin: -4px 0 0 0;
+}
+.widget-menubar button {
+  background: transparent;
+  color: alpha(@on_surface_variant, 0.5);
+  font-size: 11px;
+  min-width: 18px;
+  min-height: 16px;
+  padding: 0 2px;
+  margin: 0 1px;
+  border-radius: 6px;
+}
+.widget-menubar button:hover {
+  color: @primary;
+  background: alpha(@primary, 0.12);
+}
+.widget-menubar button:active {
+  color: @on_primary;
+  background: @primary;
+}

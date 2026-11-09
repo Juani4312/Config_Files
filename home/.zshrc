@@ -115,8 +115,15 @@ setopt interactivecomments
 
 
 # Pokemon startup
-pokemon-colorscripts --no-title -s -r
+# pokemon-colorscripts --no-title -s -r
+
+# FastFetch
+fastfetch
 
 # Initialize Oh-My-Posh
-eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/viet.omp.json)"
+# matugen.omp.json = viet.omp.json + paleta del wallpaper (lo genera matugen)
+_omp_cfg=~/.config/ohmyposh/matugen.omp.json
+[[ -f $_omp_cfg ]] || _omp_cfg=~/.config/ohmyposh/viet.omp.json
+eval "$(oh-my-posh init zsh --config $_omp_cfg)"
+unset _omp_cfg
 export PATH="$HOME/.local/bin:$PATH"

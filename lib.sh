@@ -7,9 +7,13 @@ CONFIG_DIRS=(hypr waybar rofi kitty cava fastfetch gtk-3.0 gtk-4.0 swaync wlogou
              matugen spicetify yay btop bonsai neofetch autostart
              nvim ghostty ohmyposh colors fontconfig viegphunt
              steam-theme millennium ZapZap
+             nvim-kickstart                # alias vk (NVIM_APPNAME=nvim-kickstart)
              vesktop/themes vesktop/settings tidal-hifi/themes)
 # Archivos sueltos de ~/.config
-CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list starship.toml)
+CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list starship.toml
+              qalculate/qalculate-gtk.cfg      # colores los pone matugen (qalculate-colors.sh)
+              Code/User/settings.json          # VS Code (tema matugen en extra/vscode-matugen-theme)
+              systemd/user/autoscroll.service) # autoscroll con Shift+clic medio (install.sh lo habilita)
 # Dotfiles de la home
 HOME_FILES=(.bashrc .bash_profile .bash_logout .gitconfig .zshrc .zshenv .nanorc .tmux.conf)
 # Carpetas de la home (relativas a ~)
@@ -17,6 +21,7 @@ HOME_DIRS=(Pictures/Wallpapers .tmux .fonts .icons)
 # Temas de apps que viven en perfiles/datos propios: <origen relativo a ~>|<destino en el repo>
 EXTRA_FILES=(
   ".local/share/ZapZap/customizations/global/css/matugen.css|extra/zapzap/matugen.css"
+  ".local/bin/wivrn-dashboard-avahi|extra/bin/wivrn-dashboard-avahi"
 )
 EXTRA_DIRS=(
   ".vscode/extensions/local.matugen-theme-1.0.0|extra/vscode-matugen-theme"
@@ -25,6 +30,13 @@ EXTRA_DIRS=(
   # tema GTK = adw-gtk3-dark + colores de matugen; theme-reload.sh alterna a/b para recargar en vivo
   ".local/share/themes/Matugen-a|extra/gtk-themes/Matugen-a"
   ".local/share/themes/Matugen-b|extra/gtk-themes/Matugen-b"
+  # cursor generado con la paleta (hypr/scripts/cursor/build.py lo rehace al cambiar el fondo)
+  ".local/share/icons/Matu|extra/icons/Matu"
+)
+# Archivos del sistema (fuera de ~): update.sh los copia a extra/system/<ruta>;
+# install.sh los instala con sudo solo si cambiaron (pide confirmación).
+SYSTEM_FILES=(
+  /etc/udev/rules.d/70-mouse-uaccess.rules   # acceso a los mouse para el autoscroll (sin grupo input)
 )
 # Claves de dconf (tema GTK, íconos, cursor, fuentes) que se guardan en extra/dconf-interface.ini
 DCONF_PATH=/org/gnome/desktop/interface/

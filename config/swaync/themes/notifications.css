@@ -32,13 +32,14 @@
   background-color: @surface_container;
   box-shadow: 0 0 8px 0 rgba(0,0,0,.6);
   border: 1px solid alpha(@primary, 0.30);
-  border-radius: 24px;
-  margin: 16px;
+  border-radius: 17px;
+  margin: 12px 16px;
+  min-height: 92px;
   padding: 0;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification {
-  padding: 6px;
+  padding: 3px;
   border-radius: 12px;
 }
 
@@ -47,18 +48,18 @@
 }
 
 .floating-notifications.background .notification-row .notification-background .notification .notification-content {
-  margin: 14px;
+  margin: 12px 14px;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * {
-  min-height: 3.4em;
+  min-height: 2.9em;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action {
   border-radius: 8px;
   background-color: @background-alt;
   color: @on_secondary_container;
-  margin: 6px;
+  margin: 2px 6px 6px 6px;
   border: 1px solid transparent;
 }
 
@@ -74,7 +75,7 @@
 }
 
 .image {
-  margin: 10px 20px 10px 0px;
+  margin: 6px 14px 6px 0px;
   border-radius: 10px;
 }
 

@@ -1,18 +1,23 @@
 {
     "Created": "Phunt_Vieg_",
     "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "_comment": "Diseño base. La paleta la reemplaza matugen -> matugen.omp.json (ver ~/.config/matugen/scripts/ohmyposh-build.py). Esta paleta es solo fallback.",
     "palette": {
-        "white":    "#CDD6F4",
-        "black":    "#181825",
-        "blue":     "#89B4FA",
-        "lavender": "#B4BEFE",
-        "cyan":     "#94E2D5",
-        "green":    "#A6E3A1",
-        "purple":   "#CBA6F7",
-        "red":      "#F38BA8",
-        "pink":     "#F5C2E7",
-        "yellow":   "#F9E2AF",
-        "orange":   "#FAB387"
+        "primary":                "#9bcbfa",
+        "on_primary":             "#003353",
+        "primary_container":      "#0d4a73",
+        "on_primary_container":   "#cee5ff",
+        "secondary":              "#b9c8da",
+        "secondary_container":    "#3a4857",
+        "on_secondary_container": "#d5e4f7",
+        "tertiary":               "#d3bfe6",
+        "tertiary_container":     "#4f4061",
+        "on_tertiary_container":  "#efdbff",
+        "error":                  "#ffb4ab",
+        "surface_high":           "#272a2f",
+        "on_surface":             "#e0e2e8",
+        "on_surface_variant":     "#c2c7cf",
+        "outline":                "#8c9199"
     },
     "blocks": [
         {
@@ -21,69 +26,72 @@
             "newline": true,
             "segments": [
                 {
-                    "foreground": "p:white",
+                    "type": "text",
                     "style": "plain",
-                    "template": "\u256d\u2500",
-                    "type": "text"
+                    "foreground": "p:outline",
+                    "template": "╭─"
                 },
                 {
-                    "background": "p:yellow",
-                    "foreground": "p:black",
-                    "leading_diamond": "\ue0b6",
+                    "type": "session",
                     "style": "diamond",
-                    "template": "{{ if ne (.Segments.Contains \"Python\") true }} {{ .UserName }} {{ end }}",
-                    "trailing_diamond": "\ue0b0",
-                    "type": "session"
+                    "background": "p:primary",
+                    "foreground": "p:on_primary",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "template": "{{ if ne (.Segments.Contains \"Python\") true }}  {{ .UserName }} {{ end }}"
                 },
                 {
-                    "background": "p:yellow",
-                    "foreground": "p:black",
-                    "leading_diamond": "\ue0b6",
+                    "type": "python",
+                    "style": "diamond",
+                    "background": "p:primary",
+                    "foreground": "p:on_primary",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
                     "properties": {
                         "display_mode": "environment",
                         "home_enabled": true,
                         "folder_name_fallback": false
                     },
-                    "style": "diamond",
-                    "template": " ({{ .Venv }}) ",
-                    "trailing_diamond": "\ue0b0",
-                    "type": "python"
+                    "template": "  {{ .Venv }} "
                 },
                 {
-                    "background": "p:blue",
-                    "foreground": "p:black",
+                    "type": "path",
+                    "style": "diamond",
+                    "background": "p:secondary_container",
+                    "foreground": "p:on_secondary_container",
+                    "leading_diamond": " ",
+                    "trailing_diamond": "",
                     "properties": {
                         "style": "full"
                     },
-                    "style": "diamond",
-                    "template": " \uf114  {{ .Path }} ",
-                    "trailing_diamond": "\ue0b0",
-                    "type": "path"
+                    "template": "   {{ .Path }} "
                 },
                 {
-                    "background": "p:pink",
-                    "foreground": "p:black",
+                    "type": "git",
+                    "style": "diamond",
+                    "background": "p:tertiary_container",
+                    "foreground": "p:on_tertiary_container",
+                    "leading_diamond": " ",
+                    "trailing_diamond": "",
                     "properties": {
                         "branch_icon": "",
                         "fetch_stash_count": true,
                         "fetch_status": false,
                         "fetch_upstream_icon": true
                     },
-                    "style": "diamond",
-                    "template": " \ue725({{ .UpstreamIcon }} {{ .HEAD }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }}) ",
-                    "trailing_diamond": "\ue0b0",
-                    "type": "git"
+                    "template": " {{ .UpstreamIcon }}  {{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} "
                 },
                 {
-                    "background": "p:pink",
-                    "foreground": "p:black",
+                    "type": "time",
+                    "style": "diamond",
+                    "background": "p:surface_high",
+                    "foreground": "p:tertiary",
+                    "leading_diamond": " ",
+                    "trailing_diamond": "",
                     "properties": {
                         "time_format": "15:04"
                     },
-                    "style": "diamond",
-                    "template": "{{ if ne (.Segments.Contains \"Git\") true }} \u2665  {{ .CurrentDate | date .Format }} {{ end }}",
-                    "trailing_diamond": "\ue0b0",
-                    "type": "time"
+                    "template": "{{ if ne (.Segments.Contains \"Git\") true }} {{ .CurrentDate | date .Format }} {{ end }}"
                 }
             ]
         },
@@ -93,16 +101,24 @@
             "newline": true,
             "segments": [
                 {
-                    "foreground": "p:white",
+                    "type": "text",
                     "style": "plain",
-                    "template": "\u2570\u2500<p:green>\u26a1</>",
-                    "type": "text"
+                    "foreground": "p:outline",
+                    "template": "╰─"
+                },
+                {
+                    "type": "status",
+                    "style": "plain",
+                    "foreground": "p:primary",
+                    "foreground_templates": ["{{ if gt .Code 0 }}p:error{{ end }}"],
+                    "properties": { "always_enabled": true },
+                    "template": "⚡"
                 }
             ]
         }
     ],
     "transient_prompt": {
-        "template": "<p:red>\uf489 </><p:blue>\uf0da</><p:pink>\uf105</> "
+        "template": "<p:primary> </><p:secondary></><p:tertiary></> "
     },
     "final_space": true,
     "version": 8
