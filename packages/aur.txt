@@ -14,7 +14,7 @@ librewolf-bin-debug
 millennium
 neofetch
 nuclear-player-bin
-oh-my-posh
+oh-my-posh-bin
 pipes.sh
 pokemon-colorscripts-git
 proton-authenticator-bin
