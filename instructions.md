@@ -18,7 +18,8 @@ Leé esto antes de ejecutar nada.
 3. **Nunca escribas dentro de `~/dotfiles`.** Varios `~/.config/<x>` pueden ser symlinks ahí; `install.sh` ya los
    reemplaza por copias reales y anota el symlink en el backup.
 4. **No pises los archivos propios de cada máquina** (`LOCAL_FILES` en `lib.sh`): `~/.config/hypr/monitors.lua` y
-   `~/.config/waybar/config`. `install.sh` los crea solo si faltan y `update.sh` no los sube al repo.
+   `~/.config/waybar/config` y `~/.config/rofi/power-menu.sh` (este último solo existe en la laptop). `install.sh`
+   los crea solo si faltan y `update.sh` no los sube al repo.
 5. **Editá templates, no archivos generados.** Todo lo que genera matugen (ver la tabla de templates en el README) se
    pisa en cada cambio de fondo. La fuente está en `~/.config/matugen/templates/`.
 6. **Reiniciar apps interrumpe al usuario:** LibreWolf corta videos, tidal-hifi corta la música y Steam cierra juegos.
@@ -72,7 +73,7 @@ Qué hace, en orden:
 1. Guarda en `backups/<fecha>/`: `files/` (copia de cada archivo que pisa), `manifest.txt` (symlinks reemplazados),
    `created.txt` (archivos que no existían), `review.txt` y `dconf-interface.ini` (dconf anterior).
 2. Si falta `~/.config/hypr/monitors.lua`, lo genera con los monitores y el scale actuales (`hyprctl monitors`).
-   Los `LOCAL_FILES` que ya existen (`monitors.lua`, `waybar/config`) no se tocan.
+   Los `LOCAL_FILES` que ya existen (`monitors.lua`, `waybar/config`, `rofi/power-menu.sh`) no se tocan.
 3. Copia `config/` → `~/.config`, `home/` → `~`, `extra/` → sus rutas (`~/.local/share/...`, `~/.vscode/...`,
    perfil de LibreWolf).
 4. Carga `extra/dconf-interface.ini` (tema GTK, íconos, cursor, fuentes).

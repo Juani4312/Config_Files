@@ -15,9 +15,11 @@ CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list st
               qalculate/qalculate-gtk.cfg      # colores los pone matugen (qalculate-colors.sh)
               Code/User/settings.json          # VS Code (tema matugen en extra/vscode-matugen-theme)
               systemd/user/autoscroll.service) # autoscroll con Shift+clic medio (install.sh lo habilita)
-# Archivos de ~/.config propios de cada máquina (monitores, barras de waybar por monitor):
-# update.sh nunca los sube al repo e install.sh no los pisa si ya existen (solo los crea si faltan).
-LOCAL_FILES=(hypr/monitors.lua waybar/config)
+# Archivos de ~/.config propios de cada máquina: update.sh nunca los sube al repo e install.sh
+# no los pisa si ya existen (solo los crea si faltan y el repo los tiene).
+LOCAL_FILES=(hypr/monitors.lua      # resolución, posición y scale de los monitores
+             waybar/config          # barras por monitor y qué workspaces muestran
+             rofi/power-menu.sh)    # laptop: menú de modos de energía (click en la batería)
 # Dotfiles de la home
 HOME_FILES=(.bashrc .bash_profile .bash_logout .gitconfig .zshrc .zshenv .nanorc .tmux.conf)
 # Carpetas de la home (relativas a ~)
