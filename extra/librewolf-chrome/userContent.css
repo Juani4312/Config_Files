@@ -4,64 +4,64 @@
 */
 @-moz-document url(about:home), url(about:newtab), url(about:privatebrowsing), url(about:blank) {
   :root {
-    --newtab-background-color: #101417 !important;
-    --newtab-background-color-secondary: #1c2024 !important;
-    --newtab-text-primary-color: #dfe3e7 !important;
-    --newtab-text-secondary-color: #c1c7ce !important;
-    --newtab-primary-action-background: #93cdf6 !important;
-    --newtab-border-color: #41484d !important;
-    --in-content-page-background: #101417 !important;
-    --in-content-page-color: #dfe3e7 !important;
+    --newtab-background-color: #1a110f !important;
+    --newtab-background-color-secondary: #271d1b !important;
+    --newtab-text-primary-color: #f1dfdb !important;
+    --newtab-text-secondary-color: #d8c2bd !important;
+    --newtab-primary-action-background: #ffb4a3 !important;
+    --newtab-border-color: #534340 !important;
+    --in-content-page-background: #1a110f !important;
+    --in-content-page-color: #f1dfdb !important;
   }
 
   body {
-    background-color: #101417 !important;
-    color: #dfe3e7 !important;
+    background-color: #1a110f !important;
+    color: #f1dfdb !important;
   }
 
   .search-handoff-button,
   .search-wrapper input {
-    background-color: #181c20 !important;
-    color: #dfe3e7 !important;
-    border: 1px solid #41484d !important;
+    background-color: #231917 !important;
+    color: #f1dfdb !important;
+    border: 1px solid #534340 !important;
     border-radius: 12px !important;
     box-shadow: none !important;
   }
 
   .top-site-outer .tile {
-    background-color: #1c2024 !important;
+    background-color: #271d1b !important;
     border-radius: 14px !important;
     box-shadow: none !important;
   }
 
   .top-site-outer:hover .tile,
   .top-site-outer:focus .tile {
-    background-color: #004c6d !important;
+    background-color: #733426 !important;
   }
 
   .top-site-outer .title,
   .top-site-outer .title span {
-    color: #c1c7ce !important;
+    color: #d8c2bd !important;
   }
 }
 
 /* Páginas internas (about:preferences, about:addons, etc.) */
 @-moz-document regexp("^about:(?!blank|home|newtab|privatebrowsing).*") {
   :root {
-    --in-content-page-background: #101417 !important;
-    --in-content-page-color: #dfe3e7 !important;
-    --in-content-box-background: #1c2024 !important;
-    --in-content-box-border-color: #41484d !important;
-    --in-content-primary-button-background: #93cdf6 !important;
-    --in-content-primary-button-text-color: #00344d !important;
-    --in-content-accent-color: #93cdf6 !important;
-    --in-content-border-color: #8b9198 !important;
-    --in-content-text-color: #dfe3e7 !important;
+    --in-content-page-background: #1a110f !important;
+    --in-content-page-color: #f1dfdb !important;
+    --in-content-box-background: #271d1b !important;
+    --in-content-box-border-color: #534340 !important;
+    --in-content-primary-button-background: #ffb4a3 !important;
+    --in-content-primary-button-text-color: #561f12 !important;
+    --in-content-accent-color: #ffb4a3 !important;
+    --in-content-border-color: #a08c88 !important;
+    --in-content-text-color: #f1dfdb !important;
   }
 }
 
 /* Scrollbars finas */
 :root {
-  scrollbar-color: #8b9198 transparent !important;
+  scrollbar-color: #a08c88 transparent !important;
   scrollbar-width: thin !important;
 }

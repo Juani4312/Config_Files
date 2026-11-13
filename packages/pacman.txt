@@ -3,6 +3,7 @@ adw-gtk-theme
 amd-ucode
 amule
 android-tools
+aria2
 ascii
 awww
 base
@@ -133,6 +134,7 @@ qt6-wayland
 qt6ct
 reaper
 reflector
+resources
 rofi
 rofi-emoji
 rsync

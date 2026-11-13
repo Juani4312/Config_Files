@@ -17,6 +17,7 @@ bind(mod("C"),              hl.dsp.window.close())
 bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 bind(mod("E"),              hl.dsp.exec_cmd(fileManager))
 bind(mod("V"),              hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p clipboard -display-columns 2 | cliphist decode | wl-copy")) -- historial del portapapeles
+bind(mod("I"),              hl.dsp.exec_cmd("~/.config/rofi/scripts/emoji-picker.sh")) -- selector de emojis con categorías (Enter copia)
 bind(mod("SHIFT + V"),      hl.dsp.window.float({ action = "toggle" }))
 bind(mod("Space"),          hl.dsp.exec_cmd(scripts .. "SwitchLayout.sh")) -- alternar us / latam + notificación
 bind(mod("J"),              hl.dsp.layout("togglesplit")) -- dwindle

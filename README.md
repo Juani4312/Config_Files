@@ -57,7 +57,7 @@ Todo lo de esta tabla está instalado en esta PC; los paquetes exactos están en
 |---|---|---|
 | Compositor / WM | [Hyprland](https://hypr.land) (config en **Lua**) | `config/hypr` |
 | Barra | Waybar (estilo "bintang") | `config/waybar` |
-| Launcher | Rofi estilo Spotlight (`SUPER+R`) + menú de wifi propio | `config/rofi` |
+| Launcher | Rofi estilo Spotlight (`SUPER+R`) + selector de emojis (`SUPER+I`) + menú de wifi propio | `config/rofi` |
 | Notificaciones | SwayNC | `config/swaync` |
 | Menú de apagado | wlogout (íconos teñidos con la paleta) | `config/wlogout` |
 | Lockscreen / idle | hyprlock, hypridle | `config/hypr` |
@@ -166,6 +166,10 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
   - En esta PC `style.css` es un **hardlink** a `style/bintang default.css`: editalo en el lugar, no lo reemplaces.
 - **Rofi** (`config/rofi/config.rasi`): estilo Spotlight compartido por todos los menús. Solo el launcher agrega
   `require-input` (la lista aparece al escribir). `wifi-menu.sh` es un menú de redes propio.
+  - **Selector de emojis** (`SUPER+I`, `scripts/emoji-picker.sh` + `emoji.rasi`): mismo estilo y colores, grilla de
+    9 columnas y una fila de categorías bajo la búsqueda (click, `Ctrl+Tab` o `Shift+←/→`). Cada categoría es un modo
+    script de rofi (`scripts/emoji.sh`) que lee la lista de `rofi-emoji`; busca por nombre/palabras clave en inglés y
+    Enter copia el emoji (`wl-copy`).
 - **SwayNC** (`config/swaync`): colores de waybar, popups de 390 px; el panel se agranda o achica con las flechas
   ◂▸▴▾ (`scripts/resize.sh`). Reglas: las notificaciones `theme.summary` solo se ven como popup, las `theme.app`
   van directo al panel.
@@ -252,6 +256,7 @@ Editar el script no requiere reiniciar: `Ctrl+U` (hard reload de tidal-hifi) lo 
 | `SUPER+clic izq.` / `SUPER+clic der.` | arrastrar / redimensionar ventana |
 | `SUPER+S` / `SUPER+SHIFT+S` | mostrar workspace especial / mandar o devolver ventana |
 | `SUPER+V` | historial del portapapeles |
+| `SUPER+I` | selector de emojis (Enter copia) |
 | `SUPER+P` | captura de región (se guarda en `~/Pictures/Screenshots` y se copia) |
 | `SUPER+SHIFT+C` | selector de color (hyprpicker) |
 | `SUPER+Espacio` | alternar teclado us / latam |

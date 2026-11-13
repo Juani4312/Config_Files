@@ -65,6 +65,14 @@ hl.on("window.title", function(w)
     hl.dispatch(hl.dsp.window.center())
 end)
 
+-- LibreWolf: ventana de descargas / Library (Ctrl+Shift+Y): flota centrado
+hl.window_rule({
+    match  = { class = "^(librewolf)$", initial_title = "^(Library)$" },
+    float  = true,
+    size   = "900 600",
+    center = true,
+})
+
 -- Proton Authenticator: flota centrado, rectangulo vertical
 hl.window_rule({ match = { class = "^(proton-authenticator)$" }, float = true, size = "450 750", center = true })
 
@@ -116,6 +124,14 @@ hl.window_rule({
     match  = { title = "^(Save As|Save a File|Pick Files)$" },
     float  = true,
     size   = "monitor_w*0.5 monitor_h*0.6",
+    center = true,
+})
+
+-- Selector de archivos del portal GTK (Guardar/Abrir de LibreWolf, etc.): rectangulo horizontal
+hl.window_rule({
+    match  = { class = "^(xdg-desktop-portal-gtk)$" },
+    float  = true,
+    size   = "monitor_w*0.55 monitor_h*0.6",
     center = true,
 })
 

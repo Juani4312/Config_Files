@@ -1,0 +1,79 @@
+/*
+ * Emoji picker (Super+I) — same Spotlight look as config.rasi, grid layout.
+ * Colors come from matugen via config.rasi -> colors.rasi, so it follows the
+ * wallpaper automatically. Launched by scripts/emoji-picker.sh: one rofi
+ * script mode per category (scripts/emoji.sh), shown as a tab row
+ * (mode-switcher) under the search bar. Enter/click copies (wl-copy).
+ * Switch category: click, Ctrl+Tab / Ctrl+Shift+Tab, Shift+←/→.
+ */
+@import "config.rasi"
+
+configuration {
+    show-icons:          false;
+    matching:            "normal";
+    font:                "JetBrainsMono Nerd Font Propo 22";
+}
+
+window {
+    width:               640px;
+}
+
+mainbox {
+    children:            [ "inputbar", "mode-switcher", "message", "listview" ];
+}
+
+/* ------------------------------------------------------ category tabs -- */
+mode-switcher {
+    orientation:         horizontal;
+    spacing:             4px;
+    margin:              8px 0px 0px 0px;
+    padding:             4px;
+    border-radius:       16px;
+    background-color:    @surface-container-glass;
+}
+button {
+    font:                "JetBrainsMono Nerd Font Propo 14";
+    padding:             6px 0px;
+    border-radius:       12px;
+    horizontal-align:    0.5;
+    vertical-align:      0.5;
+    text-color:          @on-surface-variant;
+    cursor:              pointer;
+}
+button selected {
+    background-color:    @primary-glass;
+    text-color:          @primary;
+}
+
+inputbar {
+    children:            [ "textbox-search", "entry" ];
+}
+entry {
+    placeholder:         "Buscar emoji";
+}
+
+listview {
+    columns:             9;
+    lines:               5;
+    fixed-height:        true;
+    flow:                horizontal;
+    spacing:             6px;
+    font:                "JetBrainsMono Nerd Font Propo 22";
+}
+
+element {
+    orientation:         vertical;
+    padding:             10px 0px;
+    font:                "JetBrainsMono Nerd Font Propo 22";
+    border-radius:       14px;
+}
+
+element selected.normal,
+element selected.active {
+    border:              0px;
+}
+
+element-text {
+    font:                "JetBrainsMono Nerd Font Propo 22";
+    horizontal-align:    0.5;
+}
