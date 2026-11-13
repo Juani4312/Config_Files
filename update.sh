@@ -36,20 +36,21 @@ command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$REPO/extra/dconf-int
 
 # Los symlinks absolutos se reemplazan: current_wallpaper lo crea install.sh.
 rm -f "$REPO/config/hypr/current_wallpaper"
-# monitors.lua (resolución, posición y scale/zoom) es propio de cada máquina: no se sincroniza.
-rm -f "$REPO/config/hypr/monitors.lua"
-# waybar: config y style.css son hardlinks (o symlinks) a un archivo de configs/ y style/;
-# en el repo quedan como symlink relativo a ese archivo.
+# waybar: style.css es un hardlink (o symlink) a un archivo de style/; en el repo queda como
+# symlink relativo a ese archivo. (config es de LOCAL_FILES: ver abajo.)
 link_variant() { # <archivo> <subcarpeta>
   local f="$REPO/config/waybar/$1" src="$HOME/.config/waybar/$1" v
   [ -e "$src" ] || return 0
   v=$(find -L "$HOME/.config/waybar/$2" -maxdepth 1 -type f -samefile "$(readlink -f "$src")" -printf '%f' -quit 2>/dev/null)
   [ -n "$v" ] && ln -sfn "$2/$v" "$f"
 }
-if [ -d "$REPO/config/waybar" ]; then
-  link_variant style.css style
-  link_variant config configs
-fi
+[ -d "$REPO/config/waybar" ] && link_variant style.css style
+
+# LOCAL_FILES (monitors.lua, waybar/config: monitores y barras por monitor) son propios de cada
+# máquina: el repo conserva la versión que ya tenía (default para máquinas nuevas) o no los tiene.
+for f in "${LOCAL_FILES[@]}"; do
+  git -C "$REPO" checkout -q HEAD -- "config/$f" 2>/dev/null || rm -f "$REPO/config/$f"
+done
 
 # Lista de paquetes para reinstalar
 if command -v pacman >/dev/null; then

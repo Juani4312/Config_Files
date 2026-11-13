@@ -36,8 +36,8 @@ LW_PROFILE=$(librewolf_profile || true)
 
 # Archivos (rutas relativas) de una carpeta origen, separados por NUL
 list_rel() { (cd "$1" && find . \( -type f -o -type l \) -printf '%P\0'); }
-# estado de un archivo respecto al destino: new | same | changed
-state() { if [ ! -e "$2" ] && [ ! -L "$2" ]; then echo new; elif cmp -s "$1" "$2"; then echo same; else echo changed; fi; }
+# estado de un archivo respecto al destino: new | same | changed | local (LOCAL_FILES: no se toca)
+state() { if is_local "$2"; then echo local; elif [ ! -e "$2" ] && [ ! -L "$2" ]; then echo new; elif cmp -s "$1" "$2"; then echo same; else echo changed; fi; }
 
 # ---------- 1. REVISIÓN ----------
 review() {
@@ -46,15 +46,15 @@ review() {
   for pair in "${PAIRS[@]}"; do
     IFS='|' read -r kind src dst <<<"$pair"
     [ -e "$src" ] || continue
-    n=0 c=0 s=0; local changed=()
+    n=0 c=0 s=0; local changed=() kept=()
     if [ "$kind" = d ]; then
       while IFS= read -r -d '' rel; do
         st=$(state "$src/$rel" "$dst/$rel")
-        case $st in new) n=$((n+1));; same) s=$((s+1));; changed) c=$((c+1)); changed+=("$rel");; esac
+        case $st in new) n=$((n+1));; same) s=$((s+1));; changed) c=$((c+1)); changed+=("$rel");; local) kept+=("$rel");; esac
       done < <(list_rel "$src")
     else
       st=$(state "$src" "$dst")
-      case $st in new) n=1;; same) s=1;; changed) c=1; changed+=("$(basename "$dst")");; esac
+      case $st in new) n=1;; same) s=1;; changed) c=1; changed+=("$(basename "$dst")");; local) kept+=("$(basename "$dst")");; esac
     fi
     t_new=$((t_new+n)); t_chg=$((t_chg+c)); t_same=$((t_same+s))
     printf '  %-48s %3d nuevos  %3d cambiados  %3d iguales\n' "${dst/#$HOME/~}" "$n" "$c" "$s"
@@ -64,6 +64,7 @@ review() {
       [ $shown -ge 12 ] && { echo "      ... y $((${#changed[@]}-12)) más"; break; }
       echo "      ~ $f"; shown=$((shown+1))
     done
+    for f in "${kept[@]}"; do echo "      = $f (propio de esta máquina: no se toca)"; done
   done
   echo "  TOTAL: $t_new nuevos, $t_chg cambiados (se respaldan), $t_same iguales"
   review_binds
@@ -169,9 +170,24 @@ if [ ! -e "$MON" ]; then
   echo "ok    creado ${MON/#$HOME/~} (editá ahí el scale de esta máquina)"
 fi
 
+# LOCAL_FILES que ya existen: se apartan antes de copiar y se reponen si la copia los cambió
+# (si quedaron iguales no se tocan, así se conserva el hardlink de waybar/config a su variante)
+KEEP="$BACKUP/local"
+for f in "${LOCAL_FILES[@]}"; do
+  is_local "$HOME/.config/$f" || continue
+  mkdir -p "$KEEP/$(dirname "$f")"; cp -a "$HOME/.config/$f" "$KEEP/$f"
+done
+
 for pair in "${PAIRS[@]}"; do
   IFS='|' read -r kind src dst <<<"$pair"
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi
+done
+
+for f in "${LOCAL_FILES[@]}"; do
+  [ -e "$KEEP/$f" ] || [ -L "$KEEP/$f" ] || continue
+  cmp -s "$KEEP/$f" "$HOME/.config/$f" && continue
+  rm -f "$HOME/.config/$f"; cp -a "$KEEP/$f" "$HOME/.config/$f"
+  echo "keep  ~/.config/$f (propio de esta máquina)"
 done
 
 # Tema GTK / íconos / cursor / fuentes
@@ -184,6 +200,10 @@ if [ -n "$LW_PROFILE" ] && [ -f "$HOME/.config/matugen/config.toml" ]; then
   sed -i -E "s#~/(\.librewolf|\.config/librewolf/librewolf)/[^/']+/chrome#~/${LW_PROFILE#"$HOME"/}/chrome#" \
     "$HOME/.config/matugen/config.toml"
 fi
+
+# Rutas absolutas a la home de la PC de origen (tema GTK, marcadores): apuntarlas a esta home
+sed -i -E "s#file:///home/[^/]+/#file://$HOME/#g" \
+  "$HOME"/.local/share/themes/Matugen-{a,b}/gtk-3.0/gtk*.css "$HOME/.config/gtk-3.0/bookmarks" 2>/dev/null || true
 
 # Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper
 wp="$HOME/Pictures/Wallpapers/Set/pacman-ghosts.png"

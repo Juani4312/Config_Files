@@ -1,4 +1,4 @@
-# PC Config File
+# PC Config Files
 
 Mi customización de Arch Linux + Hyprland, lista para clonar en otra PC.
 
@@ -45,8 +45,13 @@ workspace) lo que no.
 Varios `~/.config/<x>` (nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt) y `.zshrc`, `.tmux.conf`, `.tmux`
 son symlinks a `~/dotfiles` en esta PC; acá se guarda el **contenido real** (`tar -h` / `cp -L`).
 
-Archivos propios de cada máquina que **no** viajan: `~/.config/hypr/monitors.lua` (resolución, posición,
-scale) y el symlink `~/.config/hypr/current_wallpaper` (lo crean `install.sh` y el selector de fondos).
+Archivos propios de cada máquina que **no** viajan (`LOCAL_FILES` en `lib.sh`): `~/.config/hypr/monitors.lua`
+(resolución, posición, scale), `~/.config/waybar/config` (qué barras hay en cada monitor y qué workspaces muestran)
+y `~/.config/rofi/power-menu.sh` (solo en la laptop: menú de modos de energía de `power-profiles-daemon`, que se
+abre con click en la batería de waybar; el tiempo restante pasa al click derecho).
+`update.sh` no los sube e `install.sh` no los pisa si ya existen; si faltan, `install.sh` genera `monitors.lua` y
+copia el `config` del repo (default: variante `bintang default`, la de la PC). Tampoco viaja el symlink
+`~/.config/hypr/current_wallpaper` (lo crean `install.sh` y el selector de fondos).
 
 ---
 

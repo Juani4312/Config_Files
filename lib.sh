@@ -15,6 +15,11 @@ CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list st
               qalculate/qalculate-gtk.cfg      # colores los pone matugen (qalculate-colors.sh)
               Code/User/settings.json          # VS Code (tema matugen en extra/vscode-matugen-theme)
               systemd/user/autoscroll.service) # autoscroll con Shift+clic medio (install.sh lo habilita)
+# Archivos de ~/.config propios de cada máquina: update.sh nunca los sube al repo e install.sh
+# no los pisa si ya existen (solo los crea si faltan y el repo los tiene).
+LOCAL_FILES=(hypr/monitors.lua      # resolución, posición y scale de los monitores
+             waybar/config          # barras por monitor y qué workspaces muestran
+             rofi/power-menu.sh)    # laptop: menú de modos de energía (click en la batería)
 # Dotfiles de la home
 HOME_FILES=(.bashrc .bash_profile .bash_logout .gitconfig .zshrc .zshenv .nanorc .tmux.conf)
 # Carpetas de la home (relativas a ~)
@@ -50,6 +55,15 @@ EXCLUDE_PATTERNS=('.git' '*cache*' 'Cache*' '*.log' '*.key' '*.pem' '*token*' '*
 TAR_EX=(); for p in "${EXCLUDE_PATTERNS[@]}"; do TAR_EX+=(--exclude="$p"); done
 
 DRY=0
+
+# ¿<ruta absoluta> es un archivo de LOCAL_FILES que ya existe en esta máquina?
+is_local() {
+  local f
+  for f in "${LOCAL_FILES[@]}"; do
+    [ "$1" = "$HOME/.config/$f" ] && { [ -e "$1" ] || [ -L "$1" ]; } && return 0
+  done
+  return 1
+}
 
 # Perfil activo de LibreWolf (el "Default=" de installs.ini), sea ~/.librewolf o ~/.config/librewolf/librewolf
 librewolf_profile() {
