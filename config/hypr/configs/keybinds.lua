@@ -26,7 +26,7 @@ bind(mod("SHIFT + R"),      hl.dsp.exec_cmd(scripts .. "wbrestart.sh"))
 bind(mod("O"),              hl.dsp.exec_cmd(scripts .. "reload-all.sh")) -- recargar Hyprland + swaync + waybar
 bind(mod("K"),              hl.dsp.exec_cmd("pavucontrol"))  -- control de sonido
 bind(mod("M"),              hl.dsp.exec_cmd(scripts .. "mic-mute.sh")) -- mute micrófono + notificación
-bind(mod("B"),              hl.dsp.exec_cmd("librewolf")) -- browser
+bind(mod("B"),              hl.dsp.exec_cmd("/home/juano/.local/bin/librewolf")) -- browser (wrapper: aplica tema de YouTube pendiente)
 bind(mod("N"),              hl.dsp.exec_cmd("google-chrome-stable")) -- Google Chrome
 bind(mod("L"),              hl.dsp.exec_cmd("pidof hyprlock || hyprlock")) -- bloquear pantalla
 bind(mod("F"),              hl.dsp.window.fullscreen())

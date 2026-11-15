@@ -1,0 +1,11 @@
+#!/bin/bash
+# Wrapper de LibreWolf: antes de arrancar, si hay un tema de matugen pendiente
+# para Enhancer for YouTube (Super+W con LibreWolf abierto y sin reiniciarlo),
+# lo escribe en el storage de la extension. Solo se puede con LibreWolf cerrado,
+# o sea justo ahora. Lo usan el keybind (Super+B) y librewolf.desktop.
+SRC=~/.config/youtube-enhancer
+if ! pgrep -x librewolf >/dev/null &&
+   [[ ! -f $SRC/.applied || $SRC/custom.css -nt $SRC/.applied || $SRC/colors.json -nt $SRC/.applied ]]; then
+  ~/.config/matugen/scripts/youtube-enhancer-apply.sh >>"${XDG_RUNTIME_DIR:-/tmp}/theme-reload.log" 2>&1
+fi
+exec /usr/lib/librewolf/librewolf "$@"

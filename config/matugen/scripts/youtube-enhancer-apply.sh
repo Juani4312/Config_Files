@@ -33,4 +33,5 @@ python3 -I "$PY" "$db" set-bool customtheme    true
 python3 -I "$PY" "$db" set-bool darktheme      true
 printf '"youtube-deep-dark-custom"' >"$SRC/.theme.json"
 python3 -I "$PY" "$db" set-json theme          "$SRC/.theme.json"
+touch "$SRC/.applied"   # el wrapper ~/.local/bin/librewolf compara contra esto
 echo "youtube-enhancer: tema escrito"

@@ -117,7 +117,8 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
    - **Steam:** la ventana la crea `steamwebhelper` (otro PID) y, después del login, Steam la vuelve a mapear en el
      workspace con foco. El script la vigila hasta 2 min y la devuelve a su workspace.
    - **YouTube (Enhancer):** su CSS vive en la base IndexedDB de la extensión, así que se escribe con LibreWolf cerrado
-     (justo antes de relanzarlo, o en el momento si ya estaba cerrado).
+     (justo antes de relanzarlo, o en el momento si ya estaba cerrado). Si se eligió "Ignorar", el wrapper
+     `~/.local/bin/librewolf` (lo usan `SUPER+B` y `librewolf.desktop`) lo aplica la próxima vez que se abra LibreWolf.
 5. Se actualiza `~/.config/hypr/current_wallpaper`, que es el fondo que se carga al iniciar sesión.
 
 ### Templates (`config/matugen/templates` → destino)

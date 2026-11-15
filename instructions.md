@@ -115,7 +115,7 @@ Estas cosas no se pueden copiar como archivos.
 |---|---|
 | **Scale / monitores** | Editá `~/.config/hypr/monitors.lua` (resolución, posición, scale) y corré `hyprctl reload`. |
 | **LibreWolf** | Abrilo una vez *antes* de `install.sh` para que exista el perfil (si no, no se copian `chrome/*.css`; corré `install.sh` de nuevo después). En `about:config`, `toolkit.legacyUserProfileCustomizations.stylesheets = true`. |
-| **Enhancer for YouTube** | Instalalo desde addons.mozilla.org en LibreWolf y abrí sus opciones una vez (eso crea su base de storage). El script activa solo el tema "DeepDark custom" y el CSS custom. El tema de matugen se escribe solo en el próximo cambio de fondo que reinicie LibreWolf; para forzarlo ahora: cerrá LibreWolf y corré `~/.config/matugen/scripts/youtube-enhancer-apply.sh`. |
+| **Enhancer for YouTube** | Instalalo desde addons.mozilla.org en LibreWolf y abrí sus opciones una vez (eso crea su base de storage). El script activa solo el tema "DeepDark custom" y el CSS custom. El tema de matugen se escribe solo al reiniciar LibreWolf o la próxima vez que lo abras con `SUPER+B` / el lanzador (wrapper `~/.local/bin/librewolf`); para forzarlo a mano: cerrá LibreWolf y corré `~/.config/matugen/scripts/youtube-enhancer-apply.sh`. |
 | **Steam (Millennium)** | `millennium` (AUR) instalado; abrí Steam una vez. El tema `matugen` ya queda activo por `~/.config/millennium/config.json`. Si falta CSS: `~/.config/steam-theme/build.sh --regen`. |
 | **VS Code** | La extensión `local.matugen-theme` se copia sola; si no aparece el tema, elegí "Matugen" en *Preferences: Color Theme*. |
 | **tidal-hifi** | En Settings → Theming elegí `matugen.css`. Para las flechas: si tidal-hifi se instaló *después* de `install.sh`, corré `sudo python3 /usr/local/lib/tidal-hifi-userscripts/patch-asar.py` (o `config/tidal-hifi/userscripts/install/install.sh` con sudo) y reiniciá tidal-hifi. |
@@ -145,7 +145,7 @@ A la vista: barra con la isla de workspaces, rofi Spotlight con `SUPER+R` y, des
   tidal-hifi o Steam si estaban en uso). También queda una notificación por app en el panel de swaync (campana) con
   su propio botón "Reiniciar".
 - "Ignorar" no pierde nada: esas apps toman los colores nuevos la próxima vez que se reinicien. YouTube (Enhancer)
-  se actualiza en el próximo cambio de fondo en que LibreWolf se reinicie o esté cerrado.
+  se actualiza la próxima vez que abras LibreWolf (el wrapper `~/.local/bin/librewolf` aplica el tema pendiente).
 - Agregar fondos: copiá imágenes a `~/Pictures/Wallpapers` (o a una subcarpeta). Los `.webp` aparecen sin miniatura.
 
 ### Mantener el repo al día (desde la máquina que cambiaste)

@@ -28,6 +28,9 @@ HOME_DIRS=(Pictures/Wallpapers .tmux .fonts .icons)
 EXTRA_FILES=(
   ".local/share/ZapZap/customizations/global/css/matugen.css|extra/zapzap/matugen.css"
   ".local/bin/wivrn-dashboard-avahi|extra/bin/wivrn-dashboard-avahi"
+  # wrapper de LibreWolf (SUPER+B y .desktop): aplica el tema pendiente de YouTube antes de arrancar
+  ".local/bin/librewolf|extra/bin/librewolf"
+  ".local/share/applications/librewolf.desktop|extra/applications/librewolf.desktop"
 )
 EXTRA_DIRS=(
   ".vscode/extensions/local.matugen-theme-1.0.0|extra/vscode-matugen-theme"
