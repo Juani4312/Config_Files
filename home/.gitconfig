@@ -6,4 +6,6 @@
 	helper = !/usr/bin/gh auth git-credential
 [user]
 	name = Juan Ignacio Garces
-	email = jgarces@itba.edu.ar
+	email = juanini2005@gmail.com
+[includeIf "gitdir:~/Documents/ITBA/"]
+	path = ~/.gitconfig-itba

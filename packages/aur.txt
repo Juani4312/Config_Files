@@ -40,6 +40,5 @@ wivrn-server
 wlogout
 xrizer
 yay
-yay-debug
 zapzap
 zen-browser-bin

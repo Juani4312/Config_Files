@@ -28,9 +28,13 @@ Leé esto antes de ejecutar nada.
    `hyprctl dispatch 'hl.dsp.exec_cmd("kitty")'`. La forma clásica (`dispatch workspace 3`) falla.
 8. **`~/.config/waybar/style.css` puede ser un hardlink** a `style/<variante>.css`. Editalo en el lugar (con Edit);
    nunca `sed -i` ni reemplazar el archivo, porque rompe el enlace.
+   Desde **waybar 0.16** los módulos `custom/*` son `eventbox > box > label#custom-x` y el hover queda en el `box`
+   sin nombre: `#custom-x:hover` no matchea nunca, hay que escribir `box:hover > #custom-x`. Un error de CSS al
+   recargar (SIGUSR2) cierra waybar (ej. `/*` dentro de un comentario): validalo antes con `Gtk.CssProvider`.
+   Usá solo los colores de matugen (`@primary`, `@secondary`, ... de `colors.css`) para que siga a `SUPER+W`.
 9. **Sincronizar después de cambiar configs:** `./update.sh` copia la máquina al repo. El push por SSH puede necesitar
    la passphrase de la clave del usuario: si `git push` falla con `Permission denied (publickey)`, avisale que corra
-   `git -C ~/Sync push` en su terminal.
+   `git -C ~/Laptop/Sync push` en su terminal.
 10. **Logs útiles:** `$XDG_RUNTIME_DIR/theme-reload.log` (cambio de tema), `journalctl --user -u autoscroll`
     (autoscroll), `hyprctl configerrors` (config de Hyprland).
 11. **tidal-hifi:** los `~/.config/tidal-hifi/userscripts/*.js` se recargan con `Ctrl+U` (sin reiniciar). Para

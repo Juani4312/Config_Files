@@ -6,25 +6,25 @@
 
 :root
 {
-	--m-primary: #ffb4a3;
-	--m-on-primary: #3a0a02;
-	--m-primary-container: #733426;
-	--m-tertiary: #dbc58c;
-	--m-on-tertiary: #3c2f04;
-	--m-tertiary-container: #544519;
+	--m-primary: #9bcbfa;
+	--m-on-primary: #001d32;
+	--m-primary-container: #0d4a73;
+	--m-tertiary: #d3bfe6;
+	--m-on-tertiary: #382a49;
+	--m-tertiary-container: #4f4061;
 	--m-error: #ffb4ab;
 
-	--m-surface-lowest: #140c0a;
-	--m-surface-dim: #1a110f;
-	--m-surface-low: #231917;
-	--m-surface-container: #271d1b;
-	--m-surface-high: #322825;
-	--m-surface-highest: #3d3230;
+	--m-surface-lowest: #0b0f12;
+	--m-surface-dim: #101418;
+	--m-surface-low: #181c20;
+	--m-surface-container: #1c2024;
+	--m-surface-high: #272a2f;
+	--m-surface-highest: #323539;
 
-	--m-outline-variant: #534340;
-	--m-outline: #a08c88;
-	--m-on-surface-variant: #d8c2bd;
-	--m-on-surface: #f1dfdb;
+	--m-outline-variant: #42474e;
+	--m-outline: #8c9198;
+	--m-on-surface-variant: #c2c7cf;
+	--m-on-surface: #e0e2e8;
 }
 
 /* misma tipografia que waybar / kitty */

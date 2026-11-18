@@ -21,5 +21,6 @@
     "window.menuBarVisibility": "toggle",
     "workbench.tree.indent": 14,
     "workbench.list.smoothScrolling": true,
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "markdown-preview-enhanced.previewTheme": "monokai.css"
 }

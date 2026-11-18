@@ -165,7 +165,8 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
 - **Waybar** (`config/waybar`): `config` y `style.css` apuntan a la variante elegida en `configs/` y `style/`
   (actual: "bintang default"; `SUPER+CTRL+B` / `SUPER+ALT+B` cambian estilo y layout).
   - Isla de workspaces por monitor con animaciones (el foco crece a una píldora con glow; urgente parpadea en
-    `@tertiary`), burbuja 特 a la izquierda cuando hay ventanas en el workspace especial.
+    `@tertiary`), burbuja 特 a la izquierda cuando hay ventanas en el workspace especial. Al pasar el mouse, cada
+    workspace se enmarca en un cuadradito redondeado (borde fino + fondo leve en `@primary`) sin mover la isla.
   - Volumen propio (`scripts/volume.py`, con `pactl subscribe`): las ondas del parlante se animan al pasar el mouse.
   - Campana de swaync que suena una vez con cada notificación nueva; batería que "respira" cargando y titila crítica;
     botón de apagado con glow en `@primary`.

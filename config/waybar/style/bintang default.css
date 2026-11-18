@@ -178,6 +178,9 @@ tooltip label{
 }
 
 /*-----Animaciones (curvas iguales a rofi/Hyprland)----*/
+/* waybar 0.16: los módulos custom ahora son eventbox > box > label#custom-x y el
+   estado :hover queda en el box SIN nombre, no en el label con el id.
+   Por eso los custom usan `box:hover > #custom-x` (se deja el selector viejo). */
 /* hover: "levanta" el módulo con un fondo suave */
 #clock:hover,
 #network:hover,
@@ -185,12 +188,15 @@ tooltip label{
 #battery:hover,
 #pulseaudio:hover,
 #custom-volume:hover,
-#custom-swaync:hover {
+#custom-swaync:hover,
+box:hover > #custom-volume,
+box:hover > #custom-swaync {
 	color: @primary;
 	background-color: alpha(@primary, 0.12);
 	box-shadow: inset 0 0 0 1px alpha(@primary, 0.25);
 }
-#custom-swaync:hover {
+#custom-swaync:hover,
+box:hover > #custom-swaync {
 	box-shadow: 0 0 3px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0.25);
 	animation: ring-a 1.1s ease-in-out 1;
 }
@@ -210,7 +216,8 @@ tooltip label{
 #custom-swaync {
 	box-shadow: 0 0 3px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0);
 }
-#custom-power:hover {
+#custom-power:hover,
+box:hover > #custom-power {
 	color: @primary;
 	background-color: alpha(@primary, 0.15);
 	box-shadow: 0 0 3px 0 alpha(@primary, 0.40), inset 0 0 0 1px alpha(@primary, 0.35);
@@ -268,7 +275,10 @@ tooltip label{
 #custom-volume.spk-2 { background-image: -gtk-icontheme("waybar-spk-2-symbolic"); }
 #custom-volume.spk-0:hover,
 #custom-volume.spk-1:hover,
-#custom-volume.spk-2:hover {
+#custom-volume.spk-2:hover,
+box:hover > #custom-volume.spk-0,
+box:hover > #custom-volume.spk-1,
+box:hover > #custom-volume.spk-2 {
 	animation: spk-play 0.8s steps(4) 1;
 }
 #temperature.critical {
@@ -396,7 +406,7 @@ tooltip label{
 	            margin 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
 	            color 0.25s ease,
 	            background-color 0.3s ease,
-	            box-shadow 0.12s ease;
+	            box-shadow 0.2s ease;
 }
 #custom-ws.empty {
 	color: alpha(@outline, 0.7);
@@ -424,13 +434,20 @@ tooltip label{
 	            background-color 0.3s ease,
 	            box-shadow 0.3s ease 0.25s;
 }
-#custom-ws.focused:hover {
-	color: @on_primary;
-	background-color: @primary;
-}
-#custom-ws:hover {
+/* hover: el kanji queda enmarcado en un cuadradito redondeado (mismo radio que
+   la píldora del foco), con borde fino y un fondo leve en el color del tema.
+   Solo cambian colores/sombras: la geometría no se mueve y no hay serrucho. */
+#custom-ws:hover,
+box:hover > #custom-ws {
 	color: @primary;
 	background-color: alpha(@primary, 0.10);
+	box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0.45);
+}
+#custom-ws.focused:hover,
+box:hover > #custom-ws.focused {
+	color: @on_primary;
+	background-color: @primary;
+	box-shadow: 0 0 5px 0 alpha(@primary, 0.45), inset 0 0 0 1px alpha(@secondary, 0);
 }
 #custom-ws.urgent {
 	color: @primary;
@@ -474,7 +491,8 @@ tooltip label{
 	            background-color 0.35s ease,
 	            box-shadow 0.6s ease 0.15s;
 }
-#custom-special.active:hover {
+#custom-special.active:hover,
+box:hover > #custom-special.active {
 	background-color: alpha(@tertiary, 0.20);
 	box-shadow: 0 0 5px 0 alpha(@tertiary, 0.5), inset 0 0 0 1px @tertiary;
 }
