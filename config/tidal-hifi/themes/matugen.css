@@ -1,21 +1,21 @@
 /* Tidal-hifi theme — generated with Matugen (based on bundled Gruvbox.css) */
 html {
-  --sidebar-background: #1c2024;
-  --sidebar-hover-background: #36393e;
-  --sidebar-menu-top-text: #c2c7cf;
-  --sidebar-menu-playlist-text: #c2c7cf;
-  --search-background: #1c2024;
-  --main-background: #101418;
-  --main-navigation-control-background: #1c2024;
-  --main-feed-button-background: #1c2024;
-  --player-control-background: #272a2f;
-  --player-control-active-button: #9bcbfa;
-  --player-progress-bar: #9bcbfa;
-  --indicator-hifi-background: #d3bfe6;
-  --indicator-hifi-span: #1c2024;
+  --sidebar-background: #1a2121;
+  --sidebar-hover-background: #343a3a;
+  --sidebar-menu-top-text: #bec8c8;
+  --sidebar-menu-playlist-text: #bec8c8;
+  --search-background: #1a2121;
+  --main-background: #0e1415;
+  --main-navigation-control-background: #1a2121;
+  --main-feed-button-background: #1a2121;
+  --player-control-background: #252b2b;
+  --player-control-active-button: #80d4d6;
+  --player-progress-bar: #80d4d6;
+  --indicator-hifi-background: #b4c8e9;
+  --indicator-hifi-span: #1a2121;
   --player-control-favorite: #ffb4ab;
-  --search-dialog-background: #272a2f;
-  --right-queue-background: #1c2024;
+  --search-dialog-background: #252b2b;
+  --right-queue-background: #1a2121;
   --market-divider-fill-color: transparent;
   --market-header-divider-color: transparent;
   --market-core-divider-10-color: transparent;
@@ -27,47 +27,47 @@ html {
 }
 
 #sidebar {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [class*=_sidebarWrapper_] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 #sidebar [class*=_header_] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [class*=_navigationItem_] {
-  color: #c2c7cf;
+  color: #bec8c8;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 [class*=_navigationItem_]:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 [class*=_navigationItem_][data-status=active], [class*=_navigationItem_][aria-current=page] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_contentItem_] {
-  color: #c2c7cf;
+  color: #bec8c8;
   transition: background-color 0.15s ease;
 }
 [class*=_contentItem_]:hover {
-  background-color: #36393e;
-  color: #b9c8da;
+  background-color: #343a3a;
+  color: #b0cccc;
 }
 [class*=_contentItem_][data-status=active] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_collectionWrapper_] {
-  border-color: #272a2f;
+  border-color: #252b2b;
 }
 
 [class*=_fixedNavigation_] {
-  border-color: #272a2f;
+  border-color: #252b2b;
 }
 
 #sidebar ::-webkit-scrollbar {
@@ -75,7 +75,7 @@ html {
 }
 
 #sidebar ::-webkit-scrollbar-thumb {
-  background-color: #36393e;
+  background-color: #343a3a;
   border-radius: 3px;
 }
 
@@ -84,190 +84,190 @@ html {
 }
 
 [class*=_actionButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_actionButton_]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 #mainHeader {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [data-test=header] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [data-test=navigation-arrows] button {
-  color: #c2c7cf;
-  background-color: #1c2024;
-  border-color: #272a2f;
+  color: #bec8c8;
+  background-color: #1a2121;
+  border-color: #252b2b;
 }
 [data-test=navigation-arrows] button:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 [data-test=navigation-arrows] button:disabled {
-  color: #42474e;
+  color: #3f4949;
 }
 
 [class*=_logo_][href="/"] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_buttonContainer_] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_buttonContainer_] button:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_searchField_][class*=_searchField_] {
-  background-color: #1c2024;
-  color: #e0e2e8;
+  background-color: #1a2121;
+  color: #dde4e3;
   border-color: transparent;
   border-radius: 8px;
 }
 [class*=_searchField_][class*=_searchField_]::placeholder {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_searchField_][class*=_searchField_]:focus {
-  border-color: #42474e;
-  background-color: #272a2f;
+  border-color: #3f4949;
+  background-color: #252b2b;
 }
 
 input[class*=_searchField_] {
-  background-color: #1c2024;
-  color: #e0e2e8;
+  background-color: #1a2121;
+  color: #dde4e3;
   border-color: transparent;
   border-radius: 8px;
 }
 input[class*=_searchField_]::placeholder {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 input[class*=_searchField_]:focus {
-  border-color: #42474e;
-  background-color: #272a2f;
+  border-color: #3f4949;
+  background-color: #252b2b;
 }
 
 [class*=_searchFieldWithPopover_] [class*=_container_] {
-  background-color: #1c2024;
+  background-color: #1a2121;
   border-color: transparent;
   border-radius: 8px;
 }
 [class*=_searchFieldWithPopover_] [class*=_container_]:focus-within {
-  border-color: #42474e;
-  background-color: #272a2f;
+  border-color: #3f4949;
+  background-color: #252b2b;
 }
 
 [class*=_searchFieldFilter_] {
-  background-color: #272a2f;
-  color: #e0e2e8;
-  border-color: #42474e;
+  background-color: #252b2b;
+  color: #dde4e3;
+  border-color: #3f4949;
 }
 
 #main {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_mainContainer_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_containerRow_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 [class*=_containerRow_]:hover {
-  background-color: #101418 !important;
+  background-color: #0e1415 !important;
 }
 
 .mainContent {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_headerContainer_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_dataContainer_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_detailContainer_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_actionContainer_] button:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 
 [id^=footerPlayer] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [class*=_footerPlayerWrapper_] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [class*=_controlWrapper_] {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 [class*=_mediaControlButtons_] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_mediaControlButtons_] button:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [class*=_mediaControlButtons_] button[data-status=playing], [class*=_mediaControlButtons_] button[aria-pressed=true] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_progressBar_] [class*=_progressBarFill_] {
-  background-color: #9bcbfa;
+  background-color: #80d4d6;
 }
 
 [class*=_volume_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_volume_]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_trackListWrapper_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_tracklistHeaderContainer_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_trackRow_] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [class*=_trackRow_]:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 [class*=_trackRow_][data-status=playing] {
-  color: #9bcbfa;
-  background-color: #272a2f;
+  color: #80d4d6;
+  background-color: #252b2b;
 }
 
 [class*=_mediaPlayerControls_] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_mediaPlayerControls_] button:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [class*=_mediaPlayerControls_] button[data-status=playing] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_favoriteButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_favoriteButton_]:hover {
   color: #ffb4ab;
@@ -277,38 +277,38 @@ input[class*=_searchField_]:focus {
 }
 
 [class*=_feedModule_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 [class*=_feedModule_]:hover {
-  background-color: #101418 !important;
+  background-color: #0e1415 !important;
 }
 
 [class*=_cardContainer_] {
-  background-color: #101418;
+  background-color: #0e1415;
   transition: background-color 0.15s ease;
 }
 [class*=_cardContainer_]:hover {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 [class*=_feedTitle_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_subtitle_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=_container_][class*=_header_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_stickyHeader_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=_sectionHeader_] {
-  background-color: #101418 !important;
+  background-color: #0e1415 !important;
 }
 
 #main [class*=_header_] {
@@ -316,136 +316,136 @@ input[class*=_searchField_]:focus {
 }
 
 [class*=_header_] [class*=_marketText_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_headerColumn_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=_overline_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=_feedItem_],
 [class*=_feedCard_] {
-  background-color: #272a2f;
-  border-color: #272a2f;
+  background-color: #252b2b;
+  border-color: #252b2b;
 }
 
 [class*=_textContainer_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_filter_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 a {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 ::selection {
-  background-color: #272a2f;
-  color: #e0e2e8;
+  background-color: #252b2b;
+  color: #dde4e3;
 }
 
 [class*=_queueWrapper_] {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 [class*=_modal_],
 [class*=_dialog_] {
-  background-color: #272a2f;
-  color: #e0e2e8;
+  background-color: #252b2b;
+  color: #dde4e3;
 }
 
 [class*=_contextMenuWrapper_] {
-  background-color: #272a2f;
-  border-color: #42474e;
+  background-color: #252b2b;
+  border-color: #3f4949;
 }
 
 [class*=_contextMenuItem_] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [class*=_contextMenuItem_]:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 
 #footerPlayer,
 [data-test=footer-player] {
-  background-color: #1c2024;
-  border-top: 1px solid #272a2f;
+  background-color: #1a2121;
+  border-top: 1px solid #252b2b;
 }
 
 #footerPlayer [class*=_leftColumn_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 #footerPlayer [class*=_leftColumn_] a {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 #footerPlayer [class*=_leftColumn_] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [data-test=footer-track-title] a {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [data-test=footer-track-title] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 #footerPlayer [class*=_descriptionText_] a {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 #footerPlayer [class*=_descriptionText_] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_playingFrom_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_playingFrom_] a {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 #playbackControlBar button,
 [data-test=play-controls] button {
-  color: #c2c7cf;
+  color: #bec8c8;
   transition: color 0.15s ease;
 }
 #playbackControlBar button:hover,
 [data-test=play-controls] button:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 #playbackControlBar button.withBackground[aria-checked=true],
 [data-test=play-controls] button.withBackground[aria-checked=true] {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 #playbackControlBar button.withBackground[aria-checked=true] path,
 [data-test=play-controls] button.withBackground[aria-checked=true] path {
-  fill: #9bcbfa;
+  fill: #80d4d6;
 }
 
 [class*=_playbackButton_] button {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 #progressBar,
 [data-test=progress-bar] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_progressBarWrapper_] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_indicator_][class*=_fillingBlock_] {
-  background-color: #9bcbfa;
+  background-color: #80d4d6;
 }
 
 [data-test=footer-favorite-button][aria-checked=true] svg,
@@ -456,9 +456,9 @@ a:hover {
 [data-test=now-playing],
 #nowPlaying,
 [class*=_nowPlayingContainer_] {
-  background-color: #101418 !important;
+  background-color: #0e1415 !important;
   background-image: none !important;
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_innerContainer_] {
@@ -471,41 +471,41 @@ a:hover {
 }
 
 [class*=_playingFrom_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_playingFrom_] a {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 [class*=_playingFrom_] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_baseButton_][data-test=close-now-playing],
 [class*=_baseButton_][data-test=request-fullscreen],
 [class*=_closeButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
   background-color: transparent;
 }
 [class*=_baseButton_][data-test=close-now-playing]:hover,
 [class*=_baseButton_][data-test=request-fullscreen]:hover,
 [class*=_closeButton_]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 [class*=_baseButton_][data-test=close-now-playing] span,
 [class*=_baseButton_][data-test=request-fullscreen] span,
 [class*=_closeButton_] span {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 
 [class*=_leftColumn_][class*=_albumMediaQueries_],
 [class*=_leftColumn_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 .overlay[class*=_albumImageOverlay_],
 [class*=_albumImageOverlay_] {
-  color: #e0e2e8;
+  color: #dde4e3;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -514,49 +514,49 @@ a:hover {
 }
 
 [data-test=now-playing-track-title] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_artistNameColor_] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [class*=_artistNameColor_]:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_subTitleText_] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [class*=_subTitleText_] a {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [class*=_subTitleText_] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_buttonsContainer_] [data-test=now-playing-favorite-button],
 [class*=_buttonsContainer_] [data-test=now-playing-context-menu] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_buttonsContainer_] [data-test=now-playing-favorite-button]:hover,
 [class*=_buttonsContainer_] [data-test=now-playing-context-menu]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 [class*=_tabs_][class*=_tabItems_] {
   background-color: transparent;
-  border-color: #42474e;
+  border-color: #3f4949;
 }
 
 [class*=_tabItem_] {
-  color: #c2c7cf;
+  color: #bec8c8;
   background-color: transparent;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 [class*=_tabItem_]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 [class*=_tabItem_] span,
 [class*=_tabItem_] [data-wave-color] {
@@ -567,12 +567,12 @@ a:hover {
 }
 
 [class*=_tabItem_][class*=_activeTab_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_tabPanelStyles_] {
   background-color: transparent;
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_playQueueTab_] {
@@ -585,35 +585,35 @@ a:hover {
 }
 
 [class*=_stickyHeader_] {
-  background-color: #101418;
-  color: #e0e2e8;
+  background-color: #0e1415;
+  color: #dde4e3;
 }
 
 [class*=_groupTitle_] {
-  color: #e0e2e8;
+  color: #dde4e3;
   background-color: transparent;
 }
 [class*=_groupTitle_] a {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 [class*=_groupTitle_] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_clearButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_clearButton_]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 [data-test=playqueue-item] {
-  color: #b9c8da;
+  color: #b0cccc;
   background-color: transparent;
 }
 [data-test=playqueue-item]:hover {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 [class*=_containerPriorityHistory_] {
@@ -624,52 +624,52 @@ a:hover {
 }
 
 [class*=_titleLink_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [class*=_titleLink_]:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_textHigh_] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_nowPlayingIconContainer_] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_iconHigh_] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=_artistText_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_artistText_] a {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_artistText_] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=_titleArtistGroup_] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_actions_] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_actions_] button:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 [class*=_removeButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_removeButton_]:hover {
   color: #ffb4ab;
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 [class*=_nowPlayingCell_] {
@@ -677,7 +677,7 @@ a:hover {
 }
 
 [class*=_bottomGradient_] {
-  background: linear-gradient(transparent, #101418);
+  background: linear-gradient(transparent, #0e1415);
 }
 
 [class*=_dropContainer_] {
@@ -686,24 +686,24 @@ a:hover {
 
 [class*=_suggestionsTab_] {
   background-color: transparent;
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_creditsTab_] {
   background-color: transparent;
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [class*=_creditsTab_] [class*=_divider_] {
-  background-color: #272a2f !important;
+  background-color: #252b2b !important;
 }
 
 [data-test=mp-toggle-now-playing],
 [class*=_toggleButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=mp-toggle-now-playing]:hover,
 [class*=_toggleButton_]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=_nowPlayingVisible_] {
@@ -715,17 +715,17 @@ a:hover {
 }
 
 [class*=_nowPlayingButton_] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=_nowPlayingButton_]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [data-test=playqueue-scroll]::-webkit-scrollbar {
   width: 6px;
 }
 [data-test=playqueue-scroll]::-webkit-scrollbar-thumb {
-  background-color: #36393e;
+  background-color: #343a3a;
   border-radius: 3px;
 }
 [data-test=playqueue-scroll]::-webkit-scrollbar-track {
@@ -733,7 +733,7 @@ a:hover {
 }
 
 .os-theme-tidal .os-scrollbar-handle {
-  background-color: #36393e;
+  background-color: #343a3a;
   border-radius: 3px;
 }
 .os-theme-tidal .os-scrollbar-track {
@@ -741,51 +741,51 @@ a:hover {
 }
 
 .settings-window {
-  --black: #101418;
-  --black-lighter: #1c2024;
-  --black-lightest: #272a2f;
-  --grey-darkest: #42474e;
-  --grey-darker: #36393e;
-  --grey: #c2c7cf;
-  --white: #e0e2e8;
-  --tidal-blue: #d3bfe6;
+  --black: #0e1415;
+  --black-lighter: #1a2121;
+  --black-lightest: #252b2b;
+  --grey-darkest: #3f4949;
+  --grey-darker: #343a3a;
+  --grey: #bec8c8;
+  --white: #dde4e3;
+  --tidal-blue: #b4c8e9;
   --tidal-red: #ffb4ab;
-  color: #e0e2e8;
-  background: #101418;
+  color: #dde4e3;
+  background: #0e1415;
   overflow: hidden;
 }
 
 .settings-window__wrapper {
-  background: #101418;
-  box-shadow: inset 0 0 2px 0 #1c2024;
+  background: #0e1415;
+  box-shadow: inset 0 0 2px 0 #1a2121;
 }
 
 .settings-window__close-button:hover {
-  background: #272a2f;
+  background: #252b2b;
 }
 
 .tabs__trigger + label {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 .tabs__trigger + label:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 .tabs__trigger:checked + label {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 .tabs__separator {
-  border-color: #42474e;
+  border-color: #3f4949;
 }
 
 .settings input:checked + label {
-  border-bottom: 2px solid #9bcbfa;
-  color: #9bcbfa;
+  border-bottom: 2px solid #80d4d6;
+  color: #80d4d6;
 }
 
 .tabs__content::-webkit-scrollbar-thumb {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 .group {
@@ -793,56 +793,56 @@ a:hover {
 }
 
 .group__title {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 .group__option {
-  background: #272a2f;
-  border-color: #272a2f;
+  background: #252b2b;
+  border-color: #252b2b;
 }
 
 .group__options-group {
-  background: #272a2f;
-  border-color: #272a2f;
+  background: #252b2b;
+  border-color: #252b2b;
 }
 .group__options-group .group__option {
-  border-bottom-color: #42474e;
+  border-bottom-color: #3f4949;
 }
 
 .group__content h4 {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 .group__content p,
 .group__description p {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 
 .group__description .text-input {
-  border-bottom: solid 1px #42474e;
-  color: #e0e2e8;
+  border-bottom: solid 1px #3f4949;
+  color: #dde4e3;
 }
 
 .group__description .text-input:focus {
-  border-color: #9bcbfa;
-  color: #e0e2e8;
+  border-color: #80d4d6;
+  color: #dde4e3;
 }
 
 .text-input {
-  background-color: #42474e;
-  color: #e0e2e8;
-  border-color: #42474e;
+  background-color: #3f4949;
+  color: #dde4e3;
+  border-color: #3f4949;
 }
 .text-input::placeholder {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 .tags__tag {
-  background: #cee5ff;
-  color: #101418;
+  background: #9cf1f2;
+  color: #0e1415;
 }
 .tags__tag:hover, .tags__tag:focus-within {
-  background: #9bcbfa;
+  background: #80d4d6;
 }
 
 .tags__tag__text {
@@ -858,42 +858,42 @@ a:hover {
 }
 
 .button {
-  background: #272a2f;
-  color: #e0e2e8;
-  border-color: #42474e;
+  background: #252b2b;
+  color: #dde4e3;
+  border-color: #3f4949;
 }
 .button:hover {
-  background: #42474e;
+  background: #3f4949;
 }
 .button.primary {
-  background: #9bcbfa;
-  color: #003353;
+  background: #80d4d6;
+  color: #003738;
 }
 .button.primary:hover {
-  background: #cee5ff;
+  background: #9cf1f2;
 }
 
 .select-input {
-  background-color: #272a2f;
-  color: #e0e2e8;
-  border-color: #42474e;
+  background-color: #252b2b;
+  color: #dde4e3;
+  border-color: #3f4949;
 }
 
 .select-input option {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 .select-input option:disabled {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 .hotkey-binding kbd {
-  background: #9bcbfa;
-  color: #003353;
+  background: #80d4d6;
+  color: #003738;
 }
 
 .hotkey-binding.editing {
-  background: #42474e;
+  background: #3f4949;
 }
 
 .switch {
@@ -902,11 +902,11 @@ a:hover {
 }
 
 .switch input:checked + .switch__slider {
-  background-color: #9bcbfa;
+  background-color: #80d4d6;
 }
 
 .switch input:checked + .switch__slider::before {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 .switch input:focus + .switch__slider {
@@ -914,209 +914,209 @@ a:hover {
 }
 
 .switch:has(:focus-visible) {
-  outline: 2px solid #9bcbfa;
+  outline: 2px solid #80d4d6;
   outline-offset: 2px;
   border-radius: 40px;
 }
 
 .switch__slider {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 .switch__slider::before {
-  background-color: #c2c7cf;
+  background-color: #bec8c8;
 }
 
 .textarea {
-  background: #272a2f;
-  color: #b9c8da;
-  border-color: #42474e;
+  background: #252b2b;
+  color: #b0cccc;
+  border-color: #3f4949;
 }
 
 .footer__note {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 .footer__button {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 
 .footer__button:hover {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 
 .external-link {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 .external-link:hover {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 
 .file-msg {
-  color: #d3bfe6 !important;
+  color: #b4c8e9 !important;
 }
 
 [class*=sidebarWrapper] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 #sidebar [class*=header_] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [class*=logoWrapper] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [class*=logoButton],
 [data-test=sidebar-logo] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=versionBadge] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=submenu_] {
-  background-color: #272a2f;
-  border-color: #42474e;
+  background-color: #252b2b;
+  border-color: #3f4949;
 }
 
 [class*=submenuItem] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=submenuItem]:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 
 [class*=collapseButton],
 [data-test=sidebar-collapse],
 [data-test=sidebar-expand] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=collapseButton]:hover,
 [data-test=sidebar-collapse]:hover,
 [data-test=sidebar-expand]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 [data-test=shortcut-list] [class*=shortcutItem] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [data-test=shortcut-list] [class*=shortcutItem]:hover {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 [data-test=shortcut-list] [class*=textWrapper] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 
 [data-test=create-folder-or-playlist] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=create-folder-or-playlist]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 [class*=logo_][class*=logoVisible] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [data-test=header-profile-menu-button],
 [class*=profileMenuButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=header-profile-menu-button]:hover,
 [class*=profileMenuButton]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=profilePicture] {
-  border-color: #272a2f;
+  border-color: #252b2b;
 }
 
 [class*=searchField] {
-  background-color: #1c2024;
-  color: #e0e2e8;
+  background-color: #1a2121;
+  color: #dde4e3;
   border-color: transparent;
   border-radius: 8px;
 }
 [class*=searchField]::placeholder {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=searchField]:focus, [class*=searchField]:focus-within {
-  border-color: #42474e;
-  background-color: #272a2f;
+  border-color: #3f4949;
+  background-color: #252b2b;
 }
 
 [class*=searchFieldWithPopover] [class*=container] {
-  background-color: #1c2024;
+  background-color: #1a2121;
   border-color: transparent;
   border-radius: 8px;
 }
 [class*=searchFieldWithPopover] [class*=container]:focus-within {
-  border-color: #42474e;
-  background-color: #272a2f;
+  border-color: #3f4949;
+  background-color: #252b2b;
 }
 
 [data-test=search-popover-container] {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 .mainContent {
-  color: #e0e2e8;
-  background-color: #101418;
+  color: #dde4e3;
+  background-color: #0e1415;
 }
 
 [class*=pageHeader] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=feed_][data-test=home-page-feed],
 [class*=feed_] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [data-test=spotlight-banner] [class*=slide_] {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 [data-test=spotlight-banner] [class*=leftSection] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [data-test=spotlight-banner] [class*=brandingTitle] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=cardContainer],
 [class*=card_] {
-  background-color: #101418;
+  background-color: #0e1415;
   transition: background-color 0.15s ease;
 }
 [class*=cardContainer]:hover,
 [class*=card_]:hover {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 [class*=textContent] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=subtitle] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=description] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 
 [class*=headerTitleContainer] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=headerText] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=marketText] {
@@ -1125,63 +1125,63 @@ a:hover {
 
 [data-test=view-all-link],
 [class*=viewAllButton] {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 [data-test=view-all-link]:hover,
 [class*=viewAllButton]:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=overlay] [class*=playButton] {
-  background-color: #9bcbfa;
-  color: #003353;
+  background-color: #80d4d6;
+  color: #003738;
 }
 
 [class*=playButtonContainer] [class*=playButtonInner] {
-  background-color: #9bcbfa;
+  background-color: #80d4d6;
 }
 
 [class*=headerContainer] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=detailContainer] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [class*=sortButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=sortButton]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=trackListWrapper] {
-  background-color: #101418;
+  background-color: #0e1415;
 }
 
 [data-test=tracklist-row],
 [class*=trackRow_] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [data-test=tracklist-row]:hover,
 [class*=trackRow_]:hover {
-  background-color: #36393e;
-  color: #e0e2e8;
+  background-color: #343a3a;
+  color: #dde4e3;
 }
 [data-test=tracklist-row][data-status=playing], [data-test=tracklist-row][data-test-is-playing=true],
 [class*=trackRow_][data-status=playing],
 [class*=trackRow_][data-test-is-playing=true] {
-  color: #9bcbfa;
-  background-color: #272a2f;
+  color: #80d4d6;
+  background-color: #252b2b;
 }
 
 [class*=album] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 
 [class*=favoriteButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=favoriteButton]:hover {
   color: #ffb4ab;
@@ -1194,77 +1194,77 @@ a:hover {
 [class*=explicitBadge],
 [data-test=quality-badge-LOSSLESS],
 [class*=qualityBadgeContainer] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 #footerPlayer [class*=background_] {
-  background-color: #1c2024 !important;
+  background-color: #1a2121 !important;
 }
 
 [class*=playerContent] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [data-test=track-info],
 [class*=trackInfo] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=artworkContainer],
 [data-test=player-details-toggle-now-playing] {
-  border-color: #272a2f;
+  border-color: #252b2b;
 }
 
 [class*=trackContent] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=titleArtistStack] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=titleContainer] a {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [class*=titleContainer] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=artist_] [class*=item_],
 [class*=artist_] [class*=link_] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [class*=artist_] [class*=item_]:hover,
 [class*=artist_] [class*=link_]:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 [class*=playingFromText] a {
-  color: #d3bfe6;
+  color: #b4c8e9;
 }
 [class*=playingFromText] a:hover {
-  color: #cee5ff;
+  color: #9cf1f2;
 }
 
 #footerPlayer [class*=actions_] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 #footerPlayer [class*=actions_] button:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=blockButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=blockButton]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=contextMenuButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=contextMenuButton]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=centerSection] {
@@ -1273,98 +1273,98 @@ a:hover {
 
 #playbackControlBar button[aria-checked=true] path,
 [data-test=play-controls] button[aria-checked=true] path {
-  fill: #9bcbfa;
+  fill: #80d4d6;
 }
 #playbackControlBar button.withBackground, #playbackControlBar button[class*=activeButton],
 [data-test=play-controls] button.withBackground,
 [data-test=play-controls] button[class*=activeButton] {
-  background-color: #272a2f;
+  background-color: #252b2b;
 }
 
 [class*=shuffleButton][aria-checked=true],
 [data-test=shuffle][aria-checked=true] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=repeatButton][aria-checked=true],
 [data-test=repeat][aria-checked=true] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [class*=skipButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=skipButton]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=playbackButton],
 [data-test=play-controls] [class*=playButtonInner] {
-  color: #e0e2e8;
+  color: #dde4e3;
   background-color: transparent;
 }
 
 [class*=scrubberRow] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=scrubberBar] {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 [class*=scrubberTime],
 [class*=scrubberTimeText] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=fillingBlock][class*=indicator] {
-  background-color: #9bcbfa;
+  background-color: #80d4d6;
 }
 
 [class*=fillingBlock][class*=range] {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 [class*=knob] {
-  background-color: #9bcbfa;
+  background-color: #80d4d6;
 }
 
 [class*=toolTip] {
-  background-color: #42474e;
-  color: #e0e2e8;
+  background-color: #3f4949;
+  color: #dde4e3;
 }
 
 [class*=rightSection] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=utilityContainer] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=utilityButtons] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=utilityButtons] button:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [data-test=play-queue-button] {
-  color: #c2c7cf;
+  color: #bec8c8;
   background-color: transparent !important;
 }
 [data-test=play-queue-button]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 [data-test=play-queue-button][aria-pressed=true] {
-  color: #9bcbfa;
+  color: #80d4d6;
 }
 
 [data-test=volume] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=volume]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=sliderContainer] {
@@ -1372,20 +1372,20 @@ a:hover {
 }
 
 [class*=newNowPlaying] {
-  background-color: #101418 !important;
+  background-color: #0e1415 !important;
   background-image: none !important;
   --market-button-focus-ring-color: transparent;
-  --market-core-focus-ring-color: #9bcbfa;
+  --market-core-focus-ring-color: #80d4d6;
 }
 
 [data-test=now-playing-similar-tracks] [class*=radioSection] [class*=card_] {
   background-color: transparent;
 }
 [data-test=now-playing-similar-tracks] [class*=radioSection] [class*=contentContainer] {
-  color: #b9c8da;
+  color: #b0cccc;
 }
 [data-test=now-playing-similar-tracks] [class*=radioSection] [class*=subtitle] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [data-test=now-playing-mixes-and-radio-header],
@@ -1401,8 +1401,8 @@ a:hover {
 }
 
 #playQueueSidebar {
-  background-color: #1c2024 !important;
-  background: #1c2024 !important;
+  background-color: #1a2121 !important;
+  background: #1a2121 !important;
   border: none !important;
   border-color: transparent !important;
   border-width: 0 !important;
@@ -1410,36 +1410,36 @@ a:hover {
   outline: none !important;
 }
 #playQueueSidebar > * {
-  background-color: #1c2024 !important;
+  background-color: #1a2121 !important;
   border: none !important;
   box-shadow: none !important;
 }
 
 [class*=playQueueWrapper] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 
 [data-test=playqueue-header] {
-  background-color: #1c2024;
+  background-color: #1a2121;
 }
 [data-test=playqueue-header] [class*=headerButton] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=playqueue-header] [class*=headerButton]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [data-test=playqueue-save-button],
 [data-test=playqueue-close-button] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=playqueue-save-button]:hover,
 [data-test=playqueue-close-button]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [data-test=playqueue-title] {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [class*=playQueueItemsContainer],
@@ -1452,71 +1452,71 @@ a:hover {
 }
 
 #playQueueSidebar [class*=stickyHeader] {
-  background-color: #1c2024;
-  color: #e0e2e8;
+  background-color: #1a2121;
+  color: #dde4e3;
 }
 
 [data-test=playqueue-item] {
-  color: #b9c8da;
+  color: #b0cccc;
   background-color: transparent;
-  border-bottom: 1px solid #272a2f;
+  border-bottom: 1px solid #252b2b;
 }
 [data-test=playqueue-item]:hover {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 [data-test=playqueue-item] img {
   border-radius: 4px;
 }
 [data-test=playqueue-item] [class*=artist] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=playqueue-item] [class*=duration] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 
 [class*=dragHandle] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=dragHandle]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 [data-test=playqueue-item] [class*=more],
 [data-test=playqueue-item] [class*=menu] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [data-test=playqueue-item] [class*=more]:hover,
 [data-test=playqueue-item] [class*=menu]:hover {
-  color: #e0e2e8;
+  color: #dde4e3;
 }
 
 #playQueueSidebar [class*=actions_] button {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 #playQueueSidebar [class*=actions_] button:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 [class*=removeButton],
 [data-test=remove-button] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=removeButton]:hover,
 [data-test=remove-button]:hover {
   color: #ffb4ab;
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 
 [class*=bottomGradient] {
-  background: linear-gradient(transparent, #1c2024);
+  background: linear-gradient(transparent, #1a2121);
 }
 
 [data-test=playqueue-scroll]::-webkit-scrollbar {
   width: 6px;
 }
 [data-test=playqueue-scroll]::-webkit-scrollbar-thumb {
-  background-color: #36393e;
+  background-color: #343a3a;
   border-radius: 3px;
 }
 [data-test=playqueue-scroll]::-webkit-scrollbar-track {
@@ -1524,80 +1524,80 @@ a:hover {
 }
 
 [class*=notificationWrapper] {
-  background-color: #272a2f;
-  color: #e0e2e8;
+  background-color: #252b2b;
+  color: #dde4e3;
 }
 
 [class*=marketButton][class*=primary] {
-  background-color: #9bcbfa;
-  color: #003353;
+  background-color: #80d4d6;
+  color: #003738;
 }
 [class*=marketButton][class*=primary]:hover {
   opacity: 0.9;
 }
 [class*=marketButton][class*=secondary] {
-  background-color: #272a2f;
-  color: #e0e2e8;
-  border-color: #42474e;
+  background-color: #252b2b;
+  color: #dde4e3;
+  border-color: #3f4949;
 }
 [class*=marketButton][class*=secondary]:hover {
-  background-color: #36393e;
+  background-color: #343a3a;
 }
 [class*=marketButton][class*=tertiary] {
-  color: #c2c7cf;
+  color: #bec8c8;
 }
 [class*=marketButton][class*=tertiary]:hover {
-  color: #e0e2e8;
-  background-color: #36393e;
+  color: #dde4e3;
+  background-color: #343a3a;
 }
 
 /* ---- tokens de TIDAL (market-core / wave-color) -> paleta matugen ----
    TIDAL pinta muchas superficies con estas variables (grises neutros y acento cian);
    se pisan en todos los elementos para que no queden grises sueltos. */
 * {
-  --market-core-surface-5-color: #0b0f12 !important;
-  --market-core-surface-10-color: #181c20 !important;
-  --market-core-surface-20-color: #1c2024 !important;
-  --market-core-surface-30-color: #272a2f !important;
+  --market-core-surface-5-color: #090f0f !important;
+  --market-core-surface-10-color: #161d1d !important;
+  --market-core-surface-20-color: #1a2121 !important;
+  --market-core-surface-30-color: #252b2b !important;
   --market-core-surface-overlay-color: rgba(0, 0, 0, 0.5) !important;
-  --frosted-glass-floating-surface: color-mix(in srgb, #1c2024, transparent 25%) !important;
-  --frosted-glass-surface: color-mix(in srgb, #272a2f, transparent 35%) !important;
+  --frosted-glass-floating-surface: color-mix(in srgb, #1a2121, transparent 25%) !important;
+  --frosted-glass-surface: color-mix(in srgb, #252b2b, transparent 35%) !important;
   --frosted-glass-nav-surface: rgba(0, 0, 0, 0.5) !important;
 
-  --wave-color-solid-base-fill: #0b0f12 !important;
-  --wave-color-solid-base-bright: #181c20 !important;
-  --wave-color-solid-base-brighter: #272a2f !important;
-  --wave-color-solid-base-brightest: #323539 !important;
-  --wave-color-material-dark: color-mix(in srgb, #1c2024, transparent 50%) !important;
-  --wave-color-opacity-base-bright-thin: color-mix(in srgb, #181c20, transparent 80%) !important;
-  --wave-color-opacity-base-bright-thick: color-mix(in srgb, #181c20, transparent 40%) !important;
-  --wave-color-opacity-base-bright-ultra-thick: color-mix(in srgb, #181c20, transparent 20%) !important;
-  --wave-color-opacity-base-bright-transparent: #181c20 !important;
-  --wave-color-opacity-base-brighter-ultra-thick: color-mix(in srgb, #272a2f, transparent 20%) !important;
-  --wave-color-opacity-base-brightest-regular: color-mix(in srgb, #323539, transparent 60%) !important;
-  --wave-color-opacity-base-brightest-thin: color-mix(in srgb, #323539, transparent 80%) !important;
-  --wave-color-opacity-base-brightest-ultra-thin: color-mix(in srgb, #323539, transparent 90%) !important;
+  --wave-color-solid-base-fill: #090f0f !important;
+  --wave-color-solid-base-bright: #161d1d !important;
+  --wave-color-solid-base-brighter: #252b2b !important;
+  --wave-color-solid-base-brightest: #2f3636 !important;
+  --wave-color-material-dark: color-mix(in srgb, #1a2121, transparent 50%) !important;
+  --wave-color-opacity-base-bright-thin: color-mix(in srgb, #161d1d, transparent 80%) !important;
+  --wave-color-opacity-base-bright-thick: color-mix(in srgb, #161d1d, transparent 40%) !important;
+  --wave-color-opacity-base-bright-ultra-thick: color-mix(in srgb, #161d1d, transparent 20%) !important;
+  --wave-color-opacity-base-bright-transparent: #161d1d !important;
+  --wave-color-opacity-base-brighter-ultra-thick: color-mix(in srgb, #252b2b, transparent 20%) !important;
+  --wave-color-opacity-base-brightest-regular: color-mix(in srgb, #2f3636, transparent 60%) !important;
+  --wave-color-opacity-base-brightest-thin: color-mix(in srgb, #2f3636, transparent 80%) !important;
+  --wave-color-opacity-base-brightest-ultra-thin: color-mix(in srgb, #2f3636, transparent 90%) !important;
 
-  --wave-color-solid-contrast-dark: #e0e2e8 !important;
-  --wave-color-solid-contrast-darker: #c2c7cf !important;
-  --wave-color-solid-contrast-darkest: #8c9198 !important;
-  --wave-color-text-main: #e0e2e8 !important;
-  --wave-color-text-secondary: #c2c7cf !important;
-  --wave-color-text-tertiary: #8c9198 !important;
-  --wave-color-text-disabled: #42474e !important;
-  --wave-color-text-placeholder: #8c9198 !important;
-  --wave-color-text-link: #d3bfe6 !important;
+  --wave-color-solid-contrast-dark: #dde4e3 !important;
+  --wave-color-solid-contrast-darker: #bec8c8 !important;
+  --wave-color-solid-contrast-darkest: #899392 !important;
+  --wave-color-text-main: #dde4e3 !important;
+  --wave-color-text-secondary: #bec8c8 !important;
+  --wave-color-text-tertiary: #899392 !important;
+  --wave-color-text-disabled: #3f4949 !important;
+  --wave-color-text-placeholder: #899392 !important;
+  --wave-color-text-link: #b4c8e9 !important;
 
-  --wave-color-solid-accent-fill: #9bcbfa !important;
-  --wave-color-solid-accent-bright: #9bcbfa !important;
-  --wave-color-solid-accent-brighter: #cee5ff !important;
-  --wave-color-solid-accent-dark: #2f628c !important;
-  --wave-color-solid-accent-darker: #0d4a73 !important;
-  --wave-color-solid-accent-darkest: #003353 !important;
-  --wave-color-opacity-accent-fill-ultra-thin: color-mix(in srgb, #9bcbfa, transparent 90%) !important;
-  --wave-color-opacity-accent-fill-thin: color-mix(in srgb, #9bcbfa, transparent 80%) !important;
-  --wave-color-opacity-accent-fill-regular: color-mix(in srgb, #9bcbfa, transparent 60%) !important;
-  --wave-color-opacity-accent-fill-ultra-thick: color-mix(in srgb, #9bcbfa, transparent 20%) !important;
+  --wave-color-solid-accent-fill: #80d4d6 !important;
+  --wave-color-solid-accent-bright: #80d4d6 !important;
+  --wave-color-solid-accent-brighter: #9cf1f2 !important;
+  --wave-color-solid-accent-dark: #00696b !important;
+  --wave-color-solid-accent-darker: #004f51 !important;
+  --wave-color-solid-accent-darkest: #003738 !important;
+  --wave-color-opacity-accent-fill-ultra-thin: color-mix(in srgb, #80d4d6, transparent 90%) !important;
+  --wave-color-opacity-accent-fill-thin: color-mix(in srgb, #80d4d6, transparent 80%) !important;
+  --wave-color-opacity-accent-fill-regular: color-mix(in srgb, #80d4d6, transparent 60%) !important;
+  --wave-color-opacity-accent-fill-ultra-thick: color-mix(in srgb, #80d4d6, transparent 20%) !important;
 }
 
 /* barra inferior: oscura como las pastillas de waybar, sin gris */
@@ -1605,8 +1605,8 @@ a:hover {
 [data-test=footer-player],
 [id^=footerPlayer],
 [class*=_footerPlayerWrapper_] {
-  background-color: #0b0f12 !important;
-  border-top: 1px solid #42474e !important;
+  background-color: #090f0f !important;
+  border-top: 1px solid #3f4949 !important;
 }
 #footerPlayer [class*=_controlWrapper_] {
   background-color: transparent !important;
@@ -1614,16 +1614,16 @@ a:hover {
 
 /* rectangulos de albumes de la pantalla principal (shortcuts) */
 [class*=_shortcutItem_] {
-  background-color: #181c20 !important;
+  background-color: #161d1d !important;
   transition: background-color 0.2s ease;
 }
 [class*=_shortcutItem_]:hover {
-  background-color: #272a2f !important;
+  background-color: #252b2b !important;
 }
 
 /* submenu del sidebar (Collection) */
 [class*=_submenu_] {
-  background-color: #272a2f !important;
+  background-color: #252b2b !important;
 }
 /* TIDAL le pone una capa "frosted glass" encima con ::before/::after: es lo que se veia gris */
 #footerPlayer::before,
@@ -1639,9 +1639,9 @@ a:hover {
    Ademas el hero usa degradados fijos a #0c0c0c y las reglas genericas de arriba
    (_headerContainer_, _sectionHeader_, ...) dejaban rectangulos color surface encima. */
 [class*="_theme_"] {
-  --profile-background: #101418 !important;
-  --profile-foreground: #e0e2e8 !important;
-  background-color: #101418 !important;
+  --profile-background: #0e1415 !important;
+  --profile-foreground: #dde4e3 !important;
+  background-color: #0e1415 !important;
 }
 [class*="_theme_"] [class*="_headerContainer_"],
 [class*="_theme_"] [class*="_sectionHeader_"],
@@ -1655,11 +1655,11 @@ a:hover {
 }
 /* hero: degradado y fundido hacia surface en vez de #0c0c0c */
 [class*="_theme_"] [class*="_background_"] {
-  background-image: linear-gradient(color-mix(in srgb, #101418, transparent 60%) 0, #101418 100%) !important;
+  background-image: linear-gradient(color-mix(in srgb, #0e1415, transparent 60%) 0, #0e1415 100%) !important;
 }
 [class*="_theme_"] [class*="_background_"] [class*="_image_"]:not([class*="_mainImage_"])::before {
-  background-image: linear-gradient(180deg, color-mix(in srgb, #101418, transparent 30%) 0, #101418 100%), var(--img) !important;
+  background-image: linear-gradient(180deg, color-mix(in srgb, #0e1415, transparent 30%) 0, #0e1415 100%), var(--img) !important;
 }
 [class*="_theme_"] [class*="_background_"] [class*="_mainImage_"]::after {
-  background-image: linear-gradient(180deg, color-mix(in srgb, #101418, transparent 80%) 0, #101418 100%), var(--img) !important;
+  background-image: linear-gradient(180deg, color-mix(in srgb, #0e1415, transparent 80%) 0, #0e1415 100%), var(--img) !important;
 }

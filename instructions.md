@@ -41,6 +41,12 @@ Leé esto antes de ejecutar nada.
     inspeccionar el DOM, relanzalo con `--remote-debugging-port=9222 --remote-debugging-address=127.0.0.1` y usá CDP
     (`Runtime.evaluate`, `Input.dispatchKeyEvent` para probar teclas); el puerto 47836 es la API de tidal-hifi, no
     DevTools. Al terminar, relanzalo sin el puerto. Las ventanas relanzadas abren en el workspace actual (va en el 7).
+12. **Autoscroll y modificadores:** el daemon no lee el teclado. `Super` + clic medio lo resuelve un bind
+    `SUPER + mouse:274` de Hyprland, que avisa "mid" por `$XDG_RUNTIME_DIR/autoscroll-ctl.sock`. No vuelvas a
+    seguir el estado de una tecla con binds de press/release (`Super_L` con `release = true`): Hyprland los
+    *sombrea* después de cualquier combo `SUPER+tecla`, el release no llega y el daemon cree que la tecla sigue
+    apretada. Para probarlo sin tocar nada, usá un teclado y un mouse virtuales (uinput) en un workspace vacío:
+    un clic medio sobre kitty pega el portapapeles.
 
 ---
 
@@ -224,6 +230,7 @@ Si Steam cambia sus clases CSS, el tema queda incompleto: `~/.config/steam-theme
 | YouTube sin tema | `youtube-enhancer-apply.sh` necesita LibreWolf **cerrado**. Si dice "no hay base de storage", abrí las opciones de Enhancer una vez. Si se reinstaló la extensión, el script encuentra el UUID nuevo solo. |
 | Steam abre en otro workspace | El script lo devuelve en unos segundos (vigila hasta 2 min). Si no, revisá el log. |
 | El mouse no responde bien / binds de mouse por dispositivo no aplican | Hyprland solo ve el mouse virtual del autoscroll: `systemctl --user stop autoscroll` para descartarlo. |
+| El autoscroll arranca con clic medio sin `Super` | Config vieja que seguía `Super_L` con binds de release (Hyprland los sombrea). Actualizá `keybinds.lua` y `autoscroll.py` desde el repo y `systemctl --user restart autoscroll`. `journalctl --user -u autoscroll` muestra cada `start`/`stop`. |
 | Waybar no aparece | `waybar` en una terminal muestra el error; `SUPER+O` la reinicia. |
 | `hyprctl dispatch ...` da error | Usá la sintaxis Lua (`hl.dsp.*`). |
 | Steam tarda minutos en abrir | No pongas el CSS en quick.css de Millennium; el tema `matugen` lo inyecta por ventana. |

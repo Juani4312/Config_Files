@@ -14,7 +14,7 @@ CONFIG_DIRS=(hypr waybar rofi kitty cava fastfetch gtk-3.0 gtk-4.0 swaync wlogou
 CONFIG_FILES=(pavucontrol.ini QtProject.conf mimeapps.list xdg-terminals.list starship.toml
               qalculate/qalculate-gtk.cfg      # colores los pone matugen (qalculate-colors.sh)
               Code/User/settings.json          # VS Code (tema matugen en extra/vscode-matugen-theme)
-              systemd/user/autoscroll.service) # autoscroll con Shift+clic medio (install.sh lo habilita)
+              systemd/user/autoscroll.service) # autoscroll con Super+clic medio (install.sh lo habilita)
 # Archivos de ~/.config propios de cada máquina: update.sh nunca los sube al repo e install.sh
 # no los pisa si ya existen (solo los crea si faltan y el repo los tiene).
 LOCAL_FILES=(hypr/monitors.lua      # resolución, posición y scale de los monitores

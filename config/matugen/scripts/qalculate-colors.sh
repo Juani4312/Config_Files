@@ -8,4 +8,4 @@ set_key() {
   else sed -i "/^\[General\]/a $1=$2" "$cfg"; fi
 }
 set_key status_error_color '#ffb4ab'
-set_key status_warning_color '#d3bfe6'
+set_key status_warning_color '#b4c8e9'

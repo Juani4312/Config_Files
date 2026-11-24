@@ -210,10 +210,11 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
 
 ## Autoscroll con el mouse
 `hypr/scripts/autoscroll.py` (python-evdev, servicio `autoscroll.service`) toma los mouse y los re-emite por un
-dispositivo virtual. **Clic medio normal = clic medio; `Shift` + clic medio = autoscroll** (un toque lo fija y
+dispositivo virtual. **Clic medio normal = clic medio; `Super` + clic medio = autoscroll** (un toque lo fija y
 mover el mouse desplaza; mantener y arrastrar desplaza mientras se mantiene; cualquier clic sale). Un indicador
 GTK4 layer-shell muestra la burbuja. Los mouse se acceden con la regla udev `70-mouse-uaccess.rules`
-(sin meter al usuario en el grupo `input`). El estado de Shift llega desde binds de Hyprland, no leyendo el teclado.
+(sin meter al usuario en el grupo `input`). No lee el teclado: un bind `SUPER + mouse:274` de Hyprland consume el
+clic y le avisa al daemon, así que no hay estado de "Super apretado" que pueda quedar trabado.
 Si el mouse se porta raro, este daemon es el primer sospechoso: `journalctl --user -u autoscroll`.
 
 ## tidal-hifi: navegación con flechas
@@ -246,7 +247,7 @@ Editar el script no requiere reiniciar: `Ctrl+U` (hard reload de tidal-hifi) lo 
 
 | Atajo | Acción |
 |---|---|
-| `SUPER+T` / `SUPER+SHIFT+Enter` | terminal (kitty) / terminal flotante |
+| `SUPER+T` / `SUPER+Enter` | terminal (kitty) / terminal flotante |
 | `SUPER+R` | launcher (rofi) |
 | `SUPER+E` / `SUPER+SHIFT+E` | Nemo / Yazi |
 | `SUPER+B` / `SUPER+N` | LibreWolf / Google Chrome |
@@ -276,7 +277,7 @@ Editar el script no requiere reiniciar: `Ctrl+U` (hard reload de tidal-hifi) lo 
 | `SUPER+CTRL+B` / `SUPER+ALT+B` | menú de estilos / layouts de waybar |
 | `CTRL+ALT+Supr` | salir de Hyprland |
 | Teclas multimedia | volumen, mic, brillo y reproducción (funcionan con la pantalla bloqueada) |
-| `Shift` + clic medio | autoscroll |
+| `Super` + clic medio | autoscroll |
 | tidal-hifi: `↑/↓/←/→` · `Enter` · `Esc` | mover el resaltado · reproducir/abrir · soltar |
 | tidal-hifi: `Ctrl+↑/↓` | primer / último tema de la lista (sin lista: volumen) |
 

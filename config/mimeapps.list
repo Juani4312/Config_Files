@@ -3,7 +3,7 @@ inode/directory=nemo.desktop
 application/x-gnome-saved-search=nemo.desktop
 x-scheme-handler/discord=vesktop.desktop
 x-scheme-handler/bitwarden=bitwarden.desktop
-text/markdown=code.desktop
+text/markdown=com.microsoft.VSCode.desktop
 text/html=librewolf.desktop
 x-scheme-handler/http=librewolf.desktop
 x-scheme-handler/https=librewolf.desktop
@@ -15,4 +15,4 @@ application/pdf=librewolf.desktop
 x-scheme-handler/stremio=stremio-enhanced.desktop
 
 [Added Associations]
-text/markdown=code.desktop;
+text/markdown=code.desktop;com.microsoft.VSCode.desktop;

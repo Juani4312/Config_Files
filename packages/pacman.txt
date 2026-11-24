@@ -29,6 +29,7 @@ debuginfod
 dkms
 docker
 dosfstools
+dotnet-sdk
 dpkg
 dunst
 efibootmgr
@@ -58,6 +59,7 @@ gst-plugin-pipewire
 gst-plugins-bad
 gst-plugins-ugly
 gvfs
+hplip
 hypridle
 hyprland
 hyprlock
@@ -101,6 +103,7 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 npm
+nss-mdns
 ntfs-3g
 nwg-look
 obs-studio
@@ -118,6 +121,7 @@ pipewire-jack
 pipewire-pulse
 polkit-gnome
 poppler-glib
+postgresql
 power-profiles-daemon
 prismlauncher
 protontricks

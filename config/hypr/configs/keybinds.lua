@@ -12,7 +12,7 @@ end
 local function mod(keys) return mainMod .. " + " .. keys end
 
 bind(mod("T"),              hl.dsp.exec_cmd(terminal))
-bind(mod("SHIFT + Return"), hl.dsp.exec_cmd(terminal, { float = true, size = "800 550" }))
+bind(mod("Return"), hl.dsp.exec_cmd(terminal, { float = true, size = "800 550" }))
 bind(mod("C"),              hl.dsp.window.close())
 bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 bind(mod("E"),              hl.dsp.exec_cmd(fileManager))
@@ -100,12 +100,9 @@ bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true 
 bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
--- autoscroll.py: tell the daemon when Shift is held, so Shift + middle-click
--- passes through as a normal middle click (close tab, paste...)
-local ctl = 'nc -UuN -w1 "$XDG_RUNTIME_DIR/autoscroll-ctl.sock"'
-for _, key in ipairs({ "Shift_L", "Shift_R" }) do
-    bind(key, hl.dsp.exec_cmd("printf shift1 | " .. ctl),
-         { non_consuming = true, ignore_mods = true, locked = true })
-    bind(key, hl.dsp.exec_cmd("printf shift0 | " .. ctl),
-         { non_consuming = true, ignore_mods = true, locked = true, release = true })
-end
+-- autoscroll.py: Super + middle-click starts autoscroll (plain middle-click
+-- passes through: close tab, paste...). Hyprland checks Super at click time,
+-- consumes the click and tells the daemon "mid". Don't go back to Super_L
+-- press/release binds: Hyprland shadows them after any Super+key combo, the
+-- release never fires and the daemon thought Super was still held.
+bind(mod("mouse:274"), hl.dsp.exec_cmd('printf mid | nc -UuN -w1 "$XDG_RUNTIME_DIR/autoscroll-ctl.sock"'))

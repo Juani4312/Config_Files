@@ -2,17 +2,22 @@
 """
 autoscroll.py - Windows-style middle-click autoscroll (evdev + uinput).
 
-  * Shift + tap the wheel  -> autoscroll locks. Move the mouse up/down: the
+  * Super + tap the wheel  -> autoscroll locks. Move the mouse up/down: the
                               further from the start point, the faster it
                               scrolls. Any click (or the wheel) ends it.
-  * Shift + hold + drag    -> scrolls while held, release to stop.
+  * Super + hold + drag    -> scrolls while held, release to stop.
 
 The pointer is frozen while autoscrolling, so the window under it keeps
 receiving the scroll. Plain middle-click passes through as a normal middle
-click (close tab, paste, open in new tab); Shift + middle-click starts autoscroll.
-Shift state comes from Hyprland binds (configs/keybinds.lua) that send
-"shift1"/"shift0" to $XDG_RUNTIME_DIR/autoscroll-ctl.sock, so this daemon
-never needs to read the keyboard.
+click (close tab, paste, open in new tab); Super + middle-click starts autoscroll.
+
+Every middle press is forwarded. Hyprland has a SUPER + mouse:274 bind
+(configs/keybinds.lua) that consumes the click and sends "mid" to
+$XDG_RUNTIME_DIR/autoscroll-ctl.sock; that message starts autoscroll. So the
+modifier is checked by Hyprland at click time, this daemon never reads the
+keyboard and keeps no "Super is held" state that could get stuck.
+(Before 2026-11-24 it tracked Super_L press/release binds, but Hyprland
+shadows those after any Super+key combo, so the release was lost.)
 
 Grabs every real mouse exclusively and re-emits its events through a single
 virtual uinput mouse. If this process dies, the grab is released by the kernel
@@ -33,7 +38,7 @@ from evdev import UInput, ecodes as e
 
 RUNTIME = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
 CTL_SOCK = os.path.join(RUNTIME, "autoscroll-ctl.sock")
-SHIFT_TIMEOUT = 30.0     # forget a Shift press if its release never arrives
+MID_WINDOW = 1.0         # accept Hyprland's "mid" up to this long after the press
 
 # indicator bubble (autoscroll-indicator.py); silently ignored if not running
 NOTIFY_SOCK = os.path.join(RUNTIME, "autoscroll.sock")
@@ -130,7 +135,8 @@ class Autoscroll:
         self.vx = Axis(e.REL_HWHEEL_HI_RES, e.REL_HWHEEL)
         self.last_tick = 0.0
         self.last_scan = 0.0
-        self.shift_since = None  # monotonic time Shift went down, None if up
+        self.mid_down = False    # middle physically down (press was forwarded)
+        self.mid_press_t = None  # when that forwarded press happened
         try:
             os.unlink(CTL_SOCK)
         except FileNotFoundError:
@@ -138,14 +144,6 @@ class Autoscroll:
         self.ctl = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
         self.ctl.bind(CTL_SOCK)
         self.ctl.setblocking(False)
-
-    def shift_down(self):
-        if self.shift_since is None:
-            return False
-        if time.monotonic() - self.shift_since > SHIFT_TIMEOUT:
-            self.shift_since = None
-            return False
-        return True
 
     def read_ctl(self):
         while True:
@@ -155,10 +153,11 @@ class Autoscroll:
                 return
             except OSError:
                 return
-            if msg == b"shift1":
-                self.shift_since = time.monotonic()
-            elif msg == b"shift0":
-                self.shift_since = None
+            if msg != b"mid":
+                continue
+            t, self.mid_press_t = self.mid_press_t, None
+            if t is not None and not self.active and time.monotonic() - t < MID_WINDOW:
+                self.start(held=self.mid_down)
 
     # ------------------------------------------------------------ devices --
     def scan(self):
@@ -195,18 +194,20 @@ class Autoscroll:
                 pass
 
     # -------------------------------------------------------------- state --
-    def start(self):
-        self.active, self.held, self.moved = True, True, False
+    def start(self, held):
+        self.active, self.held, self.moved = True, held, False
         self.dx = self.dy = 0
         self.vy.reset()
         self.vx.reset()
         self.last_tick = time.monotonic()
         self.sent_v, self.sent_t = 0.0, 0.0
         notify("start")
+        log("start")
 
     def stop(self):
         if self.active:
             notify("stop")
+            log("stop")
         self.active = self.held = False
 
     def tick(self):
@@ -238,21 +239,19 @@ class Autoscroll:
                     self.stop()
                     self.swallow.add(c)
                     return
-                if c == e.BTN_MIDDLE:
-                    if not self.shift_down():  # plain middle -> normal click
-                        self.ui.write(t, c, v)
-                        return
-                    self.start()
-                    self.swallow.add(c)
-                    return
+                if c == e.BTN_MIDDLE:        # forwarded; Hyprland decides
+                    self.mid_down = True
+                    self.mid_press_t = time.monotonic()
             elif v == 0:
-                if c == e.BTN_MIDDLE and self.active and self.held:
-                    self.held = False
-                    if self.moved:           # hold + drag -> stop on release
-                        self.stop()
-                    # tap -> stays locked
-                    self.swallow.discard(c)
-                    return
+                if c == e.BTN_MIDDLE:
+                    self.mid_down = False
+                    if self.active and self.held:
+                        self.held = False
+                        if self.moved:       # hold + drag -> stop on release
+                            self.stop()
+                        # tap -> stays locked
+                    # its press was forwarded, so the release must be too
+                    # (Hyprland drops it since the bind consumed the press)
                 if c in self.swallow:
                     self.swallow.discard(c)
                     return
