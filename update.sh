@@ -39,6 +39,10 @@ command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$REPO/extra/dconf-int
 qcfg="$REPO/config/qalculate/qalculate-gtk.cfg"
 [ -f "$qcfg" ] && sed -i -E '/^(expression_history|history_time|history_expression|history_parse|history_result[a-z_]*|history_warning|history_message|history_bookmark[a-z_]*)=/d' "$qcfg"
 
+# QtProject.conf: el historial del diálogo de archivos (carpetas visitadas) no se sube (repo público).
+qtcfg="$REPO/config/QtProject.conf"
+[ -f "$qtcfg" ] && sed -i -E '/^(history|lastVisited)=/d' "$qtcfg"
+
 # Los symlinks absolutos se reemplazan: current_wallpaper lo crea install.sh.
 rm -f "$REPO/config/hypr/current_wallpaper"
 # waybar: style.css es un hardlink (o symlink) a un archivo de style/; en el repo queda como

@@ -31,6 +31,9 @@ EXTRA_FILES=(
   # wrapper de LibreWolf (SUPER+B y .desktop): aplica el tema pendiente de YouTube antes de arrancar
   ".local/bin/librewolf|extra/bin/librewolf"
   ".local/share/applications/librewolf.desktop|extra/applications/librewolf.desktop"
+  # Nemo: Exec con "env -u GIO_USE_VFS" (abierto por el portal, Borrar no hacía nada); install.sh lo rehace
+  # desde el nemo.desktop del sistema
+  ".local/share/applications/nemo.desktop|extra/applications/nemo.desktop"
 )
 EXTRA_DIRS=(
   ".vscode/extensions/local.matugen-theme-1.0.0|extra/vscode-matugen-theme"

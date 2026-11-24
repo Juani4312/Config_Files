@@ -231,6 +231,7 @@ Si Steam cambia sus clases CSS, el tema queda incompleto: `~/.config/steam-theme
 | Steam abre en otro workspace | El script lo devuelve en unos segundos (vigila hasta 2 min). Si no, revisá el log. |
 | El mouse no responde bien / binds de mouse por dispositivo no aplican | Hyprland solo ve el mouse virtual del autoscroll: `systemctl --user stop autoscroll` para descartarlo. |
 | El autoscroll arranca con clic medio sin `Super` | Config vieja que seguía `Super_L` con binds de release (Hyprland los sombrea). Actualizá `keybinds.lua` y `autoscroll.py` desde el repo y `systemctl --user restart autoscroll`. `journalctl --user -u autoscroll` muestra cada `start`/`stop`. |
+| Nemo: `Supr` no manda nada a la papelera | Nemo se abrió desde el portal (ej. "abrir carpeta" de otra app) y heredó `GIO_USE_VFS=local`. `~/.local/share/applications/nemo.desktop` lo evita (`Exec=env -u GIO_USE_VFS nemo`); `install.sh` lo rehace desde el `.desktop` del sistema. Para salir del paso: `nemo --quit` y abrirlo de nuevo. |
 | Waybar no aparece | `waybar` en una terminal muestra el error; `SUPER+O` la reinicia. |
 | `hyprctl dispatch ...` da error | Usá la sintaxis Lua (`hl.dsp.*`). |
 | Steam tarda minutos en abrir | No pongas el CSS en quick.css de Millennium; el tema `matugen` lo inyecta por ventana. |

@@ -205,6 +205,13 @@ fi
 sed -i -E "s#file:///home/[^/]+/#file://$HOME/#g" \
   "$HOME"/.local/share/themes/Matugen-{a,b}/gtk-3.0/gtk*.css "$HOME/.config/gtk-3.0/bookmarks" 2>/dev/null || true
 
+# Nemo: el override solo cambia Exec (env -u GIO_USE_VFS: si lo abre el portal, Borrar no hace nada).
+# Se rehace desde el .desktop del sistema para que coincida con la versión de nemo de esta máquina.
+NEMO_SYS=/usr/share/applications/nemo.desktop NEMO_USR="$HOME/.local/share/applications/nemo.desktop"
+if [ -f "$NEMO_SYS" ] && [ -f "$NEMO_USR" ]; then
+  sed -E 's/^Exec=nemo( |$)/Exec=env -u GIO_USE_VFS nemo\1/' "$NEMO_SYS" > "$NEMO_USR" && echo "ok    nemo.desktop"
+fi
+
 # Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper
 wp="$HOME/Pictures/Wallpapers/Set/pacman-ghosts.png"
 [ -e "$wp" ] || wp="$(find "$HOME/Pictures/Wallpapers" -type f 2>/dev/null | head -1)"
