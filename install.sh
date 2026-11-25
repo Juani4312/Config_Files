@@ -205,10 +205,17 @@ fi
 sed -i -E "s#file:///home/[^/]+/#file://$HOME/#g" \
   "$HOME"/.local/share/themes/Matugen-{a,b}/gtk-3.0/gtk*.css "$HOME/.config/gtk-3.0/bookmarks" 2>/dev/null || true
 
-# Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper
-wp="$HOME/Pictures/Wallpapers/Set/pacman-ghosts.png"
-[ -e "$wp" ] || wp="$(find "$HOME/Pictures/Wallpapers" -type f 2>/dev/null | head -1)"
-[ -n "$wp" ] && ln -sfn "$wp" "$HOME/.config/hypr/current_wallpaper"
+# Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper.
+# Solo se crea si falta (o está roto): no pisar el fondo que ya eligió esta máquina.
+CUR_WP="$HOME/.config/hypr/current_wallpaper"
+if [ ! -e "$CUR_WP" ]; then
+  wp="$HOME/Pictures/Wallpapers/Set/pacman-ghosts.png"
+  [ -e "$wp" ] || wp="$(find "$HOME/Pictures/Wallpapers" -type f 2>/dev/null | head -1)"
+  if [ -n "$wp" ]; then
+    [ -L "$CUR_WP" ] || echo "${CUR_WP#"$HOME"/}" >> "$BACKUP/created.txt"
+    ln -sfn "$wp" "$CUR_WP"
+  fi
+fi
 
 # Archivos del sistema (extra/system/<ruta>): solo los que faltan o cambiaron, con sudo
 sys_todo=()
@@ -220,7 +227,9 @@ if [ ${#sys_todo[@]} -gt 0 ]; then
   ans=s; [ "$YES" -eq 1 ] || read -rp "¿Instalarlos? [s/N] " ans
   if [[ "$ans" =~ ^[sSyY]$ ]]; then
     for f in "${sys_todo[@]}"; do
-      [ -f "$f" ] && cp -a "$f" "$BACKUP/files/system$(echo "$f" | tr / _)" 2>/dev/null
+      # Backup en <backup>/system/<ruta> (fuera de files/, que revert.sh copia a la home)
+      if [ -f "$f" ]; then mkdir -p "$BACKUP/system$(dirname "$f")" && cp -p "$f" "$BACKUP/system$f"
+      else echo "$f" >> "$BACKUP/system-created.txt"; fi
       sudo install -Dm644 "$REPO/extra/system$f" "$f" && echo "ok    $f"
     done
     case " ${sys_todo[*]} " in *udev/rules.d*) sudo udevadm control --reload && sudo udevadm trigger ;; esac
