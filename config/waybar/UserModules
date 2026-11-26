@@ -170,5 +170,18 @@
 		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh volume up",
 		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh volume down",
 		"smooth-scrolling-threshold": 1
+	},
+	// Clima en Buenos Aires (scripts/weather.py, Open-Meteo, cada 15 min).
+	// Comparte id #custom-weather (padding del CSS); click = refrescar ya,
+	// click derecho = gráfico del día (scripts/weather-popup.py).
+	"custom/weather#ba": {
+		"exec": "~/.config/waybar/scripts/weather.py",
+		"return-type": "json",
+		"interval": 900,
+		"signal": 9,
+		"on-click": "pkill -RTMIN+9 -x waybar",
+		// popup centrado con la temperatura hora por hora (toggle);
+		// sin layer-shell abre lo mismo como página en el navegador
+		"on-click-right": "setsid -f ~/.config/waybar/scripts/weather-popup.py"
 	}
 }

@@ -28,6 +28,7 @@
 	//"idle_inhibitor",
 	//"custom/separator#blank",
 	"clock",
+	"custom/weather#ba",
 	"custom/separator#blank",
 	"tray",
 	],
@@ -74,6 +75,7 @@
 
 "modules-left": [
 	"clock",
+	"custom/weather#ba",
 	"custom/separator#blank",
 	"tray",
 	],

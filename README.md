@@ -183,6 +183,15 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     En esta PC hay uno por barra (`custom/music#dp3` / `#hdmi`, el argumento resalta solo el ícono del monitor
     con el menú abierto); en otra máquina agregá `"custom/music"` al principio de `modules-right` de `config`.
     Usa `playerctl`, `gtk-layer-shell` (dependencias de waybar) y `python-gobject`.
+  - **Clima** (`custom/weather#ba`, `scripts/weather.py` + `weather-popup.py`): a la derecha del reloj, ícono
+    según el tiempo + temperatura actual de Buenos Aires ([Open-Meteo](https://open-meteo.com), sin API key, cada
+    15 min; sin red muestra el último valor guardado, atenuado). Tooltip con condición, sensación térmica, mín/máx,
+    humedad y viento; click = actualizar. Click derecho = popup centrado (GTK3 + layer-shell, fondo oscurecido):
+    curva de temperatura hora por hora de 00 a 00 (sensación térmica punteada, noche sombreada, marca de "ahora",
+    detalle de cada hora al pasar el mouse) y tira cada 3 h con lluvia; fila de **7 días** (click, `←/→`, `1-7` o
+    rueda). Se cierra con `Esc`, click afuera u otro click derecho. Sin layer-shell (o con `--html`) abre lo mismo
+    como página en el navegador (`~/.cache/waybar-weather/today.html`). Para otra ciudad cambiá `LAT`, `LON` y `TZ`
+    en `weather.py`. Va en `modules-left` de `config` (local: en otra máquina agregalo después de `"clock"`).
   - Campana de swaync que suena una vez con cada notificación nueva; batería que "respira" cargando y titila crítica;
     botón de apagado con glow en `@primary`.
   - En esta PC `style.css` es un **hardlink** a `style/bintang default.css`: editalo en el lugar, no lo reemplaces.

@@ -188,6 +188,8 @@ tooltip label{
 #bluetooth:hover,
 #battery:hover,
 #language:hover,
+#custom-weather:hover,
+box:hover > #custom-weather,
 #pulseaudio:hover,
 #custom-volume:hover,
 #custom-swaync:hover,
@@ -526,3 +528,8 @@ box:hover > #custom-special.active {
 	box-shadow: 0 0 5px 0 alpha(@tertiary, 0.5), inset 0 0 0 1px @tertiary;
 }
 
+
+/* clima: sin red muestra el último valor cacheado, apagado */
+#custom-weather.stale {
+	opacity: 0.55;
+}
