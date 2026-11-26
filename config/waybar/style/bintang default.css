@@ -121,6 +121,7 @@ tooltip label{
 #disk,
 #idle_inhibitor,
 #keyboard-state,
+#language,
 #memory,
 #mode,
 #mpris,
@@ -186,6 +187,7 @@ tooltip label{
 #network:hover,
 #bluetooth:hover,
 #battery:hover,
+#language:hover,
 #pulseaudio:hover,
 #custom-volume:hover,
 #custom-swaync:hover,
@@ -239,6 +241,33 @@ box:hover > #custom-power {
 }
 #tray > .needs-attention {
 	animation: attention 1.2s ease-in-out infinite alternate;
+}
+
+/*-----Música: custom/music (solo el ícono; el click abre music-popup.py)----*/
+#custom-music {
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-right: 7px;
+	padding-left: 7px;
+	border-radius: 12px;
+	color: @secondary;
+	box-shadow: inset 0 0 0 1px alpha(@primary, 0);
+	transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.3s ease;
+}
+/* sonando: color del tema; en pausa: apagado */
+#custom-music.playing {
+	color: @primary;
+}
+#custom-music.paused,
+#custom-music.stopped {
+	color: @outline;
+}
+#custom-music:hover,
+#custom-music.open,
+box:hover > #custom-music {
+	color: @primary;
+	background-color: alpha(@primary, 0.12);
+	box-shadow: inset 0 0 0 1px alpha(@primary, 0.25);
 }
 
 /*-----Indicators----*/

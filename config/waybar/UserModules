@@ -122,5 +122,53 @@
 			"custom/ws#9",
 			"custom/ws#10"
 		]
+	},
+	// Idioma del teclado (us / latam). Se actualiza solo con el evento
+	// activelayout de Hyprland; click = lo mismo que SUPER+Space.
+	"hyprland/language#kb": {
+		"format": "󰌌 {}",
+		"format-en": "US",
+		"format-es": "LA",
+		"tooltip-format": "{long}",
+		"on-click": "~/.config/hypr/scripts/SwitchLayout.sh"
+	},
+	// Música: SOLO tidal-hifi y DeaDBeeF (scripts/music.py escucha MPRIS con
+	// whitelist). En la barra va solo el ícono: click = mini menú
+	// (scripts/music-popup.py), click derecho = pausa/play, medio = cambiar
+	// de reproductor, rueda = ±5 s. Una variante por monitor (el argumento
+	// hace que el ícono se resalte solo en la barra donde está abierto el menú);
+	// "custom/music" sin argumento sirve para cualquier otra barra.
+	"custom/music": {
+		"exec": "~/.config/waybar/scripts/music.py",
+		"return-type": "json",
+		"exec-on-event": false,
+		"on-click": "~/.config/waybar/scripts/music-ctl.sh menu",
+		"on-click-right": "~/.config/waybar/scripts/music-ctl.sh play-pause",
+		"on-click-middle": "~/.config/waybar/scripts/music-ctl.sh cycle",
+		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh seek +5",
+		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh seek -5",
+		"smooth-scrolling-threshold": 1
+	},
+	"custom/music#dp3": {
+		"exec": "~/.config/waybar/scripts/music.py DP-3",
+		"return-type": "json",
+		"exec-on-event": false,
+		"on-click": "~/.config/waybar/scripts/music-ctl.sh menu",
+		"on-click-right": "~/.config/waybar/scripts/music-ctl.sh play-pause",
+		"on-click-middle": "~/.config/waybar/scripts/music-ctl.sh cycle",
+		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh seek +5",
+		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh seek -5",
+		"smooth-scrolling-threshold": 1
+	},
+	"custom/music#hdmi": {
+		"exec": "~/.config/waybar/scripts/music.py HDMI-A-1",
+		"return-type": "json",
+		"exec-on-event": false,
+		"on-click": "~/.config/waybar/scripts/music-ctl.sh menu",
+		"on-click-right": "~/.config/waybar/scripts/music-ctl.sh play-pause",
+		"on-click-middle": "~/.config/waybar/scripts/music-ctl.sh cycle",
+		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh seek +5",
+		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh seek -5",
+		"smooth-scrolling-threshold": 1
 	}
 }

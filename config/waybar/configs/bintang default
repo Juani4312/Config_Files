@@ -40,13 +40,13 @@
 	],
 
 "modules-right": [
-        //"mpris",
-        //"custom/separator#dot-line",
+        "custom/music#dp3",
         "group/notify",	
 	"network",
 	"bluetooth",
 	"battery",
-	"custom/separator#blank",  
+	"hyprland/language#kb",
+	"custom/separator#blank",
 	"group/audio",
 	"custom/separator#blank",
 	"custom/power",
@@ -85,11 +85,13 @@
 	],
 
 "modules-right": [
+        "custom/music#hdmi",
         "group/notify",	
 	"network",
 	"bluetooth",
 	"battery",
-	"custom/separator#blank",  
+	"hyprland/language#kb",
+	"custom/separator#blank",
 	"group/audio",
 	"custom/separator#blank",
 	"custom/power",

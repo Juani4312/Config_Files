@@ -168,6 +168,18 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     `@tertiary`), burbuja 特 a la izquierda cuando hay ventanas en el workspace especial. Al pasar el mouse, cada
     workspace se enmarca en un cuadradito redondeado (borde fino + fondo leve en `@primary`) sin mover la isla.
   - Volumen propio (`scripts/volume.py`, con `pactl subscribe`): las ondas del parlante se animan al pasar el mouse.
+  - Indicador de idioma del teclado (`hyprland/language#kb` en `UserModules`): muestra `󰌌 US` / `󰌌 LA`, se
+    actualiza solo con `SUPER+Space` y al hacer click cambia de idioma (mismo `SwitchLayout.sh`, con notificación).
+    Va en `modules-right` de `config`, que es local por máquina: en la laptop hay que agregarlo a mano.
+  - **Música** (`custom/music`, `scripts/music*.{py,sh}`): un ícono 󰝚 que **solo** sigue a tidal-hifi y DeaDBeeF
+    (MPRIS con lista blanca vía libplayerctl; ignora navegadores, ZapZap y el `chromium.instanceN` de Electron).
+    Color del tema mientras suena, apagado en pausa. Click = mini menú (`music-popup.py`, GTK3 + layer-shell):
+    carátula, título/artista/álbum, barra de progreso (click/arrastre para saltar), anterior/pausa/siguiente y
+    botón para alternar reproductor; se cierra al alejar el mouse o con otro click. Click derecho = pausa/play,
+    medio = cambiar de reproductor, rueda = ±5 s. Muestra el último que empezó a sonar.
+    En esta PC hay uno por barra (`custom/music#dp3` / `#hdmi`, el argumento resalta solo el ícono del monitor
+    con el menú abierto); en otra máquina agregá `"custom/music"` al principio de `modules-right` de `config`.
+    Usa `playerctl`, `gtk-layer-shell` (dependencias de waybar) y `python-gobject`.
   - Campana de swaync que suena una vez con cada notificación nueva; batería que "respira" cargando y titila crítica;
     botón de apagado con glow en `@primary`.
   - En esta PC `style.css` es un **hardlink** a `style/bintang default.css`: editalo en el lugar, no lo reemplaces.
