@@ -88,9 +88,11 @@ Qué hace, en orden:
    perfil de LibreWolf).
 4. Carga `extra/dconf-interface.ini` (tema GTK, íconos, cursor, fuentes).
 5. Apunta las rutas de LibreWolf de `~/.config/matugen/config.toml` al perfil activo de esta máquina.
-6. Crea `~/.config/hypr/current_wallpaper` (por defecto, `Pictures/Wallpapers/Set/pacman-ghosts.png`).
+6. Crea `~/.config/hypr/current_wallpaper` **solo si falta** (por defecto, `Pictures/Wallpapers/Set/pacman-ghosts.png`):
+   si ya existe, respeta el fondo que eligió esta máquina.
 7. Instala con `sudo` (pregunta) los archivos de sistema que cambiaron: `/etc/udev/rules.d/70-mouse-uaccess.rules`,
-   `/usr/local/lib/tidal-hifi-userscripts/patch-asar.py` y `/etc/pacman.d/hooks/tidal-hifi-userscripts.hook`. Si
+   `/usr/local/lib/tidal-hifi-userscripts/patch-asar.py` y `/etc/pacman.d/hooks/tidal-hifi-userscripts.hook`. Las
+   versiones anteriores quedan en `backups/<fecha>/system/<ruta>` (y los que no existían, en `system-created.txt`). Si
    tidal-hifi está instalado y su `app.asar` no tiene el cargador, pregunta y lo parchea (navegación con flechas).
 8. Habilita `autoscroll.service` (systemd de usuario) y da permisos de ejecución a los scripts.
 
@@ -253,17 +255,15 @@ Restaura cada archivo pisado, borra los que creó la instalación y vuelve a car
 symlinks (por ejemplo `~/.config/hypr -> ~/dotfiles/...`), imprime los comandos `rm` + `ln -s` para recrearlos;
 correlos si querés volver a ese estado.
 
+Los archivos del sistema (regla udev, patcher y hook de tidal-hifi) también se revierten: `revert.sh` pregunta y,
+con `sudo`, repone la versión anterior desde `backups/<fecha>/system/` o borra los que la instalación creó.
+
 `revert.sh` **no** deshace:
 - **El servicio de autoscroll:**
   `systemctl --user disable --now autoscroll.service && rm ~/.config/systemd/user/autoscroll.service`
-- **La regla udev:** `sudo rm /etc/udev/rules.d/70-mouse-uaccess.rules && sudo udevadm control --reload`.
-  Si había una versión anterior, está en `backups/<fecha>/files/system_etc_udev_rules.d_70-mouse-uaccess.rules`;
-  reponela con `sudo install -Dm644 <ese archivo> /etc/udev/rules.d/70-mouse-uaccess.rules`. Como `revert.sh` copia
-  todo `files/` a `~`, ese archivo también aparece como `~/system_etc_udev_...`: borralo.
-- **El patch de tidal-hifi:** `sudo rm /etc/pacman.d/hooks/tidal-hifi-userscripts.hook && sudo rm -r
-  /usr/local/lib/tidal-hifi-userscripts` y reinstalá el paquete para recuperar el `app.asar` original
-  (`yay -S tidal-hifi-bin`). Para desactivar solo las flechas: borrá `~/.config/tidal-hifi/userscripts/arrow-nav.js`.
-  Igual que con la regla udev, `revert.sh` deja copias `~/system_...` de estos archivos si existían antes: borralas.
+- **La recarga de udev:** después de revertir la regla, `sudo udevadm control --reload && sudo udevadm trigger`.
+- **El `app.asar` parcheado de tidal-hifi:** reinstalá el paquete para recuperar el original (`yay -S tidal-hifi-bin`).
+  Para desactivar solo las flechas: borrá `~/.config/tidal-hifi/userscripts/arrow-nav.js`.
 - **Los paquetes** instalados con `-p`: desinstalalos a mano (`sudo pacman -Rns <paquete>`).
 - **El tema de Enhancer for YouTube:** en las opciones de la extensión, Theme → desactivá "Custom theme" o elegí otro
   tema. La base original quedó en `<perfil>/storage/default/moz-extension+++<uuid>*/idb/*.sqlite.bak-matugen`; se puede
