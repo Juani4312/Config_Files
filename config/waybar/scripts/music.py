@@ -71,6 +71,15 @@ def status_of(p):
         return "Stopped"
 
 
+def volume_of(p):
+    """Volumen propio del reproductor (MPRIS) en %, o None si no lo expone."""
+    try:
+        v = p.props.volume
+    except Exception:
+        return None
+    return round(v * 100) if v is not None and v >= 0 else None
+
+
 def source(p):
     return SOURCES[p.props.player_name.lower()]
 
@@ -159,9 +168,11 @@ def render():
     status = status_of(p)
     title, artist, _album, _length = track_info(p)
     song = title + (f" · {artist}" if artist and title else artist)
-    state = {"Playing": "", "Paused": "  (en pausa)"}.get(status, "  (detenido)")
+    state = {"Playing": "", "Paused": "  (paused)"}.get(status, "  (stopped)")
+    vol = volume_of(p)
+    vol = f" · \U000f057e {vol}%" if vol is not None else ""      # 󰕾
     tip = (f"<b>{esc(song)}</b>{state}\n" if song else "") + \
-        f"<span alpha='55%' size='small'>{label} · Click: controles · Rueda: ±5 s</span>"
+        f"<span alpha='55%' size='small'>{label}{vol} · Click: controls · Scroll: volume</span>"
     write_state(active, status, cls)
     classes = [cls, status.lower()]
     if popup_open():        # sin tooltip: taparía el menú; ícono resaltado
@@ -197,6 +208,7 @@ def add_player(name):
     p.connect("playback-status", on_status)
     p.connect("metadata", on_change)
     p.connect("seeked", on_change)
+    p.connect("volume", on_change)          # rueda sobre el ícono
     manager.manage_player(p)
     players[name.instance] = p
     if status_of(p) == "Playing":

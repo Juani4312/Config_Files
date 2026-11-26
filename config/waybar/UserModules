@@ -145,8 +145,8 @@
 		"on-click": "~/.config/waybar/scripts/music-ctl.sh menu",
 		"on-click-right": "~/.config/waybar/scripts/music-ctl.sh play-pause",
 		"on-click-middle": "~/.config/waybar/scripts/music-ctl.sh cycle",
-		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh seek +5",
-		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh seek -5",
+		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh volume up",
+		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh volume down",
 		"smooth-scrolling-threshold": 1
 	},
 	"custom/music#dp3": {
@@ -156,8 +156,8 @@
 		"on-click": "~/.config/waybar/scripts/music-ctl.sh menu",
 		"on-click-right": "~/.config/waybar/scripts/music-ctl.sh play-pause",
 		"on-click-middle": "~/.config/waybar/scripts/music-ctl.sh cycle",
-		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh seek +5",
-		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh seek -5",
+		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh volume up",
+		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh volume down",
 		"smooth-scrolling-threshold": 1
 	},
 	"custom/music#hdmi": {
@@ -167,8 +167,8 @@
 		"on-click": "~/.config/waybar/scripts/music-ctl.sh menu",
 		"on-click-right": "~/.config/waybar/scripts/music-ctl.sh play-pause",
 		"on-click-middle": "~/.config/waybar/scripts/music-ctl.sh cycle",
-		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh seek +5",
-		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh seek -5",
+		"on-scroll-up": "~/.config/waybar/scripts/music-ctl.sh volume up",
+		"on-scroll-down": "~/.config/waybar/scripts/music-ctl.sh volume down",
 		"smooth-scrolling-threshold": 1
 	}
 }

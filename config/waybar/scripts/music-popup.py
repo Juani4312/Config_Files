@@ -3,8 +3,10 @@
 
 Popup GTK3 + layer-shell que aparece debajo del ícono: carátula, título,
 artista, álbum, barra de progreso (click/arrastre = ir a ese punto),
-anterior / pausa / siguiente y de qué reproductor viene (con botón para
-alternar si están abiertos tidal-hifi y DeaDBeeF).
+anterior / pausa / siguiente, de qué reproductor viene (con botón para
+alternar si están abiertos tidal-hifi y DeaDBeeF) y volumen del reproductor
+(MPRIS, lo mismo que la rueda sobre el ícono: la rueda sobre el slider usa
+music-ctl.sh volume, así los pasos son iguales).
 
 Sigue al reproductor activo que elige music.py
 ($XDG_RUNTIME_DIR/waybar-music/state). Colores: los de matugen
@@ -46,6 +48,8 @@ RUN = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "waybar-music")
 STATE = os.path.join(RUN, "state")
 PIDFILE = os.path.join(RUN, "popup.pid")
 CLOSED = os.path.join(RUN, "popup.closed")
+VOLFILE = os.path.join(RUN, "volume")      # "reproductor valor ms" (music-ctl.sh volume)
+CTL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "music-ctl.sh")
 CACHE = os.path.join(os.environ.get("XDG_CACHE_HOME") or os.path.expanduser("~/.cache"),
                      "waybar-music")
 COLORS = os.path.expanduser("~/.config/waybar/colors.css")
@@ -64,6 +68,10 @@ I_MUSIC, I_DISK = "\U000f075a", "\U000f02ca"
 I_PREV, I_NEXT = "\U000f04ae", "\U000f04ad"
 I_PLAY, I_PAUSE = "\U000f040a", "\U000f03e4"
 I_SWAP = "\U000f04e1"
+# volumen: 0 / bajo / medio / alto  (󰝟 󰕿 󰖀 󰕾)
+I_VOL = ("\U000f075f", "\U000f057f", "\U000f0580", "\U000f057e")
+VOL_HOLD = 1.5       # s tras cambiarlo nosotros en que se ignora lo que reporta el
+                     # reproductor (tidal tarda en reflejarlo y haría saltar el slider)
 
 CSS = """
 @import url("file://%(colors)s");
@@ -157,6 +165,9 @@ button:active { background-color: alpha(@primary, 0.22); }
 }
 #swap { font-size: 100%%; padding: 2px 8px; color: @outline; }
 #swap:hover { color: @primary; }
+
+#vol-icon { color: @secondary; font-size: 115%%; min-width: 22px; }
+#vol-pct  { color: @outline; font-size: 85%%; font-weight: bold; }
 """ % {"colors": COLORS}
 
 
@@ -217,6 +228,11 @@ class Popup(Gtk.Window):
         self.length = None
         self.dragging = False
         self.pending_seek = None
+        self.vol_dragging = False
+        self.vol_pending = None      # valor (0-100) a mandar, con throttle
+        self.vol_timer = 0
+        self.vol_set_at = 0.0        # monotonic() del último cambio nuestro / de la rueda
+        self.scroll_acc = 0.0
         self.closing = False
         self.geo = None
         self.zone = None
@@ -287,6 +303,25 @@ class Popup(Gtk.Window):
         prov.load_from_data(CSS.encode())
         Gtk.StyleContext.add_provider_for_screen(screen, prov,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_USER + 1)
+        # Super+W (matugen) reescribe colors.css: recargar en vivo si el menú
+        # sigue abierto (el @import se vuelve a leer en cada load_from_data)
+        self.css_prov, self.css_reload_id = prov, 0
+        self.colors_mon = Gio.File.new_for_path(COLORS).monitor_file(
+            Gio.FileMonitorFlags.WATCH_MOVES, None)
+        self.colors_mon.connect("changed", self.on_colors_changed)
+
+    def on_colors_changed(self, *_):
+        if self.css_reload_id:                 # matugen escribe en varios pasos
+            GLib.source_remove(self.css_reload_id)
+        self.css_reload_id = GLib.timeout_add(150, self.reload_css)
+
+    def reload_css(self):
+        self.css_reload_id = 0
+        try:
+            self.css_prov.load_from_data(CSS.encode())
+        except GLib.Error:
+            pass                               # archivo a medio escribir: el próximo evento lo arregla
+        return False
 
     def label(self, name, xalign=0.0):
         lb = Gtk.Label(xalign=xalign)
@@ -306,7 +341,7 @@ class Popup(Gtk.Window):
         # click en la carátula / el título: ir a la ventana del reproductor
         top_ev = Gtk.EventBox()
         top_ev.add(top)
-        top_ev.set_tooltip_text("Ir a la app")
+        top_ev.set_tooltip_text("Open app")
         top_ev.connect("button-release-event", self.on_top_click)
         top_ev.connect("realize", lambda w: w.get_window().set_cursor(
             Gdk.Cursor.new_from_name(w.get_display(), "pointer")))
@@ -366,18 +401,36 @@ class Popup(Gtk.Window):
 
         mid = Gtk.Box(spacing=8)
         mid.set_halign(Gtk.Align.CENTER)
-        self.b_prev = self.button(I_PREV, "prev", "Anterior", lambda: self.call("previous"))
-        self.b_play = self.button(I_PLAY, "play", "Pausa / reproducir", lambda: self.call("play_pause"))
-        self.b_next = self.button(I_NEXT, "next", "Siguiente", lambda: self.call("next"))
+        self.b_prev = self.button(I_PREV, "prev", "Previous", lambda: self.call("previous"))
+        self.b_play = self.button(I_PLAY, "play", "Play / pause", lambda: self.call("play_pause"))
+        self.b_next = self.button(I_NEXT, "next", "Next", lambda: self.call("next"))
         for b in (self.b_prev, self.b_play, self.b_next):
             b.set_valign(Gtk.Align.CENTER)
             mid.pack_start(b, False, False, 0)
         ctl.set_center_widget(mid)
 
-        self.b_swap = self.button(I_SWAP, "swap", "Cambiar de reproductor", self.swap)
+        self.b_swap = self.button(I_SWAP, "swap", "Switch player", self.swap)
         self.b_swap.set_valign(Gtk.Align.CENTER)
         self.b_swap.set_no_show_all(True)
         ctl.pack_end(self.b_swap, False, False, 0)
+
+        vol = Gtk.Box(spacing=6)
+        card.pack_start(vol, False, False, 0)
+        self.l_vol_icon = Gtk.Label(label=I_VOL[3])
+        self.l_vol_icon.set_name("vol-icon")
+        vol.pack_start(self.l_vol_icon, False, False, 0)
+        self.vscale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 100, 1)
+        self.vscale.set_draw_value(False)
+        self.vscale.set_hexpand(True)
+        self.vscale.connect("button-press-event", self.on_vol_press)
+        self.vscale.connect("button-release-event", self.on_vol_release)
+        self.vscale.connect("change-value", self.on_vol_change)
+        self.vscale.connect("scroll-event", self.on_vol_scroll)
+        vol.pack_start(self.vscale, True, True, 0)
+        self.l_vol = Gtk.Label(label="", xalign=1)
+        self.l_vol.set_name("vol-pct")
+        self.l_vol.set_width_chars(4)          # "100%": que el slider no se corra
+        vol.pack_start(self.l_vol, False, False, 0)
 
     def button(self, glyph, name, tip, fn):
         b = Gtk.Button(label=glyph)
@@ -393,6 +446,8 @@ class Popup(Gtk.Window):
         names = {f.get_basename() if f else None, other.get_basename() if other else None}
         if "state" in names:
             self.bind()
+        if "volume" in names:           # rueda sobre el ícono / el slider: al instante
+            self.volume_from_file()
 
     def bind(self):
         inst, _status, cls = read_state()
@@ -416,6 +471,8 @@ class Popup(Gtk.Window):
         if self.player is not None:
             for sig in ("metadata", "playback-status", "seeked"):
                 self.handlers.append(self.player.connect(sig, lambda *_: self.refresh()))
+            self.handlers.append(self.player.connect("volume", lambda *_: self.sync_volume()))
+        self.vol_set_at = 0.0           # otro reproductor: tomar su volumen ya
         self.refresh_swap()
         self.refresh()
 
@@ -429,13 +486,14 @@ class Popup(Gtk.Window):
     def refresh(self):
         p = self.player
         if p is None:
-            self.l_title.set_text("Nada sonando")
+            self.l_title.set_text("Nothing playing")
             self.l_artist.set_text("")
             self.l_album.set_text("")
             self.l_source.set_text("")
             self.set_art(None)
             self.length = None
             self.l_len.set_text("-:--")
+            self.sync_volume()
             return False
         m = self.meta()
         title = m.get("xesam:title") or ""
@@ -476,6 +534,7 @@ class Popup(Gtk.Window):
             if url:
                 self.fetch_art(url)
         self.tick(update_only=True)
+        self.sync_volume()
         return False
 
     def refresh_swap(self):
@@ -503,14 +562,12 @@ class Popup(Gtk.Window):
 
     def on_top_click(self, _w, ev):
         if ev.button == 1:
-            ctl = os.path.join(os.path.dirname(os.path.realpath(__file__)), "music-ctl.sh")
-            subprocess.Popen([ctl, "focus"])
+            subprocess.Popen([CTL, "focus"])
             self.quit()
         return True
 
     def swap(self):
-        ctl = os.path.join(os.path.dirname(os.path.realpath(__file__)), "music-ctl.sh")
-        subprocess.Popen([ctl, "cycle"])
+        subprocess.Popen([CTL, "cycle"])
 
     # ---- carátula ----------------------------------------------------------
     def fetch_art(self, url):
@@ -600,6 +657,106 @@ class Popup(Gtk.Window):
             except GLib.Error:
                 pass
 
+    # ---- volumen (MPRIS del reproductor, igual que la rueda sobre el ícono) --
+    def show_volume(self, pct):
+        pct = max(0, min(100, int(round(pct))))
+        self.l_vol.set_text(f"{pct}%")
+        self.l_vol_icon.set_text(I_VOL[0 if pct == 0 else 1 if pct < 34 else 2 if pct < 67 else 3])
+        return pct
+
+    def sync_volume(self):
+        """Toma el volumen que reporta el reproductor (si no lo estamos cambiando)."""
+        p = self.player
+        try:
+            v = p.props.volume if p is not None else None
+        except Exception:
+            v = None
+        ok = v is not None and v >= 0
+        self.vscale.set_sensitive(ok)
+        if not ok:
+            self.l_vol.set_text("")
+            return False
+        if self.vol_dragging or self.vol_pending is not None or \
+                time.monotonic() - self.vol_set_at < VOL_HOLD:
+            return False
+        self.vscale.set_value(self.show_volume(v * 100))
+        return False
+
+    def volume_from_file(self):
+        """music-ctl.sh volume (rueda) escribió el valor nuevo: mostrarlo ya."""
+        try:
+            with open(VOLFILE) as f:
+                who, val, _ms = f.read().split()
+            val = float(val)
+        except (OSError, ValueError):
+            return
+        if who != self.inst or self.vol_dragging:
+            return
+        self.vol_set_at = time.monotonic()
+        self.vscale.set_value(self.show_volume(val * 100))
+
+    def set_volume(self, pct):
+        """Manda el volumen al reproductor y lo anota para music-ctl.sh (así la
+        rueda sigue desde acá y no desde un valor viejo)."""
+        if self.player is None:
+            return
+        v = round(pct) / 100
+        try:
+            self.player.set_volume(v)
+        except GLib.Error:
+            return
+        self.vol_set_at = time.monotonic()
+        try:
+            tmp = f"{VOLFILE}.{os.getpid()}.tmp"
+            with open(tmp, "w") as f:
+                f.write(f"{self.inst} {v:.2f} {int(time.time() * 1000)}\n")
+            os.replace(tmp, VOLFILE)
+        except OSError:
+            pass
+
+    def flush_volume(self):
+        self.vol_timer = 0
+        if self.vol_pending is not None:
+            pct, self.vol_pending = self.vol_pending, None
+            self.set_volume(pct)
+        return False
+
+    def on_vol_press(self, *_):
+        self.vol_dragging = True
+        return False
+
+    def on_vol_change(self, _scale, _scroll, value):
+        self.vol_pending = self.show_volume(value)
+        if not self.vol_timer:           # arrastrando: como mucho cada 60 ms
+            self.vol_timer = GLib.timeout_add(60, self.flush_volume)
+        return False
+
+    def on_vol_release(self, *_):
+        self.vol_dragging = False
+        if self.vol_timer:
+            GLib.source_remove(self.vol_timer)
+        self.flush_volume()
+        return False
+
+    def on_vol_scroll(self, _w, ev):
+        """Rueda sobre el slider = rueda sobre el ícono (mismos pasos 1/2/5 %)."""
+        ok, direction = ev.get_scroll_direction()
+        steps = 0
+        if ok and direction == Gdk.ScrollDirection.UP:
+            steps = 1
+        elif ok and direction == Gdk.ScrollDirection.DOWN:
+            steps = -1
+        else:
+            ok, _dx, dy = ev.get_scroll_deltas()
+            if ok:
+                self.scroll_acc -= dy
+                steps = int(self.scroll_acc)          # cada 1.0 de delta = un paso
+                self.scroll_acc -= steps
+        if self.player is not None and self.vscale.get_sensitive():
+            for _ in range(abs(steps)):
+                subprocess.Popen([CTL, "volume", "up" if steps > 0 else "down"])
+        return True                       # no dejar que GTK mueva el slider por su cuenta
+
     # ---- cierre ------------------------------------------------------------
     def find_zone(self):
         """Rectángulo (global) donde el mouse cuenta como "en el menú": el popup
@@ -624,7 +781,7 @@ class Popup(Gtk.Window):
             c = hypr("cursorpos")
         except Exception:
             return True
-        if self.zone is None or self.dragging:
+        if self.zone is None or self.dragging or self.vol_dragging:
             self.away_since = None
             return True
         x0, y0, x1, y1 = self.zone

@@ -174,9 +174,12 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
   - **Música** (`custom/music`, `scripts/music*.{py,sh}`): un ícono 󰝚 que **solo** sigue a tidal-hifi y DeaDBeeF
     (MPRIS con lista blanca vía libplayerctl; ignora navegadores, ZapZap y el `chromium.instanceN` de Electron).
     Color del tema mientras suena, apagado en pausa. Click = mini menú (`music-popup.py`, GTK3 + layer-shell):
-    carátula, título/artista/álbum, barra de progreso (click/arrastre para saltar), anterior/pausa/siguiente y
-    botón para alternar reproductor; se cierra al alejar el mouse o con otro click. Click derecho = pausa/play,
-    medio = cambiar de reproductor, rueda = ±5 s. Muestra el último que empezó a sonar.
+    carátula, título/artista/álbum, barra de progreso (click/arrastre para saltar), anterior/pausa/siguiente,
+    botón para alternar reproductor y slider de volumen (el mismo que la rueda; con la rueda encima usa los mismos pasos); se cierra al alejar el mouse o con otro click. Click derecho = pausa/play,
+    medio = cambiar de reproductor, rueda = volumen **del reproductor** (MPRIS, no el del sistema;
+    pasos de 1 % hasta 10, 2 % hasta 30 y 5 % después; el tooltip muestra el nivel; en tidal-hifi el slider
+    lo sigue gracias a `userscripts/volume-sync.js`, ver abajo). Muestra el último que empezó a sonar.
+    El menú abierto recarga sus colores en vivo si cambia `colors.css` (Super+W).
     En esta PC hay uno por barra (`custom/music#dp3` / `#hdmi`, el argumento resalta solo el ícono del monitor
     con el menú abierto); en otra máquina agregá `"custom/music"` al principio de `modules-right` de `config`.
     Usa `playerctl`, `gtk-layer-shell` (dependencias de waybar) y `python-gobject`.
@@ -252,6 +255,12 @@ trababa en el buscador):
 - No interfiere al escribir (buscador), en menús contextuales ni con ←/→ sobre las barras de volumen/progreso.
 
 Editar el script no requiere reiniciar: `Ctrl+U` (hard reload de tidal-hifi) lo vuelve a cargar.
+
+`userscripts/volume-sync.js`: tidal-hifi aplica el volumen que llega por MPRIS (la rueda sobre el ícono de música de
+waybar), su API o sus atajos directo al `<audio>`, a espaldas de TIDAL: el slider no se movía y TIDAL volvía a poner
+su valor. El script escucha `volumechange` y pasa esos cambios al store Redux de TIDAL
+(`playbackControls/SET_VOLUME`), así TIDAL los aplica como si movieras su slider. Ignora sus propios cambios, el
+elemento en pausa y saltos de más de 25 % (nunca sube de golpe al 100 %).
 
 ---
 
