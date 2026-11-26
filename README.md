@@ -191,7 +191,8 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     Enter copia el emoji (`wl-copy`).
 - **SwayNC** (`config/swaync`): colores de waybar, popups de 390 px; el panel se agranda o achica con las flechas
   ◂▸▴▾ (`scripts/resize.sh`). Reglas: las notificaciones `theme.summary` solo se ven como popup, las `theme.app`
-  van directo al panel.
+  van directo al panel. Sin el reproductor MPRIS genérico: la música se controla con el ícono 󰝚 de waybar.
+  Fila de arriba (`menubar#top`): título + luna 󰽥 (Do Not Disturb, se resalta encendida) y vaciar 󰎟.
 - **wlogout**: íconos PNG re-teñidos con el primary en cada cambio de fondo (`tint-icons.sh` → `icons/matugen/`).
 - **hyprlock**: colores de `hypr/colors.conf`.
 

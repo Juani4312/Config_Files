@@ -36,8 +36,8 @@
   background-color: @surface_container_high;
   border: 1px solid @outline_variant;
   border-radius: 12px;
-  margin: 4px 0px;
-  padding: 4px;
+  margin: 6px 0px;
+  padding: 10px 4px;
   min-height: 84px;
 }
 
@@ -139,13 +139,13 @@ progressbar progress {
   /* Notification clear button */
 .widget-title {
   font-size: 1.2em;
-  margin: 6px;
+  margin: 14px 6px 10px 6px;
 }
 
 .widget-title button {
   background: @surface_container_high;
-  border-radius: 6px;
-  padding: 4px 16px;
+  border-radius: 8px;
+  padding: 8px 16px;
 }
 
 .widget-title button:hover {
@@ -193,24 +193,41 @@ progressbar progress {
 }
 
   /* Buttons menu */
+/* Sin barra de fondo: cada boton es su propia pastilla, como el de vaciar notificaciones */
 .widget-buttons-grid {
-  font-size: x-large;
-  padding: 6px;
-  margin: 6px;
-  border-radius: 12px;
-  background: @surface_container_high;
+  padding: 0;
+  margin: 6px 2px;
+  background: transparent;
 }
 
 .widget-buttons-grid>flowbox>flowboxchild>button {
-  margin: 4px;
-  padding: 6px 12px;
-  background: transparent;
-  border-radius: 8px;
+  margin: 0 4px;
+  padding: 6px 8px;
+  background: @surface_container_high;
+  border-radius: 10px;
+}
+
+.widget-buttons-grid>flowbox>flowboxchild>button label {
+  font-size: 20px;
 }
 
 .widget-buttons-grid>flowbox>flowboxchild>button:hover {
   background: alpha(@primary, 0.18);
   color: @primary;
+}
+
+/* Toggle (luna = Do Not Disturb) encendido */
+.widget-buttons-grid>flowbox>flowboxchild>button.active,
+.widget-buttons-grid>flowbox>flowboxchild>button:checked {
+  background: @primary;
+}
+.widget-buttons-grid>flowbox>flowboxchild>button.active label,
+.widget-buttons-grid>flowbox>flowboxchild>button:checked label {
+  color: @on_primary;
+}
+.widget-buttons-grid>flowbox>flowboxchild>button.active:hover,
+.widget-buttons-grid>flowbox>flowboxchild>button:checked:hover {
+  background: @primary_fixed_dim;
 }
 
 
@@ -270,7 +287,7 @@ progressbar progress {
 
 /* Flechas para agrandar/achicar el panel (scripts/resize.sh): sutiles hasta el hover */
 .widget-menubar {
-  margin: -4px 0 0 0;
+  margin: 2px 6px 0 6px;
 }
 .widget-menubar button {
   background: transparent;
@@ -279,7 +296,7 @@ progressbar progress {
   min-width: 18px;
   min-height: 16px;
   padding: 0 2px;
-  margin: 0 1px;
+  margin: 0 0 0 2px;
   border-radius: 6px;
 }
 .widget-menubar button:hover {
@@ -289,4 +306,52 @@ progressbar progress {
 .widget-menubar button:active {
   color: @on_primary;
   background: @primary;
+}
+
+/* Fila superior (menubar#top): "Notifications" a la izquierda, luna + vaciar a la derecha */
+.widget-menubar.top {
+  margin: 8px 6px 4px 6px;
+}
+.widget-menubar.top button {
+  background: @surface_container_high;
+  color: @text;
+  font-size: 14px;
+  /* 2 x 44 + 6 de separacion = 94 px, lo mismo que las 4 flechas (4 x 22 + 3 x 2) */
+  min-width: 44px;
+  min-height: 0;
+  padding: 8px 0;
+  margin: 0 0 0 6px;
+  border-radius: 8px;
+}
+.widget-menubar.top button label {
+  font-size: 15px;
+}
+.widget-menubar.top button:hover {
+  background: @primary_container;
+  color: @on_primary_container;
+}
+.widget-menubar.top button:checked {
+  background: @primary;
+}
+.widget-menubar.top button:checked label {
+  color: @on_primary;
+}
+.widget-menubar.top button:checked:hover {
+  background: @primary_fixed_dim;
+}
+/* El titulo es un boton sin accion: que parezca texto */
+.widget-menubar.top .start button,
+.widget-menubar.top .start button:hover {
+  background: transparent;
+  color: @text;
+  padding: 8px 0;
+  margin: 0;
+}
+.widget-menubar.top .start button label {
+  font-size: 1.2em;
+}
+
+/* "No Notifications": swaync lo centra en la lista (debajo de la fila de arriba), asi que se ve bajo */
+.control-center .control-center-list-placeholder {
+  margin-bottom: 120px;
 }
