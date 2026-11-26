@@ -37,6 +37,23 @@ if [ -f "$B/dconf-interface.ini" ] && command -v dconf >/dev/null; then
   dconf load "$DCONF_PATH" < "$B/dconf-interface.ini"
 fi
 
+# Archivos del sistema (los que install.sh instaló con sudo)
+sys_restore=(); sys_remove=()
+[ -d "$B/system" ] && while IFS= read -r -d '' f; do sys_restore+=("/$f"); done < <(cd "$B/system" && find . -type f -printf '%P\0')
+[ -s "$B/system-created.txt" ] && mapfile -t sys_remove < "$B/system-created.txt"
+if [ $((${#sys_restore[@]} + ${#sys_remove[@]})) -gt 0 ]; then
+  echo "Archivos del sistema (necesitan sudo):"
+  for f in "${sys_restore[@]}"; do echo "  restaurar $f"; done
+  for f in "${sys_remove[@]}";  do echo "  borrar    $f"; done
+  read -rp "¿Revertirlos también? [s/N] " ans
+  if [[ "$ans" =~ ^[sSyY]$ ]]; then
+    for f in "${sys_restore[@]}"; do
+      sudo install -D -o root -g root -m "$(stat -c %a "$B/system$f")" "$B/system$f" "$f" && echo "ok    $f"
+    done
+    for f in "${sys_remove[@]}"; do [ -n "$f" ] && sudo rm -f "$f" && echo "rm    $f"; done
+  fi
+fi
+
 echo "Restaurado."
 if [ -s "$B/manifest.txt" ]; then
   echo; echo "Estos destinos eran symlinks antes de instalar. Si querés volver a enlazarlos:"

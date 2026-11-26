@@ -93,19 +93,19 @@
         "actions": [
           {
             "label": "◂",
-            "command": "/home/juano/.config/swaync/scripts/resize.sh w+"
+            "command": "bash -c '$HOME/.config/swaync/scripts/resize.sh w+'"
           },
           {
             "label": "▸",
-            "command": "/home/juano/.config/swaync/scripts/resize.sh w-"
+            "command": "bash -c '$HOME/.config/swaync/scripts/resize.sh w-'"
           },
           {
             "label": "▴",
-            "command": "/home/juano/.config/swaync/scripts/resize.sh h-"
+            "command": "bash -c '$HOME/.config/swaync/scripts/resize.sh h-'"
           },
           {
             "label": "▾",
-            "command": "/home/juano/.config/swaync/scripts/resize.sh h+"
+            "command": "bash -c '$HOME/.config/swaync/scripts/resize.sh h+'"
           }
         ]
       }
