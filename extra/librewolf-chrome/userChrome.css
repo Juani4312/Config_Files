@@ -3,20 +3,20 @@
 * Generated with Matugen
 */
 :root {
-  --md-bg: #0e1415;
-  --md-bg-low: #161d1d;
-  --md-container: #1a2121;
-  --md-container-high: #252b2b;
-  --md-container-highest: #2f3636;
-  --md-fg: #dde4e3;
-  --md-fg-variant: #bec8c8;
-  --md-primary: #80d4d6;
-  --md-on-primary: #003738;
-  --md-primary-container: #004f51;
-  --md-on-primary-container: #9cf1f2;
-  --md-secondary-container: #324b4b;
-  --md-outline: #899392;
-  --md-outline-variant: #3f4949;
+  --md-bg: #101417;
+  --md-bg-low: #181c20;
+  --md-container: #1c2024;
+  --md-container-high: #262a2e;
+  --md-container-highest: #313539;
+  --md-fg: #dfe3e7;
+  --md-fg-variant: #c1c7ce;
+  --md-primary: #93cdf6;
+  --md-on-primary: #00344d;
+  --md-primary-container: #004c6d;
+  --md-on-primary-container: #c8e6ff;
+  --md-secondary-container: #384956;
+  --md-outline: #8b9198;
+  --md-outline-variant: #41484d;
   --md-radius: 12px;
 
   /* Variables nativas de Firefox */

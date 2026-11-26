@@ -1,104 +1,104 @@
 -- Generado por matugen, no editar a mano
 return {
 
-    background = "rgba(0e1415ff)",
+    background = "rgba(101417ff)",
 
     error = "rgba(ffb4abff)",
 
     error_container = "rgba(93000aff)",
 
-    inverse_on_surface = "rgba(2b3232ff)",
+    inverse_on_surface = "rgba(2d3135ff)",
 
-    inverse_primary = "rgba(00696bff)",
+    inverse_primary = "rgba(236488ff)",
 
-    inverse_surface = "rgba(dde4e3ff)",
+    inverse_surface = "rgba(dfe3e7ff)",
 
-    on_background = "rgba(dde4e3ff)",
+    on_background = "rgba(dfe3e7ff)",
 
     on_error = "rgba(690005ff)",
 
     on_error_container = "rgba(ffdad6ff)",
 
-    on_primary = "rgba(003738ff)",
+    on_primary = "rgba(00344dff)",
 
-    on_primary_container = "rgba(9cf1f2ff)",
+    on_primary_container = "rgba(c8e6ffff)",
 
-    on_primary_fixed = "rgba(002020ff)",
+    on_primary_fixed = "rgba(001e2eff)",
 
-    on_primary_fixed_variant = "rgba(004f51ff)",
+    on_primary_fixed_variant = "rgba(004c6dff)",
 
-    on_secondary = "rgba(1b3435ff)",
+    on_secondary = "rgba(21323eff)",
 
-    on_secondary_container = "rgba(cce8e8ff)",
+    on_secondary_container = "rgba(d2e5f5ff)",
 
-    on_secondary_fixed = "rgba(041f20ff)",
+    on_secondary_fixed = "rgba(0b1d29ff)",
 
-    on_secondary_fixed_variant = "rgba(324b4bff)",
+    on_secondary_fixed_variant = "rgba(384956ff)",
 
-    on_surface = "rgba(dde4e3ff)",
+    on_surface = "rgba(dfe3e7ff)",
 
-    on_surface_variant = "rgba(bec8c8ff)",
+    on_surface_variant = "rgba(c1c7ceff)",
 
-    on_tertiary = "rgba(1d314cff)",
+    on_tertiary = "rgba(342b4bff)",
 
-    on_tertiary_container = "rgba(d4e3ffff)",
+    on_tertiary_container = "rgba(e9ddffff)",
 
-    on_tertiary_fixed = "rgba(051c35ff)",
+    on_tertiary_fixed = "rgba(1f1635ff)",
 
-    on_tertiary_fixed_variant = "rgba(344863ff)",
+    on_tertiary_fixed_variant = "rgba(4b4263ff)",
 
-    outline = "rgba(899392ff)",
+    outline = "rgba(8b9198ff)",
 
-    outline_variant = "rgba(3f4949ff)",
+    outline_variant = "rgba(41484dff)",
 
-    primary = "rgba(80d4d6ff)",
+    primary = "rgba(93cdf6ff)",
 
-    primary_container = "rgba(004f51ff)",
+    primary_container = "rgba(004c6dff)",
 
-    primary_fixed = "rgba(9cf1f2ff)",
+    primary_fixed = "rgba(c8e6ffff)",
 
-    primary_fixed_dim = "rgba(80d4d6ff)",
+    primary_fixed_dim = "rgba(93cdf6ff)",
 
     scrim = "rgba(000000ff)",
 
-    secondary = "rgba(b0ccccff)",
+    secondary = "rgba(b7c9d8ff)",
 
-    secondary_container = "rgba(324b4bff)",
+    secondary_container = "rgba(384956ff)",
 
-    secondary_fixed = "rgba(cce8e8ff)",
+    secondary_fixed = "rgba(d2e5f5ff)",
 
-    secondary_fixed_dim = "rgba(b0ccccff)",
+    secondary_fixed_dim = "rgba(b7c9d8ff)",
 
     shadow = "rgba(000000ff)",
 
-    source_color = "rgba(546262ff)",
+    source_color = "rgba(5a6975ff)",
 
-    surface = "rgba(0e1415ff)",
+    surface = "rgba(101417ff)",
 
-    surface_bright = "rgba(343a3aff)",
+    surface_bright = "rgba(353a3dff)",
 
-    surface_container = "rgba(1a2121ff)",
+    surface_container = "rgba(1c2024ff)",
 
-    surface_container_high = "rgba(252b2bff)",
+    surface_container_high = "rgba(262a2eff)",
 
-    surface_container_highest = "rgba(2f3636ff)",
+    surface_container_highest = "rgba(313539ff)",
 
-    surface_container_low = "rgba(161d1dff)",
+    surface_container_low = "rgba(181c20ff)",
 
-    surface_container_lowest = "rgba(090f0fff)",
+    surface_container_lowest = "rgba(0a0f12ff)",
 
-    surface_dim = "rgba(0e1415ff)",
+    surface_dim = "rgba(101417ff)",
 
-    surface_tint = "rgba(80d4d6ff)",
+    surface_tint = "rgba(93cdf6ff)",
 
-    surface_variant = "rgba(3f4949ff)",
+    surface_variant = "rgba(41484dff)",
 
-    tertiary = "rgba(b4c8e9ff)",
+    tertiary = "rgba(cdc0e9ff)",
 
-    tertiary_container = "rgba(344863ff)",
+    tertiary_container = "rgba(4b4263ff)",
 
-    tertiary_fixed = "rgba(d4e3ffff)",
+    tertiary_fixed = "rgba(e9ddffff)",
 
-    tertiary_fixed_dim = "rgba(b4c8e9ff)",
+    tertiary_fixed_dim = "rgba(cdc0e9ff)",
 
 }
