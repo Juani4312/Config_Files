@@ -3,7 +3,7 @@
 # copia el repo a un directorio temporal (así los backups de la prueba no quedan en backups/), usa un HOME
 # vacío y stubs de sudo/systemctl/dconf/udevadm/hyprctl. No necesita red ni sudo.
 # Verifica: install -y anda; conserva el historial de qalculate; deja waybar/style.css como symlink;
-# una segunda corrida no cambia nada más; revert de las dos deja el HOME como estaba.
+# borra los OBSOLETE_FILES; una segunda corrida no cambia nada más; revert de las dos deja el HOME como estaba.
 # Uso: tests/install-e2e.sh
 set -euo pipefail
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -21,10 +21,13 @@ seed='[General]
 history_expression=1+1
 precision=10'
 printf '%s\n' "$seed" > "$W/home/.config/qalculate/qalculate-gtk.cfg"
+obs="$W/home/.config/tidal-hifi/userscripts/volume-sync.js"     # uno de OBSOLETE_FILES
+mkdir -p "$(dirname "$obs")"; echo 'viejo' > "$obs"
 
 run() { HOME="$W/home" PATH="$W/stubs:$PATH" "$W/repo/install.sh" -y > "$W/install$1.log" 2>&1 || fail "install $1 (ver log)"; }
 
 run 1
+[ ! -e "$obs" ] || fail "no borró el obsoleto volume-sync.js"
 grep -qx 'history_expression=1+1' "$W/home/.config/qalculate/qalculate-gtk.cfg" || fail "se perdió el historial de qalculate"
 [ -L "$W/home/.config/waybar/style.css" ] || fail "waybar/style.css no quedó como symlink"
 [ -f "$W/home/.config/waybar/config" ] || fail "falta waybar/config"
@@ -41,7 +44,9 @@ for b in $(ls -1 "$W/repo/backups" | sort -r); do
   HOME="$W/home" PATH="$W/stubs:$PATH" "$W/repo/revert.sh" "$b" < <(yes s) > "$W/revert-$b.log" 2>&1 || fail "revert $b"
 done
 quedan=$(cd "$W/home" && find . \( -type f -o -type l \) | sort | tr '\n' ' ')
-[ "$quedan" = "./.config/qalculate/qalculate-gtk.cfg " ] || fail "revert dejó archivos: $quedan"
+[ "$quedan" = "./.config/qalculate/qalculate-gtk.cfg ./.config/tidal-hifi/userscripts/volume-sync.js " ] \
+  || fail "revert dejó archivos (o no repuso el obsoleto): $quedan"
+[ "$(cat "$obs")" = viejo ] || fail "revert no repuso volume-sync.js"
 [ "$(cat "$W/home/.config/qalculate/qalculate-gtk.cfg")" = "$seed" ] || fail "revert no repuso qalculate-gtk.cfg"
 
 echo "OK: install (2 corridas) + revert en HOME falso"

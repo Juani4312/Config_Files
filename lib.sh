@@ -60,6 +60,13 @@ SYSTEM_FILES=(
   /etc/pacman.d/hooks/tidal-hifi-userscripts.hook
   /etc/sddm.conf                              # tema del login: sddm-astronaut-theme
 )
+# Archivos que el repo ya no trae y que install.sh borra de la máquina (con backup: revert.sh los repone),
+# porque copiar nunca borra nada. Rutas relativas a ~.
+OBSOLETE_FILES=(
+  # muteaba tidal al pasar de tema (copiaba las rampas de volumen de TIDAL a su slider); la waybar
+  # ahora usa el volumen del stream en PipeWire (waybar/scripts/music_stream.py)
+  .config/tidal-hifi/userscripts/volume-sync.js
+)
 # Archivos de ~/.config que mezclan historial con opciones: update.sh borra esas líneas antes de subirlos
 # (repo público) e install.sh conserva las de esta máquina. <archivo relativo a ~/.config>|<regex de las claves>
 HISTORY_KEYS=(

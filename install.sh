@@ -81,6 +81,10 @@ review() {
     for f in "${kept[@]}"; do echo "      = $f (propio de esta máquina: no se toca)"; done
   done
   echo "  TOTAL: $t_new nuevos, $t_chg cambiados (se respaldan), $t_same iguales"
+  local o
+  for o in "${OBSOLETE_FILES[@]}"; do
+    if [ -e "$HOME/$o" ] || [ -L "$HOME/$o" ]; then echo "  - ~/$o (obsoleto: se respalda y se borra)"; fi
+  done
   review_binds
 }
 
@@ -136,6 +140,10 @@ backup() {
         new) echo "${dst#"$HOME"/}" >> "$BACKUP/created.txt" ;;
       esac
     fi
+  done
+  local o
+  for o in "${OBSOLETE_FILES[@]}"; do
+    if [ -e "$HOME/$o" ] || [ -L "$HOME/$o" ]; then save "$HOME/$o"; fi
   done
   # dconf actual (tema GTK, íconos, cursor), para que revert.sh lo pueda restaurar
   command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$BACKUP/dconf-interface.ini"
@@ -237,6 +245,11 @@ done
 for pair in "${PAIRS[@]}"; do
   IFS='|' read -r kind src dst <<<"$pair"
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi
+done
+
+# Obsoletos (ya respaldados en backup())
+for o in "${OBSOLETE_FILES[@]}"; do
+  if [ -e "$HOME/$o" ] || [ -L "$HOME/$o" ]; then rm -f "$HOME/$o" && echo "rm    ~/$o (obsoleto)"; fi
 done
 
 # waybar: en el repo style.css es un symlink a style/<variante>. tar -h lo copia como archivo, y eso rompía el
