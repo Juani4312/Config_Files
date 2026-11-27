@@ -63,14 +63,9 @@ Leé esto antes de ejecutar nada.
 ---
 
 ## 1. Requisitos previos
-- Arch Linux (o derivada) con usuario normal y `sudo`.
-- `git` y `base-devel`. Para los paquetes AUR, `yay`:
-  ```bash
-  sudo pacman -S --needed git base-devel
-  git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin && (cd /tmp/yay-bin && makepkg -si)
-  ```
-- Una sesión de Hyprland. Si todavía no está instalado, se instala con `./install.sh -p` (paso 2.4) y después se elige
-  "Hyprland" en el display manager, o se ejecuta `Hyprland` desde una TTY.
+- Arch Linux (o derivada) con un usuario normal con `sudo` (install.sh no corre como root).
+- `git` para clonar (`sudo pacman -S --needed git`). Todo lo demás (base-devel, `yay`, Hyprland, apps, fuentes,
+  servicios) lo instala `./install.sh -p` (paso 2.4), aunque arranques desde una TTY sin entorno gráfico.
 
 ## 2. Instalación
 ### 2.1 Clonar
@@ -94,30 +89,47 @@ listan. Al final compara los binds de Hyprland: cuáles **se pierden** (quedan e
 Qué hace, en orden:
 1. Guarda en `backups/<fecha>/`: `files/` (copia de cada archivo que pisa), `manifest.txt` (symlinks reemplazados),
    `created.txt` (archivos que no existían), `review.txt` y `dconf-interface.ini` (dconf anterior).
-2. Si falta `~/.config/hypr/monitors.lua`, lo genera con los monitores y el scale actuales (`hyprctl monitors`).
-   Los `LOCAL_FILES` que ya existen (`monitors.lua`, `waybar/config`, `rofi/power-menu.sh`) no se tocan.
+2. Si falta `~/.config/hypr/monitors.lua`, lo genera con los monitores y el scale actuales (`hyprctl monitors`;
+   desde una TTY sale uno genérico). Los `LOCAL_FILES` que ya existen (`monitors.lua`, `waybar/config`,
+   `rofi/power-menu.sh`) no se tocan. En una PC nueva, `waybar/config` es una barra genérica (sin monitor fijo);
+   el layout del desktop (una barra por monitor) es `configs/bintang default` y se elige con `SUPER+ALT+B`.
+   Si falta `~/.gitconfig.local`, lo crea con el `user.name`/`user.email` del `~/.gitconfig` actual: el
+   `.gitconfig` del repo no trae identidad (repo público) y la incluye desde ahí.
 3. Copia `config/` → `~/.config`, `home/` → `~`, `extra/` → sus rutas (`~/.local/share/...`, `~/.vscode/...`,
-   perfil de LibreWolf).
+   perfil de LibreWolf). Conserva el historial de qalculate y del diálogo de archivos de Qt (el repo no lo tiene).
 4. Carga `extra/dconf-interface.ini` (tema GTK, íconos, cursor, fuentes).
-5. Apunta las rutas de LibreWolf de `~/.config/matugen/config.toml` al perfil activo de esta máquina.
+5. Apunta las rutas de LibreWolf de `~/.config/matugen/config.toml` al perfil activo de esta máquina, y reescribe
+   `/home/<usuario>/` a esta `$HOME` (tema GTK 3/4, marcadores, `librewolf.desktop`, ZapZap).
+   Elige el tema de matugen en los archivos que no se sincronizan porque tienen tokens o son del perfil:
+   `user.js` de LibreWolf (pref de `userChrome.css`), `theme` de tidal-hifi y `ApplicationTheme` de PrismLauncher.
 6. Crea `~/.config/hypr/current_wallpaper` **solo si falta** (por defecto, `Pictures/Wallpapers/Set/pacman-ghosts.png`):
    si ya existe, respeta el fondo que eligió esta máquina.
-7. Instala con `sudo` (pregunta) los archivos de sistema que cambiaron: `/etc/udev/rules.d/70-mouse-uaccess.rules`,
-   `/usr/local/lib/tidal-hifi-userscripts/patch-asar.py` y `/etc/pacman.d/hooks/tidal-hifi-userscripts.hook`. Las
+7. Instala con `sudo` (pregunta) los archivos de sistema que cambiaron: `/etc/udev/rules.d/70-mouse-uaccess.rules`
+   (mouse + `/dev/uinput` para el autoscroll), `/usr/local/lib/tidal-hifi-userscripts/patch-asar.py`,
+   `/etc/pacman.d/hooks/tidal-hifi-userscripts.hook` y `/etc/sddm.conf` (tema del login). Las
    versiones anteriores quedan en `backups/<fecha>/system/<ruta>` (y los que no existían, en `system-created.txt`). Si
    tidal-hifi está instalado y su `app.asar` no tiene el cargador, pregunta y lo parchea (navegación con flechas).
-8. Habilita `autoscroll.service` (systemd de usuario) y da permisos de ejecución a los scripts.
+8. Habilita `autoscroll.service` (systemd de usuario; si no estaba habilitado lo anota en `enabled.txt` para que
+   `revert.sh` lo deshabilite) y da permisos de ejecución a los scripts.
 
 ### 2.4 Paquetes
 ```bash
-./install.sh -p     # instalación + pacman -S --needed packages/pacman.txt + yay -S --needed packages/aur.txt
+./install.sh -p     # instalación + paquetes + servicios
 ```
-Algunas dependencias que usan los scripts están instaladas como dependencias de otros paquetes, así que no
-figuran en `packages/`. En una máquina limpia, asegurate de tenerlas:
-```bash
-sudo pacman -S --needed jq gtk4-layer-shell libnotify python-gobject python-cairo python-evdev \
-  imagemagick librsvg playerctl curl openbsd-netcat wl-clipboard cliphist grim slurp adw-gtk-theme matugen awww
-```
+Antes de copiar las configs:
+1. `sudo pacman -Syu --needed git base-devel` e instala `yay` (desde `yay-bin` de AUR) si falta.
+2. `yay -S --needed` de **`packages/deps.txt`**: los ~90 paquetes que usan las configs y scripts del repo
+   (Hyprland, waybar, apps con tema, fuentes, dependencias de los scripts). La lista es **a mano**: si agregás algo
+   que usa un programa nuevo, sumalo ahí. `update.sh` no la toca.
+3. Pregunta si instalar también **todo** `packages/pacman.txt` + `aur.txt`. Es el volcado completo de la PC de
+   origen (`pacman -Qqe`, lo regenera `update.sh`) e incluye kernel, microcódigo, drivers y apps personales:
+   en otra PC normalmente respondé que no. Con `-y` no lo instala. Si un paquete ya no existe, se saltea y se avisa.
+4. Habilita `NetworkManager`, `bluetooth` y `sddm` (este último solo si no hay otro display manager). Si tu
+   instalación usa `iwd`/`systemd-networkd` en vez de NetworkManager, revisá que no choquen.
+
+**LibreWolf:** el paquete es `librewolf` del repo oficial (`librewolf-bin` ya no existe en AUR). Si tenés
+`librewolf-bin`, migrá antes de `-p` (mismas rutas, el perfil no cambia):
+`sudo pacman -Rdd librewolf-bin librewolf-bin-debug && sudo pacman -S librewolf`.
 
 ### 2.5 Aplicar
 ```bash
@@ -138,15 +150,17 @@ Estas cosas no se pueden copiar como archivos.
 | Qué | Cómo |
 |---|---|
 | **Scale / monitores** | Editá `~/.config/hypr/monitors.lua` (resolución, posición, scale) y corré `hyprctl reload`. |
-| **LibreWolf** | Abrilo una vez *antes* de `install.sh` para que exista el perfil (si no, no se copian `chrome/*.css`; corré `install.sh` de nuevo después). En `about:config`, `toolkit.legacyUserProfileCustomizations.stylesheets = true`. |
+| **LibreWolf** | Abrilo y cerralo una vez para que exista el perfil, y corré `./install.sh` de nuevo: recién ahí copia `chrome/*.css`, escribe el `user.js` con `toolkit.legacyUserProfileCustomizations.stylesheets` y apunta matugen al perfil. |
 | **Enhancer for YouTube** | Instalalo desde addons.mozilla.org en LibreWolf y abrí sus opciones una vez (eso crea su base de storage). El script activa solo el tema "DeepDark custom" y el CSS custom. El tema de matugen se escribe solo al reiniciar LibreWolf o la próxima vez que lo abras con `SUPER+B` / el lanzador (wrapper `~/.local/bin/librewolf`); para forzarlo a mano: cerrá LibreWolf y corré `~/.config/matugen/scripts/youtube-enhancer-apply.sh`. |
 | **Steam (Millennium)** | `millennium` (AUR) instalado; abrí Steam una vez. El tema `matugen` ya queda activo por `~/.config/millennium/config.json`. Si falta CSS: `~/.config/steam-theme/build.sh --regen`. |
 | **VS Code** | La extensión `local.matugen-theme` se copia sola; si no aparece el tema, elegí "Matugen" en *Preferences: Color Theme*. |
-| **tidal-hifi** | En Settings → Theming elegí `matugen.css`. Para las flechas: si tidal-hifi se instaló *después* de `install.sh`, corré `sudo python3 /usr/local/lib/tidal-hifi-userscripts/patch-asar.py` (o `config/tidal-hifi/userscripts/install/install.sh` con sudo) y reiniciá tidal-hifi. |
-| **Vesktop** (opcional) | Instalalo aparte; en Settings → Themes activá `matugen.css`. |
+| **tidal-hifi** | `install.sh` elige `matugen.css` (si tidal-hifi ya estaba instalado). Para las flechas: si tidal-hifi se instaló *después* de `install.sh`, corré `install.sh` de nuevo (o `sudo python3 /usr/local/lib/tidal-hifi-userscripts/patch-asar.py`) y reiniciá tidal-hifi. |
+| **Vesktop** | Viene en `deps.txt`; el tema `matugen.css` ya queda activo por `~/.config/vesktop/settings/settings.json`. |
+| **PrismLauncher** | `install.sh` elige el tema `matugen` (si Prism ya estaba instalado; si no, corré `install.sh` de nuevo). |
 | **Autoscroll** | La regla udev se aplica al reconectar el mouse o reiniciar. Comprobá con `systemctl --user status autoscroll`. |
 | **Shell** | `chsh -s /usr/bin/zsh`; zinit y los plugins se instalan solos en el primer zsh. tmux: `prefix + I` instala los plugins de tpm. |
-| **Git / SSH** | `~/.ssh` no viaja: generá una clave, agregala a GitHub y configurá el host que use el remoto. |
+| **Git / SSH** | `~/.ssh` no viaja: generá una clave, agregala a GitHub y configurá el host que use el remoto. Tu nombre y mail van en `~/.gitconfig.local` (`git config -f ~/.gitconfig.local user.email tu@mail`), no en el `.gitconfig` del repo. |
+| **Primer fondo** | `SUPER+W` y elegí un fondo: el repo trae colores pre-generados, pero recién ahí matugen genera todo para esta PC (cursor, Steam, YouTube, etc.). |
 
 ## 4. Verificar
 ```bash
@@ -222,8 +236,13 @@ Editá los arrays de `lib.sh`:
 - `HOME_FILES` / `HOME_DIRS`: relativos a `~`.
 - `EXTRA_FILES` / `EXTRA_DIRS`: `"<origen relativo a ~>|<destino en el repo>"`.
 - `SYSTEM_FILES`: rutas absolutas fuera de `~` (se instalan con sudo).
+- `HISTORY_KEYS`: claves de historial que `update.sh` borra antes de subir y `install.sh` conserva.
 
-Nunca se copian `*.key`, `*.pem`, `*token*`, `*secret*`, `.env`, `*cache*`, `*.log` ni `*.bak*`.
+Si lo nuevo usa un programa que no está en `packages/deps.txt`, sumalo ahí.
+
+Nunca se copian `*.key`, `*.pem`, `*token*`, `*secret*`, `.env`, `*cache*`, `*.log`, `*.bak*`, `*.orig`, `*.save`,
+`*(Copy)*`, `*.pre-classfix` ni carpetas `old-conf` (backups viejos). Las configs de apps que guardan tokens
+(tidal-hifi, PrismLauncher, perfil de LibreWolf) no se sincronizan: `install.sh` solo elige su tema.
 
 ### Cambiar el diseño de YouTube
 Editá `~/.config/matugen/templates/youtube-enhancer.css`, regeneralo (`SUPER+W`, o la config temporal del paso 4 con
@@ -273,10 +292,11 @@ correlos si querés volver a ese estado.
 Los archivos del sistema (regla udev, patcher y hook de tidal-hifi) también se revierten: `revert.sh` pregunta y,
 con `sudo`, repone la versión anterior desde `backups/<fecha>/system/` o borra los que la instalación creó.
 
+También deshabilita `autoscroll.service` si la instalación lo habilitó (`enabled.txt`), recarga udev si tocó la
+regla y borra `~/.gitconfig.local` / los archivos de tema que creó.
+
 `revert.sh` **no** deshace:
-- **El servicio de autoscroll:**
-  `systemctl --user disable --now autoscroll.service && rm ~/.config/systemd/user/autoscroll.service`
-- **La recarga de udev:** después de revertir la regla, `sudo udevadm control --reload && sudo udevadm trigger`.
+- **Los servicios del sistema** que habilitó `-p` (`NetworkManager`, `bluetooth`, `sddm`): `sudo systemctl disable <servicio>`.
 - **El `app.asar` parcheado de tidal-hifi:** reinstalá el paquete para recuperar el original (`yay -S tidal-hifi-bin`).
   Para desactivar solo las flechas: borrá `~/.config/tidal-hifi/userscripts/arrow-nav.js`.
 - **Los paquetes** instalados con `-p`: desinstalalos a mano (`sudo pacman -Rns <paquete>`).

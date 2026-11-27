@@ -39,7 +39,7 @@ workspace) lo que no.
 | `config/<x>` | `~/.config/<x>`: hypr, waybar, rofi, kitty, cava, fastfetch, gtk-3.0/4.0, swaync, wlogout, matugen, spicetify, btop, bonsai, neofetch, autostart, nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt, steam-theme, millennium, ZapZap, `vesktop/{themes,settings}`, `tidal-hifi/{themes,userscripts}`, `nvim-kickstart` + archivos sueltos (`mimeapps.list`, `xdg-terminals.list`, `starship.toml`, `qalculate/qalculate-gtk.cfg`, `Code/User/settings.json`, `systemd/user/autoscroll.service`, ...) |
 | `home/` | dotfiles de la home (`.bashrc`, `.bash_profile`, `.zshrc`, `.zshenv`, `.nanorc`, `.tmux.conf`, `.gitconfig`, ...), `.tmux/`, `.fonts/`, `.icons/` y `Pictures/Wallpapers` (sueltos + `Set/`) |
 | `extra/` | temas que viven fuera de `~/.config`: ZapZap, `userChrome/userContent.css` de LibreWolf, extensión de VS Code `local.matugen-theme`, tema `matugen` de Millennium (Steam), tema de PrismLauncher, temas GTK `Matugen-a/b`, cursor `Matu` (`~/.local/share/icons`), `bin/wivrn-dashboard-avahi` y `bin/librewolf` (`~/.local/bin`), `applications/` (`librewolf.desktop` y `nemo.desktop`, en `~/.local/share/applications`), `dconf-interface.ini` (tema GTK, íconos, cursor, fuentes) y `system/` (archivos fuera de `~`: regla udev del autoscroll; patcher del `app.asar` de tidal-hifi + hook de pacman) |
-| `packages/` | `pacman.txt` (paquetes explícitos) y `aur.txt` (AUR / foreign) |
+| `packages/` | `deps.txt` (a mano: lo que usan las configs y scripts del repo), `pacman.txt` / `aur.txt` (volcado de la PC de origen que regenera `update.sh`) |
 | `install.sh` · `update.sh` · `revert.sh` · `lib.sh` | instalar en una máquina · copiar esta máquina al repo · deshacer una instalación · listas compartidas (qué se sincroniza) |
 
 Varios `~/.config/<x>` (nvim, ghostty, ohmyposh, colors, fontconfig, viegphunt) y `.zshrc`, `.tmux.conf`, `.tmux`
@@ -353,7 +353,7 @@ elemento en pausa y saltos de más de 25 % (nunca sube de golpe al 100 %).
 ```bash
 ./install.sh -n     # solo revisión: qué es nuevo / cambia / igual + diff de binds de hypr
 ./install.sh        # revisa, pide confirmación, respalda en backups/<fecha>/ e instala
-./install.sh -p     # igual + instala paquetes (pacman + yay)
+./install.sh -p     # igual + yay si falta + packages/deps.txt (+ opcional todo pacman.txt/aur.txt) + servicios
 ./update.sh [-n] [-p]   # copia esta máquina al repo (-p: commit "Sync <fecha>" + push)
 ./revert.sh -l | [fecha] # lista backups / deshace una instalación
 ```
