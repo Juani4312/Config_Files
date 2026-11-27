@@ -32,6 +32,9 @@ HERE = os.path.dirname(os.path.realpath(__file__))
 RUN = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "waybar-weather")
 PIDFILE = os.path.join(RUN, "search.pid")
 COLORS = os.path.expanduser("~/.config/waybar/colors.css")
+# esquina de la tarjeta: baja desde arriba a la izquierda, debajo de la barra
+CORNER_TOP, CORNER_LEFT = 44, 14
+CARD_SHADOW = 14     # margen CSS de la tarjeta (lugar para la sombra)
 HYPR_SOCK = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "hypr",
                          os.environ.get("HYPRLAND_INSTANCE_SIGNATURE", ""), ".socket.sock")
 GEO_URL = "https://geocoding-api.open-meteo.com/v1/search?count=8&language=en&format=json&name="
@@ -180,8 +183,8 @@ window { background-color: transparent; }
     border-radius: 24px;
     padding: 14px;
     color: @on_surface;
-    box-shadow: 0 8px 28px 0 alpha(@shadow, 0.45);
-    margin: 30px;
+    box-shadow: 0 6px 16px 0 alpha(@shadow, 0.45);
+    margin: 14px;
 }
 #search-box {
     background-color: alpha(@on_surface, 0.05);
@@ -328,7 +331,7 @@ def run_gtk(then_forecast):
 
         def draw_backdrop(self, _w, cr):
             cr.set_operator(cairo.OPERATOR_SOURCE)
-            cr.set_source_rgba(*self.color("scrim", 0.32 * self.fade))
+            cr.set_source_rgba(0, 0, 0, 0)   # capa transparente: solo atrapa los clicks de afuera
             cr.paint()
             cr.set_operator(cairo.OPERATOR_OVER)
             return False
@@ -336,16 +339,22 @@ def run_gtk(then_forecast):
         def step_fade(self):
             t = (GLib.get_monotonic_time() - self.t0) / 300_000
             self.fade = 1 - (1 - min(t, 1.0)) ** 3
+            # entrada: la tarjeta baja 10 px desde la barra mientras aparece
+            self.ev.set_opacity(self.fade)
+            self.ev.set_margin_top(CORNER_TOP - CARD_SHADOW - int(round(10 * (1 - self.fade))))
             self.queue_draw()
             return t < 1.0
 
         # ---- widgets --------------------------------------------------------
         def build(self):
             ev = Gtk.EventBox()
-            ev.set_halign(Gtk.Align.CENTER)
-            # arriba del centro y crece hacia abajo (la lista cambia de alto)
+            # baja desde la esquina, debajo del clima, y crece hacia abajo (la lista cambia de alto)
+            ev.set_halign(Gtk.Align.START)
             ev.set_valign(Gtk.Align.START)
-            ev.set_margin_top(int(self.mon_h * 0.22))
+            ev.set_margin_start(CORNER_LEFT - CARD_SHADOW)
+            ev.set_margin_top(CORNER_TOP - CARD_SHADOW - 10)
+            ev.set_opacity(0)
+            self.ev = ev
             ev.connect("button-press-event", lambda *_: True)
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
             card.set_name("card")

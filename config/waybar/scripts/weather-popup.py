@@ -50,6 +50,11 @@ COLORS = os.path.expanduser("~/.config/waybar/colors.css")
 HTML_DIR = os.path.join(os.environ.get("XDG_CACHE_HOME") or os.path.expanduser("~/.cache"),
                         "waybar-weather")
 FRESH = 15 * 60
+# esquina de la tarjeta: baja desde arriba a la izquierda, debajo de la barra
+CORNER_TOP, CORNER_LEFT = 44, 14
+CARD_SHADOW = 14     # margen CSS de la tarjeta (lugar para la sombra)
+AWAY_CLOSE = 0.7     # s con el mouse lejos -> se cierra
+ZONE_PAD = 16
 HYPR_SOCK = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "hypr",
                          os.environ.get("HYPRLAND_INSTANCE_SIGNATURE", ""), ".socket.sock")
 
@@ -511,8 +516,8 @@ window { background-color: transparent; }
     border-radius: 24px;
     padding: 16px 22px 12px 22px;
     color: @on_surface;
-    box-shadow: 0 8px 28px 0 alpha(@shadow, 0.45);
-    margin: 30px;
+    box-shadow: 0 6px 16px 0 alpha(@shadow, 0.45);
+    margin: 14px;
 }
 #big-icon { color: @primary; font-size: 300%%; }
 #city     { font-weight: bold; font-size: 125%%; }
@@ -601,6 +606,8 @@ def run_popup(data):
             self.cols = []
             self.day_btns = []
             self.loading = False
+            self.mon_x = self.mon_y = 0
+            self.armed, self.away = False, None
 
             self.setup_layer()
             self.build()
@@ -617,6 +624,8 @@ def run_popup(data):
             GLib.timeout_add_seconds(60, self.minute)
             self.show_all()
             self.start_anim(550_000)
+            if not self.test or os.environ.get("WEATHER_POPUP_WATCH"):
+                GLib.timeout_add(150, self.watch_cursor)
             if self.test:
                 self.input_shape_combine_region(cairo.Region())   # clicks pasan de largo
                 GLib.timeout_add(int(self.test * 1000), self.destroy)
@@ -653,6 +662,7 @@ def run_popup(data):
                     g = m.get_geometry()
                     if g.x <= cx < g.x + g.width and g.y <= cy < g.y + g.height:
                         L.set_monitor(self, m)
+                        self.mon_x, self.mon_y = g.x, g.y
                         break
             except Exception:
                 pass
@@ -718,10 +728,32 @@ def run_popup(data):
         def draw_backdrop(self, _w, cr):
             # app_paintable: GTK no pinta el fondo de la ventana, lo oscurecemos acá
             cr.set_operator(cairo.OPERATOR_SOURCE)
-            cr.set_source_rgba(*self.color("scrim", 0.32 * min(1.0, self.fade * 1.6)))
+            cr.set_source_rgba(0, 0, 0, 0)   # capa transparente: solo atrapa los clicks de afuera
             cr.paint()
             cr.set_operator(cairo.OPERATOR_OVER)
             return False
+
+        def watch_cursor(self):
+            """Se cierra si el mouse se aleja de la tarjeta (y de la barra, arriba) un
+            momento, recién después de haber estado adentro (como el menú de música)."""
+            try:
+                c = hypr("cursorpos")
+                a = self.ev.get_allocation()
+                x0 = self.mon_x + a.x + CARD_SHADOW - ZONE_PAD
+                x1 = self.mon_x + a.x + a.width - CARD_SHADOW + ZONE_PAD
+                y1 = self.mon_y + a.y + a.height - CARD_SHADOW + ZONE_PAD
+            except Exception:
+                return True
+            if x0 <= c["x"] <= x1 and self.mon_y <= c["y"] <= y1:
+                self.armed, self.away = True, None
+            elif self.armed:
+                now = GLib.get_monotonic_time() / 1e6
+                if self.away is None:
+                    self.away = now
+                elif now - self.away >= AWAY_CLOSE:
+                    self.destroy()
+                    return False
+            return True
 
         def on_backdrop(self, _w, _ev):
             # los clicks dentro de la tarjeta los frena su EventBox
@@ -739,8 +771,12 @@ def run_popup(data):
 
         def build(self):
             ev = Gtk.EventBox()
-            ev.set_halign(Gtk.Align.CENTER)
-            ev.set_valign(Gtk.Align.CENTER)
+            ev.set_halign(Gtk.Align.START)          # baja desde la esquina, debajo del clima
+            ev.set_valign(Gtk.Align.START)
+            ev.set_margin_start(CORNER_LEFT - CARD_SHADOW)
+            ev.set_margin_top(CORNER_TOP - CARD_SHADOW - 10)
+            ev.set_opacity(0)
+            self.ev = ev
             ev.connect("button-press-event", lambda *_: True)
             ev.add_events(Gdk.EventMask.SCROLL_MASK | Gdk.EventMask.SMOOTH_SCROLL_MASK)
             ev.connect("scroll-event", self.on_scroll)
@@ -977,6 +1013,10 @@ def run_popup(data):
             self.anim = 1 - (1 - min(t, 1.0)) ** 3     # ease-out cubic
             if self.anim_fade:
                 self.fade = self.anim
+                # entrada: la tarjeta baja 10 px desde la barra mientras aparece
+                a = min(1.0, self.anim * 1.6)
+                self.ev.set_opacity(a)
+                self.ev.set_margin_top(CORNER_TOP - CARD_SHADOW - int(round(10 * (1 - a))))
                 self.queue_draw()
             else:
                 self.chart.queue_draw()

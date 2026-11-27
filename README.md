@@ -206,13 +206,13 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
   - **Clima** (`custom/weather#ba`, `scripts/weather*.py`): a la derecha del reloj, ícono según el tiempo +
     temperatura actual de la ciudad elegida ([Open-Meteo](https://open-meteo.com), sin API key, cada 15 min; sin red
     muestra el último valor guardado, atenuado). Tooltip con condición, sensación térmica, mín/máx, humedad y viento.
-    - **Click** = pronóstico (`weather-popup.py`, GTK3 + layer-shell, centrado con el fondo oscurecido): curva de
+    - **Click** = pronóstico (`weather-popup.py`, GTK3 + layer-shell, baja desde la esquina debajo de la barra): curva de
       temperatura hora por hora de 00 a 00 (sensación térmica punteada, noche sombreada, marca de "ahora", detalle de
       cada hora al pasar el mouse), tira cada 3 h con lluvia y fila de **7 días** (click, `←/→`, `1-7` o rueda).
       Usa la zona horaria de la ciudad. `R` actualiza, `S` / 󰍉 cambia de ciudad y vuelve al pronóstico. Se cierra
-      con `Esc`, click afuera u otro click. Sin layer-shell (o con `--html`) abre lo mismo como página en el
+      con `Esc`, click afuera, otro click o alejando el mouse. Sin layer-shell (o con `--html`) abre lo mismo como página en el
       navegador (`~/.cache/waybar-weather/today.html`).
-    - **Click derecho** = buscar ciudad (`weather-search.py`, estilo spotlight): resultados mientras escribís
+    - **Click derecho** = buscar ciudad (`weather-search.py`, estilo spotlight, también en la esquina): resultados mientras escribís
       (geocoding de Open-Meteo) con bandera, provincia/país y hora local para distinguir homónimas; vacío muestra las
       **recientes** (✓ en la actual). `↑/↓`, `Enter`, `Esc`. Sin layer-shell usa `rofi -dmenu`.
     - La ciudad elegida y las recientes se guardan en `~/.local/state/waybar-weather/location.json`, **fuera** de
