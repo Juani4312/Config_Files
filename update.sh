@@ -43,6 +43,10 @@ qcfg="$REPO/config/qalculate/qalculate-gtk.cfg"
 qtcfg="$REPO/config/QtProject.conf"
 [ -f "$qtcfg" ] && sed -i -E '/^(history|lastVisited)=/d' "$qtcfg"
 
+# .gitconfig: la identidad va en ~/.gitconfig.local (no se sube). `git config --global user.*` la
+# escribe en ~/.gitconfig, así que se saca acá por las dudas.
+git config -f "$REPO/home/.gitconfig" --remove-section user 2>/dev/null || true
+
 # Los symlinks absolutos se reemplazan: current_wallpaper lo crea install.sh.
 rm -f "$REPO/config/hypr/current_wallpaper"
 # waybar: style.css es un hardlink (o symlink) a un archivo de style/; en el repo queda como

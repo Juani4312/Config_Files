@@ -178,6 +178,17 @@ for f in "${LOCAL_FILES[@]}"; do
   mkdir -p "$KEEP/$(dirname "$f")"; cp -a "$HOME/.config/$f" "$KEEP/$f"
 done
 
+# El .gitconfig del repo no trae [user] (repo público): incluye ~/.gitconfig.local.
+# Si falta, se arma con la identidad del ~/.gitconfig actual antes de pisarlo.
+GLOCAL="$HOME/.gitconfig.local"
+if [ ! -e "$GLOCAL" ] && [ -f "$HOME/.gitconfig" ]; then
+  for k in user.name user.email; do
+    v=$(git config -f "$HOME/.gitconfig" "$k" || true)
+    if [ -n "$v" ]; then git config -f "$GLOCAL" "$k" "$v"; fi
+  done
+  if [ -e "$GLOCAL" ]; then echo "${GLOCAL#"$HOME"/}" >> "$BACKUP/created.txt"; echo "ok    ~/.gitconfig.local (user.name/email)"; fi
+fi
+
 for pair in "${PAIRS[@]}"; do
   IFS='|' read -r kind src dst <<<"$pair"
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi

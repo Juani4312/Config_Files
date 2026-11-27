@@ -4,8 +4,8 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
-[user]
-	name = Juan Ignacio Garces
-	email = juanini2005@gmail.com
+# Identidad (user.name / user.email) fuera del repo público: install.sh crea este archivo si falta
+[include]
+	path = ~/.gitconfig.local
 [includeIf "gitdir:~/Documents/ITBA/"]
 	path = ~/.gitconfig-itba
