@@ -28,13 +28,16 @@ Instrucciones originales: `~/Laptop/CONFIG-FILES-REVISION.md`. Reporte: `REVIEW-
 (lo actualizo después de cada paso)
 
 - [x] Fase 0–2: inventario, audit, review → borrador del reporte.
-- [ ] Fixes del plan (commits 1–9).
+- [x] Fixes del plan: commits 4708d9a…b39ebd6 (install, revert, hypr, autoscroll, git, zsh, update, chore).
+  #14 (curl en hyprlock) no aplicaba: el label estaba deshabilitado, pero comentado a medias → arreglado.
+  El commit de docs (#9) queda para el final, junto con lo de instalación desde cero.
 - [ ] Leer todo el código restante.
 - [ ] Instalación desde cero (paquetes, yay, servicios, archivos que faltan).
 - [ ] Verificación final + docs + reporte final.
 
 ## Próximo paso
-Aplicar los fixes del plan, empezando por `fix(install)`.
+Leer todo el código restante (python de waybar, cursor, moz_ext_storage, steam, tidal, viegphunt, rofi, swaync, nvim/tmux)
+y anotar dependencias para la lista de paquetes de instalación desde cero.
 
 ## Log
 - 2026-11-27: review inicial terminada; borrador de `REVIEW-REPORT.md`. Pusheaste los 5 commits de main.
