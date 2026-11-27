@@ -51,7 +51,8 @@ tooltip label{
 	padding: 0px;
 }
 #ws-dp3,
-#ws-hdmi {
+#ws-hdmi,
+#ws-all {
 	background-color: rgba(0,0,0,0.55);
 	transition: background-color 0.35s ease;
 	border-radius: 20px;
@@ -603,12 +604,14 @@ box:hover > #custom-special-pad.active {
 	margin-left: 3px;
 }
 .modules-center > *:nth-child(3) > #ws-dp3,
-.modules-center > *:nth-child(3) > #ws-hdmi {
+.modules-center > *:nth-child(3) > #ws-hdmi,
+.modules-center > *:nth-child(3) > #ws-all {
 	background-color: rgba(0,0,0,0.42);
 }
 /* el focused deja de ser una píldora sólida: tinte translúcido + borde, sin brillo */
 .modules-center > *:nth-child(3) > #ws-dp3 #custom-ws.focused,
-.modules-center > *:nth-child(3) > #ws-hdmi #custom-ws.focused {
+.modules-center > *:nth-child(3) > #ws-hdmi #custom-ws.focused,
+.modules-center > *:nth-child(3) > #ws-all #custom-ws.focused {
 	color: @primary;
 	background-color: alpha(@primary, 0.18);
 	box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0.55);

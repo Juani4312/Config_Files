@@ -1,1 +1,57 @@
-configs/bintang default
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+
+/* Barra por defecto para una PC nueva: sin "output", así aparece en cualquier monitor
+   (con varios monitores sale una por monitor, todas iguales).
+   Es propia de cada máquina (LOCAL_FILES): install.sh solo la crea si falta y update.sh no la sube.
+   El desktop usa configs/bintang default (una barra por monitor: DP-3 1〜5, HDMI-A-1 6〜10);
+   se elige con SUPER+ALT+B. */
+[
+{
+"include": [
+  "$HOME/.config/waybar/Modules",
+  "$HOME/.config/waybar/ModulesWorkspaces",
+  "$HOME/.config/waybar/ModulesCustom",
+  "$HOME/.config/waybar/ModulesGroups",
+  "$HOME/.config/waybar/UserModules",
+  ],
+"layer": "bottom",
+"exclusive": true,
+"passthrough": false,
+"position": "top",
+"spacing": 3,
+"fixed-center": true,
+"ipc": true,
+"margin-top": 3,
+"margin-left": 8,
+"margin-right": 8,
+
+"modules-left": [
+	"clock",
+	"custom/weather#ba",
+	"custom/separator#blank",
+	"tray",
+	],
+
+"modules-center": [
+	"custom/special-flag#any",
+	"custom/special#any",
+	"group/ws-all",
+	"custom/special-pad#any",
+	"custom/ws-listener",
+	"custom/popups-daemon",
+	],
+
+"modules-right": [
+	"custom/music",
+	"group/notify",
+	"network",
+	"bluetooth",
+	"battery",
+	"hyprland/language#kb",
+	"custom/separator#blank",
+	"group/audio",
+	"custom/separator#blank",
+	"custom/power",
+	],
+},
+]

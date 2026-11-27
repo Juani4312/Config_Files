@@ -127,6 +127,37 @@
 		"on-click": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 pad-click",
 		"tooltip": false
 	},
+	// Barra genérica (waybar/config por defecto de una PC nueva): sin monitor fijo
+	"custom/special#any": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh any",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"on-click": "~/.config/waybar/scripts/ws-special.sh any click",
+		"tooltip": false
+	},
+	"custom/special-flag#any": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh any flag",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"tooltip": false
+	},
+	"custom/special-pad#any": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh any pad",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"on-click": "~/.config/waybar/scripts/ws-special.sh any pad-click",
+		"tooltip": false
+	},
+	"group/ws-all": {
+		"orientation": "horizontal",
+		"modules": [
+			"custom/ws#1", "custom/ws#2", "custom/ws#3", "custom/ws#4", "custom/ws#5",
+			"custom/ws#6", "custom/ws#7", "custom/ws#8", "custom/ws#9", "custom/ws#10"
+		]
+	},
 	"group/ws-dp3": {
 		"orientation": "horizontal",
 		"modules": [
