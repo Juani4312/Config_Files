@@ -202,7 +202,7 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     esquina, debajo de la hora: mes con números de semana ISO (la semana empieza según el locale), hoy resaltado en
     `@primary`; `‹ ›` / `← →` / rueda cambian de mes (con deslizamiento), `« »` / `↑ ↓` de año, y tocando el mes
     o el año se abre una grilla para elegirlos (`m` / `y`); `Home` / "Today" vuelve a hoy. Se cierra con `Esc`,
-    click afuera o alejando el mouse. El tooltip de la hora (calendario chico) ya no usa colores fijos.
+    click afuera o alejando el mouse. La hora no tiene tooltip (click izquierdo alterna hora / fecha completa).
   - **Clima** (`custom/weather#ba`, `scripts/weather*.py`): a la derecha del reloj, ícono según el tiempo +
     temperatura actual de la ciudad elegida ([Open-Meteo](https://open-meteo.com), sin API key, cada 15 min; sin red
     muestra el último valor guardado, atenuado). Tooltip con condición, sensación térmica, mín/máx, humedad y viento.
