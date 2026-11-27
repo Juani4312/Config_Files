@@ -37,14 +37,13 @@ Instrucciones originales: `~/Laptop/CONFIG-FILES-REVISION.md`. Reporte: `REVIEW-
   de apps + sddm.conf), 8cf516e (historial qalculate/Qt), e85947f (state() con /home/<usuario>).
   Probado de punta a punta en HOME falso con stubs (~/Laptop/.review-tmp/e2e): instala, es idempotente
   y revert deja el HOME vacío.
-- [ ] Verificación final + docs + reporte final.
+- [x] Verificación final + /ponytail-review (fixes en c6837c0) + tests/install-e2e.sh + docs + REVIEW-REPORT.md final.
 
 ## Próximo paso
-1. Docs: README + instructions (instalación desde cero, pasos manuales, deps.txt, .gitconfig.local, LibreWolf).
-2. Verificación final (shellcheck, luac, jq, Hyprland verify, install -n real y en HOME falso), /ponytail-review.
-3. REVIEW-REPORT.md final.
-4. Al final, con el usuario: prueba con un usuario nuevo de Linux (necesita sudo, lo corre él) y opcional
-   contenedor archlinux (docker) para probar la instalación de paquetes.
+La review terminó. Lo que queda depende del usuario:
+1. Que revise el diff y mergee.
+2. Que haga los pendientes con sudo (abajo).
+3. La prueba con un usuario nuevo (REVIEW-REPORT §8) y las dudas de §6. Si pide aplicar alguna duda, va en commits nuevos en esta branch.
 
 ## Pendientes para el usuario (necesitan sudo, no los hago yo)
 - Migrar LibreWolf: `sudo pacman -Rdd librewolf-bin librewolf-bin-debug && sudo pacman -S librewolf`
@@ -52,5 +51,6 @@ Instrucciones originales: `~/Laptop/CONFIG-FILES-REVISION.md`. Reporte: `REVIEW-
 - `./install.sh` después de mergear: instala la regla udev nueva (uinput) y /etc/sddm.conf con sudo.
 
 ## Log
+- 2026-11-27: review cerrada; reporte final. Test: `tests/install-e2e.sh` → OK.
 - 2026-11-27: fixes del plan + instalación desde cero + prueba e2e en HOME falso.
 - 2026-11-27: review inicial terminada; borrador de `REVIEW-REPORT.md`. Pusheaste los 5 commits de main.

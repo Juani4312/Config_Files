@@ -1,190 +1,195 @@
 # REVIEW-REPORT — branch `review/ponytail`
 
-> **BORRADOR (fase 3, antes de tocar código).** Los hallazgos marcados "plan" se aplican recién con tu OK.
-> Base: `main` @ `facd049` (ya pusheado). Hyprland 0.57.2.
+Base: `main` @ `facd049`. 19 commits, 44 archivos (+657 / −1021). Hyprland 0.57.2. Nada pusheado ni mergeado.
+Bitácora para retomar: [`REVIEW-PROGRESS.md`](REVIEW-PROGRESS.md).
 
 ## 1. Resumen ejecutivo
 
-El repo está sano: `bash -n` da 0 errores en 50 scripts y `shellcheck -S warning` da 10 avisos (8 son falsos
-positivos de `lib.sh`). Los JSON son válidos, los `.lua` compilan y `Hyprland --verify-config` da `config ok`.
-La simetría entre install y update es perfecta: no hay entradas de `lib.sh` sin archivo en el repo ni archivos huérfanos.
-`install.sh -n` es read-only de verdad, verificado con un HOME falso.
-No hay secretos en los archivos ni en el historial.
+El repo ya estaba sano y ahora también se puede instalar desde cero en un Arch limpio.
+- **Validaciones:** `bash -n` da 0 errores en 50 scripts y `shellcheck -S warning` pasa de 10 a **0** warnings.
+  Python compila, Lua compila, los JSON son válidos y `Hyprland --verify-config` da `config ok`.
+  Los dos configs de waybar tienen todos sus módulos definidos.
+- **Test nuevo:** `tests/install-e2e.sh` prueba install ×2 + revert en un HOME falso, sin red ni sudo, y pasa.
+- **Secretos:** no hay ninguno, ni en los archivos ni en el historial de git.
 
-Lo más importante:
-1. **Rutas `/home/juano` hardcodeadas** que install.sh no reescribe: los imports de GTK4, el bind `SUPER+B`,
-   `librewolf.desktop` y ZapZap. Con otro usuario se rompen, y además dejan ver tu usuario en un repo público.
-2. **`revert.sh` no desinstala del todo**: deja `autoscroll.service` habilitado (con el script ya borrado) y no recarga udev.
-3. **`.gitconfig` con tu nombre y tu mail personal** en el repo público.
-4. **Una PC nueva arranca sin waybar**: el `waybar/config` por defecto del repo trae `output: DP-3 / HDMI-A-1`.
-5. **install.sh borra el historial de qalculate y del diálogo de archivos de Qt** en cada instalación (queda en el backup).
+Lo más importante que se arregló:
+1. **Una PC nueva no tenía barra:** el `waybar/config` por defecto solo definía `DP-3`/`HDMI-A-1`. Ahora es genérico.
+2. **No había forma de instalar "todo" en otra PC:** faltaban dependencias reales, `yay`, servicios y la selección
+   de temas. Ahora está `packages/deps.txt` (90 paquetes verificados) y `install.sh -p` hace el resto.
+3. **install.sh borraba datos:** el historial de qalculate y Qt, y archivos con rutas de home se pisaban sin backup.
+   Además rompía el hardlink de `waybar/style.css`.
+4. **revert.sh no desinstalaba del todo:** quedaba `autoscroll.service` habilitado y no recargaba udev.
+5. **Datos personales en el repo público:** el mail en `.gitconfig` y `/home/juano` en binds y lanzadores.
+
+**Para vos, con sudo:** `librewolf-bin` ya no existe en AUR, así que tu LibreWolf está congelado en la 152.
+Migrá al paquete oficial (ver §8).
 
 ## 2. Mapa del sistema
 
 ```
-install.sh [-n|-y|-p]
-  lib.sh (arrays) ─► PAIRS repo→~ ─► review (+ diff de binds) ─► [-n: sale acá, no escribe nada]
-  └► confirmación ─► backup(): backups/<fecha>/{files/, created.txt, manifest.txt (symlinks), dconf, review.txt}
-     ─► -p: pacman + yay ─► monitors.lua si falta ─► aparta LOCAL_FILES ─► copia todo ─► repone LOCAL_FILES
-     ─► dconf load ─► sed perfil LibreWolf en matugen/config.toml ─► sed /home/<x>/ (gtk3 + bookmarks)
-     ─► nemo.desktop ─► current_wallpaper ─► SYSTEM_FILES con sudo (+ udev reload) ─► patch tidal-hifi
-     ─► systemctl --user enable --now autoscroll ─► chmod +x
-revert.sh [fecha] ─► restaura files/ ─► borra created.txt ─► dconf ─► sistema (sudo) ─► imprime cómo re-enlazar symlinks
-update.sh [-n|-p] ─► copia ~→repo (dirs con delete, excluye *.bak* *cache* *token* ...) ─► dconf dump
-  ─► limpia historial qalculate/Qt ─► LOCAL_FILES vuelven a HEAD ─► pacman -Qqen/-Qqem ─► git add -A ─► -p: commit+push
+install.sh [-n|-y|-p]   (no corre como root)
+  lib.sh (arrays) ─► PAIRS repo→~ ─► review: nuevo/cambiado/igual + diff de binds ─► [-n: termina acá, no escribe]
+  └► confirmación ─► backup(): backups/<fecha>/{files/, created.txt, manifest.txt, enabled.txt, history/, system/, dconf}
+     ─► -p: pacman -Syu git base-devel ─► yay-bin si falta ─► yay deps.txt ─► [pregunta] pacman.txt + aur.txt
+           ─► enable NetworkManager, bluetooth, sddm
+     ─► monitors.lua si falta ─► aparta LOCAL_FILES ─► ~/.gitconfig.local si falta ─► aparta historial (HISTORY_KEYS)
+     ─► copia todo (tar -h) ─► style.css → symlink a su variante ─► repone LOCAL_FILES ─► dconf load
+     ─► matugen → perfil de LibreWolf ─► sed /home/<x>/ en HOMEPATH_FILES ─► repone historial ─► nemo.desktop
+     ─► temas en archivos no sincronizados (user.js de LibreWolf, tidal-hifi, PrismLauncher)
+     ─► current_wallpaper ─► SYSTEM_FILES con sudo (+ udev reload) ─► patch tidal-hifi ─► autoscroll.service ─► chmod
+revert.sh [fecha] ─► restaura files/ ─► disable enabled.txt ─► borra created.txt ─► dconf ─► sistema (sudo + udev reload)
+update.sh [-n|-p] ─► ~→repo (dirs con delete, EXCLUDE_PATTERNS) ─► dconf dump ─► borra HISTORY_KEYS ─► saca [user] de .gitconfig
+  ─► LOCAL_FILES vuelven a HEAD ─► pacman -Qqen/-Qqem ─► -p: git add -A + commit + push
 
-SUPER+W ─► wppicker.sh (rofi) ─► matugen image ─► templates (config.toml) + post_hooks:
-  waybar(SIGUSR2) kitty(SIGUSR1) hypr colors.lua(hyprctl reload) cava(USR1) qalculate steam(build.sh)
-  cursor(build.py --apply) ohmyposh(build.py)
-  └► theme-reload.sh: GTK Matugen-a/b, btop(USR2), swaync -rs, wlogout tint, YouTube Enhancer,
-     reinicia zapzap/qalculate; pregunta por tidal/librewolf/steam/prism (salvo que no se esté usando)
+SUPER+W ─► wppicker.sh (rofi) ─► matugen image ─► templates (config.toml) + post_hooks
+  └► theme-reload.sh: GTK a/b, btop, swaync, wlogout, YouTube Enhancer, reinicia zapzap/qalculate, pregunta tidal/librewolf/steam/prism
 ```
 
-## 3. Hallazgos (del audit de la fase 1 + la review de la fase 2)
+## 3. Hallazgos
 
-Severidad: C crítico · A alto · M medio · B bajo · N nit. Estado: **plan** = se aplica con tu OK,
-**pend.** = queda propuesto, **duda** = ver §6.
+Severidad: A alto · M medio · B bajo · N nit. ✅ = arreglado (commit) · ⏳ = queda para vos · ❓ = duda (§6).
 
-| # | Sev | Dónde | Problema → escenario | Fix | Estado |
-|---|-----|-------|----------------------|-----|--------|
-| 1 | A | `install.sh:205-206` | El `sed` que cambia `/home/<x>/` por `$HOME` cubre solo GTK3 y los bookmarks. Con otro usuario fallan los `@import` de **GTK4** (`extra/gtk-themes/*/gtk-4.0/*.css`), `librewolf.desktop` (4 `Exec=`) y `ZapZap.conf` (download_path): las apps libadwaita quedan sin paleta y el lanzador de LibreWolf no abre. | Sumar esos archivos al mismo `sed`, que pasa a ser `s#/home/[^/]+/#$HOME/#g`. | plan |
-| 2 | A | `keybinds.lua:29` | `SUPER+B` ejecuta `/home/juano/.local/bin/librewolf`: con otro usuario el bind no hace nada. | `os.getenv("HOME") .. "/.local/bin/librewolf"` | plan |
-| 3 | A | `config/waybar/config` (LOCAL_FILES) | En una PC nueva, install.sh copia el `waybar/config` del repo, que solo define barras para `DP-3` y `HDMI-A-1`. En una laptop (`eDP-1`) **no aparece ninguna barra**. | Es un archivo por máquina (regla 6): no lo toco. Opción: que install.sh, si lo crea, saque las líneas `"output"`. | duda |
-| 4 | M | `revert.sh` | No deshace `systemctl --user enable --now autoscroll`. Después del revert el unit queda habilitado, el `.service` y el script borrados, y el symlink en `default.target.wants` queda colgando (el servicio falla en cada login). | Si `created.txt` tiene el `.service`: `systemctl --user disable --now` antes de borrar. | plan |
-| 5 | M | `revert.sh:129-132` | Al restaurar o borrar la regla udev no corre `udevadm control --reload && trigger` (install sí lo hace), así que los permisos viejos siguen hasta reiniciar. | Lo mismo que hace install.sh. | plan |
-| 6 | M | `home/.gitconfig` | Tu nombre y tu mail personal en un repo público (pediste tratarlo como hallazgo). | Sacar `[user]` y agregar `[include] path = ~/.gitconfig.local`. install.sh crea ese archivo a partir de tu `~/.gitconfig` actual si falta, así tu identidad de git no cambia. | plan |
-| 7 | M | `update.sh:39-44` ↔ `install.sh` | update saca el historial de `qalculate-gtk.cfg` y de `QtProject.conf`, así que install siempre los ve como "cambiados" y **pisa tu historial** (queda solo en el backup). Hoy `install.sh -n` en tu máquina da exactamente esos 2 cambios. | Opciones en §6. | duda |
-| 8 | M | `home/.zshrc:71-76` | `alias grep='grep --color=always'` y los `eza --color=always`: en un pipe mandan códigos ANSI. `ls \| xargs rm`, `grep x \| grep y` o `> archivo` reciben basura y fallan sin error visible. | `--color=auto`: en la terminal se ve igual. | plan |
-| 9 | M | `autoscroll.py` + udev | `/dev/uinput` es accesible solo por la regla `60-steam-input.rules` del paquete **steam**. Sin steam, `/dev/uinput` queda `root 0600`: `UInput()` falla, el servicio se reinicia cada 2 s hasta que systemd lo marca *failed*, y no hay autoscroll. | Agregar `KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess"` a `70-mouse-uaccess.rules` (la misma línea que trae steam). | plan |
-| 10 | B | `autoscroll.py:83` | `is_mouse` acepta un dispositivo que es teclado y mouse a la vez (combos con touchpad tipo K400): lo agarra en exclusiva, y como el uinput virtual no tiene teclas, **el teclado deja de andar**. Tus mouses actuales no tienen teclas (lo verifiqué). | `and e.KEY_A not in keys` | plan |
-| 11 | B | `install.sh:60,143,170` | `"${dst/#$HOME/~}"`: bash expande el `~` del reemplazo, así que nunca acorta (la salida muestra `/home/juano/...`). | `\~` | plan |
-| 12 | B | `install.sh:261` | `chmod +x ~/.config/hypr/UserScripts/*`: esa carpeta no existe en ningún lado. | Borrar ese glob. | plan |
-| 13 | B | `matugen/templates/hyprland-colors.conf` | `$image = …` está dentro del `for`, así que sale 50 veces en `hypr/colors.conf`. | Moverlo afuera del loop (el resultado no cambia). | plan |
-| 14 | B | `hyprlock.conf:89` | `curl -s 'wttr.in…'` sin timeout. | `curl -s -m 5` | plan |
-| 15 | B | `packages/` | `imagemagick` (`magick` en `wlogout/tint-icons.sh`) es solo dependencia opcional: en una PC limpia los íconos de wlogout no se tiñen. Editar `pacman.txt` no sirve porque update.sh lo regenera con `pacman -Qqen`. | Correr `sudo pacman -D --asexplicit imagemagick` en tu máquina. | pend. |
-| 16 | B | `packages/` | `dunst` y `swaync` están instalados y los dos registran activación D-Bus de `org.freedesktop.Notifications`. Si llega una notificación antes de que arranque swaync, dbus puede levantar dunst (a verificar). Otros a verificar: `hyprpaper` (se usa awww), `xdg-desktop-portal-wlr` junto a `-hyprland`, `librewolf-bin-debug`. | `pacman -Rns` lo que no uses. | duda |
-| 17 | B | `config/tidal-hifi/userscripts/install/` | `patch-asar.py` y el `.hook` están duplicados (idénticos) con `extra/system/...`, y son dos copias que hay que cambiar juntas. install.sh usa la de `extra/system`. | Ver §6. | duda |
-| 18 | B | `update.sh:72` | `git add -A` corre **siempre**, aunque no pases `-p`: deja staged todo lo que haya en el repo. | Moverlo adentro del `if -p` (`git status --short` alcanza para mostrar). | plan |
-| 19 | N | `lib.sh` | 8× SC2034 (falsos positivos: lo sourcean otros scripts). `brightness.sh:6` y `music-ctl.sh:13` tienen variables sin usar. | `# shellcheck disable=SC2034` en lib.sh y borrar las 2 variables. | plan |
-| 20 | N | `hyprland.lua:3` | El comentario apunta a `~/.config/hypr.bak-20261025-005229`, que ya no existe. | Borrar la línea. | plan |
+| # | Sev | Dónde | Problema | Estado |
+|---|-----|-------|----------|--------|
+| 1 | A | `config/waybar/config` | En una PC nueva no aparecía ninguna barra: el default solo tenía `DP-3`/`HDMI-A-1`. Ahora es una barra genérica con módulos `#any` + `group/ws-all`. El layout del desktop sigue en `configs/bintang default` (`SUPER+ALT+B`). | ✅ 999debe |
+| 2 | A | `packages/` + `install.sh -p` | No se podía instalar todo en otra PC: varias dependencias reales (jq, playerctl, gtk4-layer-shell, python-cairo, imagemagick, ripgrep…) solo estaban como dependencias de otros paquetes. `yay` no se instalaba. `pacman -S - < pacman.txt` y `yay - < aur.txt` abortan **todo** si falta un paquete (hoy faltan `librewolf-bin`, `librewolf-bin-debug` y `spotiflac-bin`). No se habilitaban servicios. | ✅ fd6c17d |
+| 3 | A | LibreWolf | `librewolf-bin` ya no está en AUR. Tu 152 no se actualiza más y la oficial `extra/librewolf` va por la 160, con las mismas rutas. | ✅ deps.txt / ⏳ migración en tu máquina |
+| 4 | A | `install.sh` `sed` | `/home/juano` en los imports de GTK4, `librewolf.desktop` y ZapZap no se reescribía: con otro usuario se rompían. | ✅ 4708d9a, c6837c0 |
+| 5 | A | `keybinds.lua:29` | `SUPER+B` tenía `/home/juano/…` hardcodeado. Ahora es `~/.local/bin/librewolf`. | ✅ f48a156 |
+| 6 | M | `install.sh` | Borraba el historial de qalculate y del diálogo de Qt en cada instalación. Ahora lo aparta y lo repone, con `HISTORY_KEYS` compartido con update.sh. Probado ida y vuelta con tus archivos reales. | ✅ 8cf516e |
+| 7 | M | `install.sh` | `tar -h` convertía `waybar/style.css` (hardlink en tu máquina) en una copia suelta: editar la variante dejaba de cambiar la barra. Ahora queda como symlink. | ✅ 2863289 |
+| 8 | M | `install.sh` `state()` | Con otro usuario, los archivos con rutas de home se respaldaban y recopiaban en cada corrida. Después, el review encontró que `colors.conf`/`QtProject.conf` se pisaban sin backup. Se resolvió con una lista única `HOMEPATH_FILES`. | ✅ e85947f, c6837c0 |
+| 9 | M | `revert.sh` | No deshabilitaba `autoscroll.service` y quedaba un symlink colgando en `default.target.wants`. Ahora install anota lo que habilita en `enabled.txt`. | ✅ c324d8f |
+| 10 | M | `revert.sh` | No recargaba udev al revertir la regla. Ahora sí, y avisa que tidal-hifi sigue parcheado. | ✅ c324d8f |
+| 11 | M | `home/.gitconfig` | Tu nombre y mail personal en el repo público. Pasaron a `~/.gitconfig.local`: install lo crea con tu identidad actual y el include va antes del `includeIf` de ITBA (probado). update.sh saca `[user]` si vuelve a aparecer. | ✅ afb103e |
+| 12 | M | `hyprlock.conf` | Los labels "Degrees"/"USER" estaban comentados a medias y dejaban 2 `}` sueltas. Además el typo `dots_rouding`. | ✅ f48a156 |
+| 13 | M | `.zshrc` | `--color=always` en `ls`/`grep` mandaba códigos ANSI a pipes y archivos: `ls \| xargs rm` fallaba. | ✅ c975d35 |
+| 14 | M | autoscroll | `/dev/uinput` solo era accesible por la regla del paquete **steam**: sin steam, no había autoscroll. Ahora tiene regla propia. | ✅ 589224b |
+| 15 | M | LibreWolf / tidal / Prism | En una PC nueva el tema no cargaba. Faltaba la pref de `userChrome.css`, que tenías puesta a mano en `about:config`, y el tema elegido en tidal y Prism. Esas configs tienen tokens (ListenBrainz, Modrinth), así que no se sincronizan: install escribe solo esa clave, con backup. | ✅ fd6c17d |
+| 16 | M | login | `/etc/sddm.conf` (tema `sddm-astronaut-theme`) no estaba en el repo. Ahora está en `SYSTEM_FILES`. | ✅ fd6c17d |
+| 17 | B | `update.sh:72` | `git add -A` corría aunque no pasaras `-p`. | ✅ 397ea43 |
+| 18 | B | `autoscroll.py:83` | Un combo teclado+touchpad se agarraba en exclusiva y el teclado dejaba de andar. Verifiqué que tus 3 mouses siguen detectados. | ✅ 589224b |
+| 19 | B | `ws-listener.py` | Con varias barras, los listeners se pisaban el `.tmp` del estado. | ✅ c6837c0 |
+| 20 | B | `install.sh` | Los mensajes nunca acortaban la ruta a `~` (bash expande el `~` del reemplazo). Había un glob a `UserScripts/` que no existe. | ✅ 4708d9a |
+| 21 | B | `hyprland-colors.conf` | `$image` dentro del `for`: salía 50 veces. Mismos colores, probado con una config aislada de matugen. | ✅ f48a156 |
+| 22 | B | repo | Backups viejos trackeados (`hypr/old-conf/`, `*.pre-classfix`, `(Copy).rasi`, `quick.css.orig`). Además ahora `EXCLUDE_PATTERNS` los ignora, porque siguen en tu `~/.config` y update.sh los volvía a subir. | ✅ b39ebd6 |
+| 23 | N | varios | 8 SC2034 en lib.sh (falsos positivos), variables sin usar en brightness/music-ctl, comentario a un backup que no existe. | ✅ b39ebd6, f48a156 |
+| 24 | B | `config/autostart/bitwarden.desktop` | No hace nada: la sesión arranca con SDDM → `start-hyprland` (sin uwsm) y nadie procesa el autostart XDG. Bitwarden no está corriendo. | ❓ |
+| 25 | B | packages | `dunst` y `swaync` instalados, los dos con activación D-Bus de notificaciones. `hyprpaper` sin uso (se usa awww). `xdg-desktop-portal-wlr` junto al de Hyprland. | ❓ |
+| 26 | B | `music-popup.py` | La cache de carátulas (`~/.cache/…`) crece sin límite (un archivo por tema). | ⏳ |
+| 27 | B | `rofi/wifi-menu.sh` | La clave wifi viaja por la línea de comandos de `nmcli`: otro usuario local la ve un instante en `/proc`. | ⏳ |
 
-Dejé afuera 4 nits que no cambian nada: el wrapper `bind()` de keybinds.lua que solo reenvía la llamada (tocarlo
-ensucia el diff de binds de `install.sh -n`), `ZDG_DATA_HOME` (typo heredado, cae al default), `fastfetch` en cada
-shell (es a propósito) y `kill $active_pid` sin comillas.
+**Quedan 9 notas de shellcheck nivel *info*, todas justificadas:**
+- SC2016 en `special-move.sh`: son expresiones de jq a propósito.
+- SC2012 (`ls`): nombres controlados.
+- SC2086, SC2181 y SC2295: casos inofensivos en scripts chicos o en `viegphunt/`, que no se usa.
 
-**Lo que está bien (verificado):** `-n` es read-only. Los backups cubren todo lo que se pisa, incluidos `extra/` y
-los archivos de sistema. Los archivos que no existían van a `created.txt` y revert los borra. Los symlinks a
-`~/dotfiles` se reemplazan sin escribir adentro. `backups/` y `monitors.lua` están en `.gitignore` y update.sh nunca
-sube los LOCAL_FILES. theme-reload.sh usa `pkill -x` con nombres exactos (no mata nada de más). El clima tiene
-timeout de 10 s, cache, marca "stale" y guarda la ubicación fuera del repo. No hay autostart duplicado con
-systemd (hypridle, waybar y swaync no tienen unit habilitado). Los archivos generados por matugen que están
-commiteados (colors.lua, etc.) **hacen falta**: sin `hypr/colors.lua` Hyprland no carga en el primer arranque.
+**Shortcut documentado:** `install.sh:267`. Con una HOME más profunda que `/home/<usuario>`, repetir el `sed` anida la ruta.
 
 ## 4. Binds
 
-Fuente: `config/hypr/configs/keybinds.lua`. Coincide 1:1 con la tabla del README. **No hay binds duplicados ni en
-conflicto.** Todos los binarios que usan los binds están en `packages/` o son opcionales con fallback (`hyprshutdown`).
+Fuente: `config/hypr/configs/keybinds.lua`. Coincide 1:1 con la tabla del README. **No hay duplicados ni conflictos.**
+El único cambio de la branch es `SUPER+B`: misma acción, ruta con `~`.
 
 | Bind | Acción |
 |------|--------|
 | SUPER+T / SUPER+Return | kitty / kitty flotante 800×550 |
-| SUPER+C | cerrar ventana |
-| CTRL+ALT+Delete | hyprshutdown o salir |
+| SUPER+C · CTRL+ALT+Delete | cerrar ventana · hyprshutdown o salir |
 | SUPER+E / SUPER+SHIFT+E | nemo / kitty yazi |
 | SUPER+V / SUPER+SHIFT+V | cliphist en rofi / alternar flotante |
-| SUPER+I | emoji-picker.sh |
-| SUPER+Space | SwitchLayout.sh (us/latam) |
-| SUPER+J | togglesplit |
-| SUPER+R / SUPER+SHIFT+R | rofi drun / wbrestart.sh |
-| SUPER+O | reload-all.sh |
-| SUPER+K | pavucontrol |
-| SUPER+M, XF86AudioMicMute | mic-mute.sh |
+| SUPER+I · SUPER+Space · SUPER+J | emojis · us/latam · togglesplit |
+| SUPER+R / SUPER+SHIFT+R · SUPER+O | rofi / wbrestart.sh · reload-all.sh |
+| SUPER+K · SUPER+M (y XF86AudioMicMute) | pavucontrol · mic-mute.sh |
 | SUPER+B / SUPER+N | LibreWolf (wrapper) / google-chrome-stable |
-| SUPER+L | hyprlock |
-| SUPER+F | fullscreen |
-| SUPER+P | screenshot.sh |
-| SUPER+W | wppicker.sh |
-| SUPER+SHIFT+Q | KillActiveProcess.sh |
-| SUPER+SHIFT+C | hyprpicker -a |
-| SUPER+CTRL+B / SUPER+ALT+B | WaybarStyles.sh / WaybarLayout.sh |
-| SUPER+H | ocultar waybar (SIGUSR1) |
-| SUPER+←/→ · +SHIFT | workspace r∓1 · mover ventana |
-| SUPER+↑/↓ | foco |
-| SUPER+CTRL+flechas / SUPER+ALT+flechas | mover / redimensionar (repite) |
-| SUPER+1..0 · +SHIFT | workspace 1..10 · mover ventana |
-| SUPER+S / SUPER+SHIFT+S | especial "magic" / special-move.sh |
-| SUPER+Z / SUPER+SHIFT+Z | especial "claude" / special-move.sh claude |
-| SUPER+rueda | workspace e±1 |
-| SUPER+clic izq/der | arrastrar / redimensionar |
-| SUPER+clic medio | autoscroll (nc al socket) |
-| XF86 volumen/brillo | volume.sh / brightness.sh (funcionan bloqueado, repiten) |
-| XF86 Play/Pause/Next/Prev | playerctl (funcionan bloqueado) |
+| SUPER+L · SUPER+F · SUPER+P · SUPER+W | hyprlock · fullscreen · screenshot · wppicker |
+| SUPER+SHIFT+Q · SUPER+SHIFT+C | matar proceso activo · hyprpicker |
+| SUPER+CTRL+B / SUPER+ALT+B · SUPER+H | estilos / layouts de waybar · ocultar waybar |
+| SUPER+←/→ (+SHIFT) · SUPER+↑/↓ | workspace r∓1 (mover ventana) · foco |
+| SUPER+CTRL/ALT+flechas | mover / redimensionar |
+| SUPER+1..0 (+SHIFT) | workspace 1..10 (mover ventana) |
+| SUPER+S / +SHIFT · SUPER+Z / +SHIFT | especial "magic" / "claude" (mostrar / mandar o devolver) |
+| SUPER+rueda · SUPER+clic izq/der · SUPER+clic medio | workspaces e±1 · arrastrar/redimensionar · autoscroll |
+| XF86 volumen/brillo/multimedia | volume.sh / brightness.sh / playerctl (funcionan bloqueado) |
 
-## 5. Cambios hechos
+## 5. Cambios, por commit
 
-_(se completa después de tu OK)_
-
-Plan de commits:
-1. `fix(install)`: #1, #11, #12
-2. `fix(revert)`: #4, #5
-3. `fix(hypr)`: #2, #13, #14, #20
-4. `fix(autoscroll)`: #9, #10
-5. `fix(git)`: #6 (+ install.sh crea `~/.gitconfig.local`)
-6. `fix(zsh)`: #8
-7. `fix(update)`: #18
-8. `chore`: #19 + backups viejos trackeados (§6.1) + `EXCLUDE_PATTERNS` con `*.orig *.pre-* *.save *(Copy)*`
-   para que update.sh no los vuelva a subir + `config/rofi/power-menu.sh` en `.gitignore`
-9. `docs`: README/instructions (`.gitconfig.local`, limpieza de backups)
+| Commit | Qué |
+|--------|-----|
+| 4708d9a | fix(install): `/home/<usuario>` en GTK4/LibreWolf/ZapZap, `~` en mensajes, sin glob de UserScripts |
+| c324d8f | fix(revert): deshabilita los servicios que habilitó install, recarga udev, avisa del patch de tidal |
+| f48a156 | fix(hypr): SUPER+B, hyprlock (llaves sueltas, typo), `$image` una vez |
+| 589224b | fix(autoscroll): regla udev de uinput, sin combos teclado+mouse |
+| afb103e | fix(git): identidad → `~/.gitconfig.local` |
+| c975d35 | fix(zsh): `--color=auto` |
+| 397ea43 | fix(update): `git add -A` solo con `-p` |
+| b39ebd6 | chore: backups viejos fuera + EXCLUDE_PATTERNS + shellcheck limpio + `.gitignore` power-menu |
+| 999debe | fix(waybar): config genérico para PC nueva |
+| fd6c17d | feat(install): deps.txt, yay, servicios, temas de apps, sddm.conf, no root |
+| 8cf516e | fix(install): conservar el historial de qalculate/Qt |
+| e85947f | fix(install): rutas de home no cuentan como cambio |
+| 2863289 | fix(install): style.css como symlink |
+| c6837c0 | fix: hallazgos de /ponytail-review + `tests/install-e2e.sh` |
+| 64e9030, d6ca6c4 | docs: README + instructions |
+| 3b03d84, d6459cc, 7ef00dd | bitácora/reporte |
 
 ## 6. Dudas (no borré ni cambié nada de esto)
 
-### 6.1 Backups viejos (tu nota)
-- **Trackeados en el repo** (propongo borrarlos en el commit `chore`, salvo que digas lo contrario):
-  `config/hypr/old-conf/` (config hyprlang vieja: nada la carga y mete ruido en el diff de binds de `install.sh -n`),
-  `config/matugen/templates/midnight-discord.css.pre-classfix`, `config/rofi/config (Copy).rasi`,
-  `config/steam-theme/quick.css.orig`. **Ojo:** también existen en tu `~/.config`, y como update.sh copia las
-  carpetas enteras, los volvería a subir. Por eso amplío `EXCLUDE_PATTERNS`; `old-conf/` lo tenés que borrar a mano
-  de `~/.config/hypr`.
-- **En tu home, fuera del repo:** 170 archivos `*.bak*`/`*.orig`/`*.pre-*` (1.7 MB), casi todos en
-  `~/.config/{waybar,hypr,swaync,matugen}` y de sesiones anteriores de Claude. **No interfieren:** Hyprland no los
-  carga y update.sh ya excluye `*.bak*`. No los borré porque están en tu `$HOME` real. Para verlos y borrarlos:
-  `find ~/.config/{waybar,hypr,swaync,matugen,rofi,wlogout,kitty,steam-theme,tidal-hifi} \( -name '*.bak*' -o -name '*.pre-*' \) -print` (y después `-delete`).
-  Los de `google-chrome`, `zen`, `ghidra` y `Code` los crean esas apps: no tocarlos.
-- **`~/dotfiles` NO es un backup:** `nvim`, `ghostty`, `ohmyposh`, `colors`, `fontconfig`, `viegphunt`, `.zshrc`,
-  `.tmux.conf` y `.tmux` son symlinks ahí y están en uso.
-- **`backups/20261025-205927`** (180 KB): es lo único que tiene `revert.sh`. Dejalo.
+- **`config/viegphunt/`** (11 scripts): nada los referencia. Sus dependencias están instaladas. ¿Los borro?
+- **`hypr/scripts/AirplaneMode.sh`:** sin bind ni módulo.
+- **`matugen/templates/steam-adwaita.css`:** sin entrada en `config.toml`.
+- **`fastfetch/config1.jsonc`:** ¿alternativa a mano o sobra?
+- **`custom/weather` en `waybar/ModulesCustom`:** apunta a `hypr/UserScripts/Weather.py`, que no existe. Ningún
+  layout tuyo lo usa; los layouts JaKooLit de `configs/` quizás sí.
+- **`wbrestart.sh` (`SUPER+SHIFT+R`, `killall -9`):** hace casi lo mismo que `reload-all.sh`. ¿Lo unifico?
+- **`config/tidal-hifi/userscripts/install/`:** el patcher y el hook están duplicados, idénticos, con
+  `extra/system/`. install.sh usa los de `extra/system/`. ¿Borro esta copia?
+- **`autostart/bitwarden.desktop` (#24):** ¿agrego `hl.exec_cmd("/opt/Bitwarden/bitwarden-app --autostart")` al
+  autostart de Hyprland, o lo borro?
+- **`starship.toml`:** no lo usa nada (el prompt es oh-my-posh) y starship no está instalado.
+- **`spicetify/`:** hay tema de matugen para Spotify, pero `spicetify-cli` no está instalado, así que no se aplica.
+- **`ghostty/`:** está configurado pero no instalado. Lo dejé fuera de `deps.txt`.
+- **Paquetes (#25):** `dunst`, `hyprpaper`, `xdg-desktop-portal-wlr`. ¿Los sacás con `sudo pacman -Rns`?
+- **En tu `~/.config` hay 170 `*.bak*` (1.7 MB)** de sesiones anteriores de Claude. No interfieren: update.sh los
+  excluye y Hyprland no los carga. Para verlos:
+  `find ~/.config/{waybar,hypr,swaync,matugen,rofi,wlogout,kitty,steam-theme,tidal-hifi} \( -name '*.bak*' -o -name '*.pre-*' \) -print`
+  (y después `-delete`). Los de `google-chrome`, `zen`, `ghidra` y `Code` los crean esas apps.
+  `~/.config/hypr/old-conf/` también se puede borrar.
+- **`~/dotfiles` NO es un backup:** varias carpetas de `~/.config` y `.zshrc`/`.tmux` son symlinks ahí. La primera
+  instalación los convierte en copias reales y revert te dice cómo re-enlazarlos.
 
-### 6.2 Código posiblemente muerto
-- `config/viegphunt/` (11 scripts): nada los referencia (ni binds, ni waybar, ni otros scripts).
-- `config/hypr/scripts/AirplaneMode.sh`: sin bind ni módulo.
-- Templates sin entrada en `matugen/config.toml`: `steam-adwaita.css`.
-- `config/fastfetch/config1.jsonc`: ¿alternativa a mano (`fastfetch -c`) o sobra?
-- `custom/weather` en `waybar/ModulesCustom` apunta a `hypr/UserScripts/Weather.py`, que no existe. Ningún layout
-  lo usa (el tuyo es `custom/weather#ba`).
-- `wbrestart.sh` (`SUPER+SHIFT+R`, `killall -9`) hace casi lo mismo que `reload-all.sh`. ¿Lo unifico?
-- `config/tidal-hifi/userscripts/install/` (#17): ¿lo borro (install.sh ya hace todo) o lo dejo como instalador manual?
+## 7. Qué no verifiqué y riesgos
 
-### 6.3 Decisiones
-- #3 waybar en PC nueva: ¿que install.sh saque los `"output"` del default cuando lo crea?
-- #7 historial de qalculate/Qt: (a) dejarlo así, (b) no instalarlos si ya existen (pasan a ser "locales"; perdés
-  sincronizar sus opciones), (c) que install.sh conserve las líneas de historial al copiar.
-- #16 paquetes duplicados o sin uso.
+- **Instalación real de paquetes:** no corrí `-p` (necesita sudo). Verifiqué los 90 nombres de `deps.txt` contra los
+  repos oficiales (base local de pacman) y contra la API de AUR. Lo que hace `yay` (prompts, builds) no está probado.
+  Se puede probar en un contenedor `archlinux` con docker (§8).
+- **install.sh real sobre tu HOME:** no lo corrí. Lo probé de punta a punta en un HOME falso con stubs de `sudo`,
+  `systemctl`, `dconf` y `hyprctl` (`tests/install-e2e.sh`). `install.sh -n` contra tu HOME da: 0 nuevos,
+  16 cambiados (los de esta branch más el historial), y solo cambia el bind `SUPER+B`.
+- **hyprlock:** no tiene modo de validar sin bloquear la pantalla. Verifiqué el balance de llaves y la sintaxis a ojo.
+- **waybar:** no la levanté; hubiera aparecido una barra extra en tu pantalla. Validé el JSONC con los includes y
+  el CSS con `Gtk.CssProvider`.
+- **No leí línea por línea:** el arte SVG de `cursor/build.py`, el CSS minificado de steam/tidal/vesktop, ni nvim
+  más allá de bootstrap y dependencias. Los popups grandes de waybar los leí por estructura y por todo lo que tocan
+  afuera (procesos, red, archivos, escapes).
+- **Riesgo en tu máquina:** `install.sh -p` va a fallar al instalar `deps.txt` mientras tengas `librewolf-bin`
+  (choca con `librewolf`). Migrá primero (§8).
+- **NetworkManager:** si una PC nueva usa `iwd`/`systemd-networkd`, habilitar NetworkManager puede chocar. Está
+  avisado en instructions.md.
 
-## 7. Qué no verifiqué
+## 8. Próximos pasos
 
-- No corrí `install.sh` (sin `-n`), `-p`, `update.sh` ni `revert.sh`. La instalación real llama a `dconf load`,
-  `systemctl --user` y `sudo` **aunque uses un HOME falso**, así que no es segura de probar.
-- No probé en una PC limpia. Lo recorrí leyendo el código: asume `yay` (si falta, avisa), y `monitors.lua` sale
-  genérico si Hyprland no está corriendo.
-- No chequeé con la red si los paquetes existen o cambiaron de nombre.
-- Leí entero el ciclo de vida, Hyprland, theme-reload, wppicker, autoscroll, clima y los scripts chicos de hypr.
-  **No leí línea por línea:** los popups Python de waybar (music/calendar/weather-popup, ~3000 líneas),
-  `cursor/build.py`, `moz_ext_storage.py`, `steam-theme/generate.py`, CSS y templates grandes, nvim y tmux (TPM es vendor).
-- README e instructions: revisé los flags, la tabla de binds y las rutas. No revisé cada frase.
-
-## 8. Próximos pasos sugeridos
-
-1. Decidir lo de §6.3 (sobre todo #3, que es lo que rompe una instalación nueva).
-2. `sudo pacman -D --asexplicit imagemagick` y sacar `dunst` si no lo usás.
-3. Borrar los `*.bak*` de tu `~/.config` (comando en §6.1).
-4. Después de mergear: `./install.sh -n`, y recién ahí `./install.sh`.
+1. **Revisar y mergear:** `git log main..review/ponytail` · `git diff main...review/ponytail`. No corras
+   `update.sh` antes de mergear.
+2. **Migrar LibreWolf (sudo):** `sudo pacman -Rdd librewolf-bin librewolf-bin-debug && sudo pacman -S librewolf`.
+3. **Aplicar en tu PC:** `./install.sh -n` y después `./install.sh`. Te va a pedir sudo para la regla udev nueva y
+   para `/etc/sddm.conf`, y va a crear `~/.gitconfig.local` con tu identidad. Después `SUPER+O`.
+4. **Prueba con un usuario nuevo** (lo corrés vos, necesita sudo):
+   ```bash
+   sudo useradd -m -G wheel -s /bin/bash prueba && sudo passwd prueba
+   # entrar como "prueba" (TTY o SDDM → Hyprland) y:
+   git clone https://github.com/Juani4312/Config_Files.git ~/Sync && cd ~/Sync && ./install.sh
+   # al terminar: sudo userdel -r prueba
+   ```
+   Opcional, para probar los paquetes desde cero sin tocar tu sistema:
+   `docker run --rm -it archlinux bash`, y adentro instalar `git sudo`, crear un usuario, y correr `./install.sh -p`.
+5. **Decidir las dudas de §6.**
