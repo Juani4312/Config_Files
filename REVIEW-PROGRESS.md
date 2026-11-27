@@ -31,13 +31,26 @@ Instrucciones originales: `~/Laptop/CONFIG-FILES-REVISION.md`. Reporte: `REVIEW-
 - [x] Fixes del plan: commits 4708d9a…b39ebd6 (install, revert, hypr, autoscroll, git, zsh, update, chore).
   #14 (curl en hyprlock) no aplicaba: el label estaba deshabilitado, pero comentado a medias → arreglado.
   El commit de docs (#9) queda para el final, junto con lo de instalación desde cero.
-- [ ] Leer todo el código restante.
-- [ ] Instalación desde cero (paquetes, yay, servicios, archivos que faltan).
+- [x] Leer todo el código restante (popups grandes de waybar leídos por estructura + interacciones externas;
+  arte SVG de cursor/build.py y CSS minificado de steam no línea por línea).
+- [x] Instalación desde cero: commits 999debe (waybar genérico), fd6c17d (deps.txt + yay + servicios + temas
+  de apps + sddm.conf), 8cf516e (historial qalculate/Qt), e85947f (state() con /home/<usuario>).
+  Probado de punta a punta en HOME falso con stubs (~/Laptop/.review-tmp/e2e): instala, es idempotente
+  y revert deja el HOME vacío.
 - [ ] Verificación final + docs + reporte final.
 
 ## Próximo paso
-Leer todo el código restante (python de waybar, cursor, moz_ext_storage, steam, tidal, viegphunt, rofi, swaync, nvim/tmux)
-y anotar dependencias para la lista de paquetes de instalación desde cero.
+1. Docs: README + instructions (instalación desde cero, pasos manuales, deps.txt, .gitconfig.local, LibreWolf).
+2. Verificación final (shellcheck, luac, jq, Hyprland verify, install -n real y en HOME falso), /ponytail-review.
+3. REVIEW-REPORT.md final.
+4. Al final, con el usuario: prueba con un usuario nuevo de Linux (necesita sudo, lo corre él) y opcional
+   contenedor archlinux (docker) para probar la instalación de paquetes.
+
+## Pendientes para el usuario (necesitan sudo, no los hago yo)
+- Migrar LibreWolf: `sudo pacman -Rdd librewolf-bin librewolf-bin-debug && sudo pacman -S librewolf`
+  (librewolf-bin ya no existe en AUR; mismas rutas, el perfil sigue igual). Hacerlo ANTES de `install.sh -p`.
+- `./install.sh` después de mergear: instala la regla udev nueva (uinput) y /etc/sddm.conf con sudo.
 
 ## Log
+- 2026-11-27: fixes del plan + instalación desde cero + prueba e2e en HOME falso.
 - 2026-11-27: review inicial terminada; borrador de `REVIEW-REPORT.md`. Pusheaste los 5 commits de main.
