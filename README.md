@@ -191,9 +191,11 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     botón para alternar reproductor y slider de volumen (el mismo que la rueda; con la rueda encima usa los mismos pasos); se cierra al alejar el mouse o con otro click.
     A la derecha (opuesto al nombre del reproductor) el botón de **salida de audio** (󰓃/󰍹/󰋋 según el tipo):
     despliega las salidas y la elegida pasa a ser la de por defecto, moviendo lo que ya suena (`pactl`). Click derecho = pausa/play,
-    medio = cambiar de reproductor, rueda = volumen **del reproductor** (MPRIS, no el del sistema;
-    pasos de 1 % hasta 10, 2 % hasta 30 y 5 % después; el tooltip muestra el nivel; en tidal-hifi el slider
-    lo sigue gracias a `userscripts/volume-sync.js`, ver abajo). Muestra el último que empezó a sonar.
+    medio = cambiar de reproductor, rueda = volumen **de la app** (`music_stream.py`: su stream en PipeWire, como el
+    mezclador de pavucontrol; ni el del sistema ni el slider interno del reproductor, que queda independiente;
+    WirePlumber lo recuerda por app). Pasos de 1 % hasta 10, 2 % hasta 30 y 5 % después; el tooltip muestra el
+    nivel. Chromium cierra el stream de tidal-hifi ~12 s después de pausar: mientras tanto el slider queda
+    deshabilitado y la rueda no hace nada. Muestra el último reproductor que empezó a sonar.
     El menú abierto recarga sus colores en vivo si cambia `colors.css` (Super+W).
     En esta PC hay uno por barra (`custom/music#dp3` / `#hdmi`, el argumento resalta solo el ícono del monitor
     con el menú abierto); en otra máquina agregá `"custom/music"` al principio de `modules-right` de `config`.
@@ -298,12 +300,6 @@ trababa en el buscador):
 - No interfiere al escribir (buscador), en menús contextuales ni con ←/→ sobre las barras de volumen/progreso.
 
 Editar el script no requiere reiniciar: `Ctrl+U` (hard reload de tidal-hifi) lo vuelve a cargar.
-
-`userscripts/volume-sync.js`: tidal-hifi aplica el volumen que llega por MPRIS (la rueda sobre el ícono de música de
-waybar), su API o sus atajos directo al `<audio>`, a espaldas de TIDAL: el slider no se movía y TIDAL volvía a poner
-su valor. El script escucha `volumechange` y pasa esos cambios al store Redux de TIDAL
-(`playbackControls/SET_VOLUME`), así TIDAL los aplica como si movieras su slider. Ignora sus propios cambios, el
-elemento en pausa y saltos de más de 25 % (nunca sube de golpe al 100 %).
 
 ---
 

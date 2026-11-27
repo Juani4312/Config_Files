@@ -59,6 +59,10 @@ Leé esto antes de ejecutar nada.
     `:nth-child` cuenta solo hermanos *visibles* (un custom con texto vacío se oculta), eso se usa para el estado del
     especial. Un ícono simbólico (`-gtk-icontheme`) se multiplica por el alfa de `color`: no se puede ocultar el
     glifo con `color: transparent` y seguir viendo el ícono.
+16. **Volumen de la música:** el módulo de waybar maneja el stream de la app en PipeWire (`music_stream.py`), nunca
+    el volumen interno de TIDAL. No vuelvas a copiar el `<audio>.volume` al store de TIDAL: su reproductor gapless
+    hace rampas en sus dos `<audio>` al cambiar de tema (crossfade, `volume=0` al soltar uno) y un userscript que
+    las seguía (`volume-sync.js`, ya borrado) dejaba a TIDAL en 0 de vez en cuando.
 
 ---
 

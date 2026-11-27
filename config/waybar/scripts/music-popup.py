@@ -4,9 +4,10 @@
 Popup GTK3 + layer-shell que aparece debajo del ícono: carátula, título,
 artista, álbum, barra de progreso (click/arrastre = ir a ese punto),
 anterior / pausa / siguiente, de qué reproductor viene (con botón para
-alternar si están abiertos tidal-hifi y DeaDBeeF) y volumen del reproductor
-(MPRIS, lo mismo que la rueda sobre el ícono: la rueda sobre el slider usa
-music-ctl.sh volume, así los pasos son iguales).
+alternar si están abiertos tidal-hifi y DeaDBeeF) y volumen de la app (su
+stream en PipeWire, como pavucontrol; el slider interno del reproductor queda
+independiente — ver music_stream.py). Es lo mismo que la rueda sobre el ícono:
+la rueda sobre el slider usa music-ctl.sh volume, así los pasos son iguales.
 
 Sigue al reproductor activo que elige music.py
 ($XDG_RUNTIME_DIR/waybar-music/state). Colores: los de matugen
@@ -38,6 +39,8 @@ gi.require_version("Playerctl", "2.0")
 from gi.repository import (Gdk, GdkPixbuf, Gio, GLib, Gtk,  # noqa: E402
                            GtkLayerShell, Playerctl)
 
+import music_stream  # noqa: E402  (volumen del stream de la app en PipeWire)
+
 try:                                    # PyGObject >= 3.52
     gi.require_version("GLibUnix", "2.0")
     from gi.repository import GLibUnix  # noqa: E402
@@ -49,7 +52,6 @@ RUN = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "waybar-music")
 STATE = os.path.join(RUN, "state")
 PIDFILE = os.path.join(RUN, "popup.pid")
 CLOSED = os.path.join(RUN, "popup.closed")
-VOLFILE = os.path.join(RUN, "volume")      # "reproductor valor ms" (music-ctl.sh volume)
 CTL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "music-ctl.sh")
 CACHE = os.path.join(os.environ.get("XDG_CACHE_HOME") or os.path.expanduser("~/.cache"),
                      "waybar-music")
@@ -74,8 +76,8 @@ I_OUT = {"hdmi": "\U000f0379", "headphones": "\U000f02cb", "speaker": "\U000f04c
 I_CHECK = "\U000f012c"
 # volumen: 0 / bajo / medio / alto  (󰝟 󰕿 󰖀 󰕾)
 I_VOL = ("\U000f075f", "\U000f057f", "\U000f0580", "\U000f057e")
-VOL_HOLD = 1.5       # s tras cambiarlo nosotros en que se ignora lo que reporta el
-                     # reproductor (tidal tarda en reflejarlo y haría saltar el slider)
+VOL_HOLD = 0.4       # s tras cambiarlo desde el slider en que se ignoran los avisos
+                     # de pactl (llegan atrasados y harían saltar el slider)
 
 CSS = """
 @import url("file://%(colors)s");
@@ -293,7 +295,9 @@ class Popup(Gtk.Window):
         self.vol_dragging = False
         self.vol_pending = None      # valor (0-100) a mandar, con throttle
         self.vol_timer = 0
-        self.vol_set_at = 0.0        # monotonic() del último cambio nuestro / de la rueda
+        self.vol_set_at = 0.0        # monotonic() del último cambio desde el slider
+        self.stream_vol = {}         # clase -> % del stream (falta si no está sonando)
+        self.cls = ""
         self.scroll_acc = 0.0
         self.closing = False
         self.geo = None
@@ -310,6 +314,7 @@ class Popup(Gtk.Window):
         mon = Gio.File.new_for_path(RUN).monitor_directory(Gio.FileMonitorFlags.WATCH_MOVES, None)
         mon.connect("changed", self.on_state_file)
         self._mon = mon  # que no lo junte el GC
+        self.vwatch = music_stream.Watcher(self.on_stream_vols)
 
         self.bind()
         GLib.timeout_add(500, self.tick)
@@ -525,8 +530,6 @@ class Popup(Gtk.Window):
         names = {f.get_basename() if f else None, other.get_basename() if other else None}
         if "state" in names:
             self.bind()
-        if "volume" in names:           # rueda sobre el ícono / el slider: al instante
-            self.volume_from_file()
 
     def bind(self):
         inst, _status, cls = read_state()
@@ -550,7 +553,6 @@ class Popup(Gtk.Window):
         if self.player is not None:
             for sig in ("metadata", "playback-status", "seeked"):
                 self.handlers.append(self.player.connect(sig, lambda *_: self.refresh()))
-            self.handlers.append(self.player.connect("volume", lambda *_: self.sync_volume()))
         self.vol_set_at = 0.0           # otro reproductor: tomar su volumen ya
         self.refresh_swap()
         self.refresh()
@@ -796,62 +798,41 @@ class Popup(Gtk.Window):
             except GLib.Error:
                 pass
 
-    # ---- volumen (MPRIS del reproductor, igual que la rueda sobre el ícono) --
+    # ---- volumen (stream de la app en PipeWire, igual que la rueda) ----------
     def show_volume(self, pct):
         pct = max(0, min(100, int(round(pct))))
         self.l_vol.set_text(f"{pct}%")
         self.l_vol_icon.set_text(I_VOL[0 if pct == 0 else 1 if pct < 34 else 2 if pct < 67 else 3])
         return pct
 
+    def on_stream_vols(self, vols):
+        """music_stream.Watcher: cambió algún stream (rueda sobre el ícono,
+        pavucontrol) o apareció / se cerró uno (Chromium lo cierra en pausa)."""
+        self.stream_vol = vols
+        self.sync_volume()
+
     def sync_volume(self):
-        """Toma el volumen que reporta el reproductor (si no lo estamos cambiando)."""
-        p = self.player
-        try:
-            v = p.props.volume if p is not None else None
-        except Exception:
-            v = None
-        ok = v is not None and v >= 0
+        """Muestra el volumen del stream (si no lo estamos cambiando)."""
+        v = self.stream_vol.get(self.cls) if self.player is not None else None
+        ok = v is not None
         self.vscale.set_sensitive(ok)
+        self.vscale.set_tooltip_text(None if ok else "Volume is available while playing")
         if not ok:
             self.l_vol.set_text("")
             return False
         if self.vol_dragging or self.vol_pending is not None or \
                 time.monotonic() - self.vol_set_at < VOL_HOLD:
             return False
-        self.vscale.set_value(self.show_volume(v * 100))
+        self.vscale.set_value(self.show_volume(v))
         return False
 
-    def volume_from_file(self):
-        """music-ctl.sh volume (rueda) escribió el valor nuevo: mostrarlo ya."""
-        try:
-            with open(VOLFILE) as f:
-                who, val, _ms = f.read().split()
-            val = float(val)
-        except (OSError, ValueError):
-            return
-        if who != self.inst or self.vol_dragging:
-            return
-        self.vol_set_at = time.monotonic()
-        self.vscale.set_value(self.show_volume(val * 100))
-
     def set_volume(self, pct):
-        """Manda el volumen al reproductor y lo anota para music-ctl.sh (así la
-        rueda sigue desde acá y no desde un valor viejo)."""
-        if self.player is None:
+        """Manda el volumen al stream de la app (todos los suyos)."""
+        ids = self.vwatch.ids(self.cls)
+        if self.player is None or not ids:
             return
-        v = round(pct) / 100
-        try:
-            self.player.set_volume(v)
-        except GLib.Error:
-            return
+        music_stream.set_pct(self.cls, pct, ids)
         self.vol_set_at = time.monotonic()
-        try:
-            tmp = f"{VOLFILE}.{os.getpid()}.tmp"
-            with open(tmp, "w") as f:
-                f.write(f"{self.inst} {v:.2f} {int(time.time() * 1000)}\n")
-            os.replace(tmp, VOLFILE)
-        except OSError:
-            pass
 
     def flush_volume(self):
         self.vol_timer = 0
@@ -938,6 +919,7 @@ class Popup(Gtk.Window):
         if self.closing:
             return False
         self.closing = True
+        self.vwatch.stop()
         try:
             with open(CLOSED, "w") as f:
                 f.write(str(int(time.time() * 1000)))

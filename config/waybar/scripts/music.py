@@ -29,6 +29,8 @@ import gi
 gi.require_version("Playerctl", "2.0")
 from gi.repository import Gio, GLib, Playerctl  # noqa: E402
 
+import music_stream  # noqa: E402  (volumen del stream de la app en PipeWire)
+
 try:                                    # PyGObject >= 3.52
     gi.require_version("GLibUnix", "2.0")
     from gi.repository import GLibUnix  # noqa: E402
@@ -71,13 +73,15 @@ def status_of(p):
         return "Stopped"
 
 
-def volume_of(p):
-    """Volumen propio del reproductor (MPRIS) en %, o None si no lo expone."""
-    try:
-        v = p.props.volume
-    except Exception:
-        return None
-    return round(v * 100) if v is not None and v >= 0 else None
+stream_vol = {}       # clase -> % del stream en PipeWire (falta si no suena)
+
+
+def on_stream_vols(vols):
+    """music_stream.Watcher: cambió el volumen de algún stream (rueda,
+    pavucontrol) o apareció / se cerró uno."""
+    global stream_vol
+    stream_vol = vols
+    render()
 
 
 def source(p):
@@ -169,7 +173,7 @@ def render():
     title, artist, _album, _length = track_info(p)
     song = title + (f" · {artist}" if artist and title else artist)
     state = {"Playing": "", "Paused": "  (paused)"}.get(status, "  (stopped)")
-    vol = volume_of(p)
+    vol = stream_vol.get(cls)
     vol = f" · \U000f057e {vol}%" if vol is not None else ""      # 󰕾
     tip = (f"<b>{esc(song)}</b>{state}\n" if song else "") + \
         f"<span alpha='55%' size='small'>{label}{vol} · Click: controls · Scroll: volume</span>"
@@ -208,7 +212,6 @@ def add_player(name):
     p.connect("playback-status", on_status)
     p.connect("metadata", on_change)
     p.connect("seeked", on_change)
-    p.connect("volume", on_change)          # rueda sobre el ícono
     manager.manage_player(p)
     players[name.instance] = p
     if status_of(p) == "Playing":
@@ -264,7 +267,11 @@ def main():
         add_player(name)
     render()
     GLib.timeout_add_seconds(5, tick)
-    loop.run()
+    watcher = music_stream.Watcher(on_stream_vols)
+    try:
+        loop.run()
+    finally:
+        watcher.stop()
 
 
 if __name__ == "__main__":
