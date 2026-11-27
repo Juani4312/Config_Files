@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Popup del clima (click derecho en el módulo de temperatura de waybar).
+"""Popup del clima (click izquierdo en el módulo de temperatura de waybar).
 
 Tarjeta centrada en el monitor donde está el mouse, con la temperatura de
-Buenos Aires hora por hora, para hoy y los próximos 6 días (fila de días
+la ciudad elegida (weather-search.py, click derecho) hora por hora, para hoy y los próximos 6 días (fila de días
 arriba del gráfico; también ← / → o la rueda del mouse). Cada día va de las
 00 a las 00 del día siguiente: curva suave (Cairo), sensación térmica
 punteada, marca de "ahora" (hoy), mín/máx, horas de noche sombreadas y una
@@ -50,7 +50,6 @@ COLORS = os.path.expanduser("~/.config/waybar/colors.css")
 HTML_DIR = os.path.join(os.environ.get("XDG_CACHE_HOME") or os.path.expanduser("~/.cache"),
                         "waybar-weather")
 FRESH = 15 * 60
-TZ = ZoneInfo(W.TZ)
 HYPR_SOCK = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "hypr",
                          os.environ.get("HYPRLAND_INSTANCE_SIGNATURE", ""), ".socket.sock")
 
@@ -59,19 +58,27 @@ I_SUNRISE = "\U000F059C"   # weather-sunset-up
 I_SUNSET = "\U000F059B"    # weather-sunset-down
 I_WEB = "\U000F059F"       # web
 I_REFRESH = "\U000F0450"   # refresh
+I_SEARCH = "\U000F0349"    # magnify
+SEARCH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "weather-search.py")
 
 CARD_W = 680
 CHART_H = 230
 
 
 # ---- datos ------------------------------------------------------------------
-def now_local():
-    return dt.datetime.now(TZ)
+def now_local(data=None):
+    """Hora actual en la zona de la ciudad (la de los datos o la elegida)."""
+    tz = (data or {}).get("timezone") or W.location().get("timezone") or "UTC"
+    try:
+        return dt.datetime.now(ZoneInfo(tz))
+    except Exception:
+        return dt.datetime.now()
 
 
 def is_usable(data):
     try:
-        return (data["hourly"]["time"][0][:10] == now_local().strftime("%Y-%m-%d")
+        return (W.same_loc(data)
+                and data["hourly"]["time"][0][:10] == now_local(data).strftime("%Y-%m-%d")
                 and len(data["hourly"]["temperature_2m"]) >= 24)
     except (KeyError, IndexError, TypeError):
         return False
@@ -151,10 +158,12 @@ def summary(data, d=0):
         "name": day_names(data, d)[0],
         "date": day_names(data, d)[1],
         "now": None,
+        "city": data.get("_loc", W.DEFAULT_LOC)["name"],
+        "country": data.get("_loc", W.DEFAULT_LOC).get("country", ""),
     }
     if d == 0:
         desc, _g, icon = W.describe(cur["weather_code"], cur.get("is_day", 1))
-        now = now_local()
+        now = now_local(data)
         s.update({
             "icon": icon, "desc": desc,
             "sub": f"{desc} · Feels like {round(cur['apparent_temperature'])}°",
@@ -321,7 +330,7 @@ def html_day(s):
 <div class="panel p{s['d']}">
   <div class="head">
     <div class="big-ic">{s['icon']}</div>
-    <div><div class="city">Buenos Aires</div>
+    <div><div class="city">{html.escape(s['city'])} <span class="country">{html.escape(s['country'])}</span></div>
       <div class="sub">{html.escape(s['sub'])}</div>
       <div class="date">{s['date']}</div></div>
     <div class="right"><div class="temp-big">{big}</div>
@@ -360,7 +369,7 @@ def write_html(data, sel=0):
     page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Buenos Aires · Temperature</title>
+<title>{html.escape(W.location()['name'])} · Temperature</title>
 <style>
 :root {{ color-scheme: dark; --primary: {c['primary']}; }}
 * {{ box-sizing: border-box; }}
@@ -385,6 +394,7 @@ input[name=day] {{ position: absolute; opacity: 0; pointer-events: none; }}
 .head {{ display: flex; align-items: center; gap: 14px; }}
 .big-ic {{ font-size: 42px; color: {c['primary']}; }}
 .city {{ font-weight: bold; font-size: 18px; }}
+.country {{ font-weight: normal; font-size: 13px; color: {c['outline']}; margin-left: 6px; }}
 .sub {{ color: {c['secondary']}; margin-top: 2px; }}
 .date {{ color: {c['outline']}; font-size: 12px; margin-top: 2px; }}
 .right {{ margin-left: auto; text-align: right; }}
@@ -675,6 +685,8 @@ def run_popup(data):
                 self.select_day(0)
             elif Gdk.KEY_1 <= k <= Gdk.KEY_7:
                 self.select_day(k - Gdk.KEY_1)
+            elif k in (Gdk.KEY_s, Gdk.KEY_S, Gdk.KEY_slash):
+                self.open_search()
             elif k in (Gdk.KEY_r, Gdk.KEY_R, Gdk.KEY_F5):
                 self.refresh()
             else:
@@ -741,7 +753,6 @@ def run_popup(data):
             txt = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
             txt.set_valign(Gtk.Align.CENTER)
             self.city = self.lab("city")
-            self.city.set_text("Buenos Aires")
             self.sub = self.lab("sub")
             self.date = self.lab("date")
             for w in (self.city, self.sub, self.date):
@@ -777,6 +788,7 @@ def run_popup(data):
             self.foot = self.lab("foot")
             foot.pack_start(self.foot, True, True, 0)
             for glyph, tip, fn in ((I_REFRESH, "Refresh (R)", lambda *_: self.refresh()),
+                                   (I_SEARCH, "Change city (S)", self.open_search),
                                    (I_WEB, "Open in browser", self.open_browser)):
                 b = Gtk.Button(label=glyph)
                 b.set_tooltip_text(tip)
@@ -860,6 +872,9 @@ def run_popup(data):
             self.big_icon.set_text(s["icon"])
             self.sub.set_text(s["sub"])
             self.date.set_text(s["date"])
+            self.city.set_markup(
+                f"{GLib.markup_escape_text(s['city'])}<span size='75%' weight='normal' "
+                f"foreground='{self.hex('outline')}'>  {GLib.markup_escape_text(s['country'])}</span>")
             if s["cur_t"] is not None:
                 self.big_temp.set_text(f"{round(s['cur_t'])}°")
             else:
@@ -912,10 +927,15 @@ def run_popup(data):
 
         def minute(self):
             if self.s and self.day == 0:
-                n = now_local()
+                n = now_local(self.data)
                 self.s["now"] = n.hour + n.minute / 60
                 self.chart.queue_draw()
             return True
+
+        def open_search(self, *_):
+            subprocess.Popen([SEARCH, "--then-forecast"], start_new_session=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self.destroy()
 
         def open_browser(self, *_):
             if self.data:
@@ -1167,7 +1187,7 @@ def main():
             open_html(data)
         else:
             subprocess.run(["notify-send", "-a", "Weather", "Weather unavailable",
-                            "Couldn't fetch the forecast for Buenos Aires."])
+                            f"Couldn't fetch the forecast for {W.location()['name']}."])
     finally:
         try:
             if running_pid() is None and int(open(PIDFILE).read().split()[0]) == os.getpid():

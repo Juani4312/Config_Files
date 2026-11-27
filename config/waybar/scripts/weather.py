@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""Temperatura actual en Buenos Aires para waybar (Open-Meteo, sin API key).
+"""Temperatura actual de la ciudad elegida para waybar (Open-Meteo, sin API key).
 
 Salida JSON: text = ícono + temperatura, tooltip con detalles (en inglés),
 class = condición (clear/cloudy/fog/rain/storm/snow) + day/night.
 Si falla la red, muestra el último valor cacheado (marcado como stale).
 También guarda el pronóstico por hora en el cache: lo usa weather-popup.py
-(click derecho), que además importa fetch/describe de acá.
+(click izquierdo), que además importa fetch/describe de acá.
+
+La ciudad la elige weather-search.py (click derecho) y queda guardada en
+~/.local/state/waybar-weather/location.json (junto con las recientes). Está
+fuera de ~/.config a propósito: así no se sube al repo de dotfiles (público).
+Sin ese archivo: Buenos Aires.
 """
 import json
 import os
@@ -13,11 +18,13 @@ import sys
 import time
 import urllib.request
 
-LAT, LON = -34.61, -58.38
-TZ = "America/Argentina/Buenos_Aires"
-URL = (
-    "https://api.open-meteo.com/v1/forecast"
-    f"?latitude={LAT}&longitude={LON}&timezone={TZ}&forecast_days=7"
+DEFAULT_LOC = {"name": "Buenos Aires", "admin1": "Buenos Aires F.D.",
+               "country": "Argentina", "country_code": "AR",
+               "latitude": -34.61, "longitude": -58.38,
+               "timezone": "America/Argentina/Buenos_Aires"}
+STATE = os.path.join(os.environ.get("XDG_STATE_HOME") or os.path.expanduser("~/.local/state"),
+                     "waybar-weather", "location.json")
+FIELDS = (
     "&current=temperature_2m,apparent_temperature,relative_humidity_2m,"
     "weather_code,is_day,wind_speed_10m"
     "&hourly=temperature_2m,apparent_temperature,precipitation_probability,"
@@ -25,6 +32,42 @@ URL = (
     "&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,"
     "weather_code,precipitation_probability_max"
 )
+
+
+def load_state():
+    try:
+        with open(STATE) as f:
+            st = json.load(f)
+        if isinstance(st.get("current"), dict):
+            return st
+    except (OSError, ValueError):
+        pass
+    return {"current": DEFAULT_LOC, "recent": []}
+
+
+def save_state(st):
+    os.makedirs(os.path.dirname(STATE), exist_ok=True)
+    tmp = STATE + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(st, f, ensure_ascii=False, indent=1)
+    os.replace(tmp, STATE)
+
+
+def location():
+    return load_state()["current"]
+
+
+def loc_key(loc):
+    return f"{loc['latitude']:.3f},{loc['longitude']:.3f}"
+
+
+def url_for(loc):
+    tz = loc.get("timezone") or "auto"
+    return ("https://api.open-meteo.com/v1/forecast"
+            f"?latitude={loc['latitude']}&longitude={loc['longitude']}"
+            f"&timezone={tz}&forecast_days=7" + FIELDS)
+
+
 CACHE = os.path.join(
     os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache")),
     "waybar-weather.json",
@@ -77,12 +120,22 @@ ICONS = {
 }
 
 
-def fetch():
-    req = urllib.request.Request(URL, headers={"User-Agent": "waybar-weather"})
+def fetch(loc=None):
+    loc = loc or location()
+    req = urllib.request.Request(url_for(loc), headers={"User-Agent": "waybar-weather"})
     with urllib.request.urlopen(req, timeout=10) as r:
         data = json.load(r)
     data["_fetched"] = time.time()
+    data["_loc"] = loc
     return data
+
+
+def same_loc(data, loc=None):
+    """¿El cache es de la ciudad elegida ahora?"""
+    try:
+        return loc_key(data["_loc"]) == loc_key(loc or location())
+    except (KeyError, TypeError):
+        return False
 
 
 def save_cache(data):
@@ -111,7 +164,7 @@ def render(data, stale=False):
     desc, group, icon = describe(cur["weather_code"], is_day)
     temp = round(cur["temperature_2m"])
     tooltip = (
-        f"<b>Buenos Aires</b> · {desc}\n"
+        f"<b>{data.get('_loc', DEFAULT_LOC)['name']}</b> · {desc}\n"
         f"Temperature: {cur['temperature_2m']:.1f}°C\n"
         f"Feels like: {cur['apparent_temperature']:.1f}°C\n"
         f"Min / Max: {round(day['temperature_2m_min'][0])}° / "
@@ -120,7 +173,7 @@ def render(data, stale=False):
         f"Wind: {round(cur['wind_speed_10m'])} km/h\n"
         f"<small>Updated {cur['time'][-5:]}"
         + (" (offline, cached)" if stale else "")
-        + "\nClick: refresh · Right-click: today's chart</small>"
+        + "\nClick: forecast · Right-click: change city</small>"
     )
     classes = [group, "day" if is_day else "night"]
     if stale:
@@ -135,7 +188,10 @@ def main():
         out = render(data)
     except Exception:
         try:
-            out = render(load_cache(), stale=True)
+            data = load_cache()
+            if not same_loc(data):          # cambió de ciudad y no hay red
+                raise ValueError("cache from another city")
+            out = render(data, stale=True)
         except Exception:
             out = {"text": "\U000F0590 --°", "tooltip": "Weather unavailable",
                    "class": ["stale"]}
