@@ -9,8 +9,8 @@
 #   music-ctl.sh focus                  -> enfoca la ventana del reproductor
 #   music-ctl.sh cycle                  -> alterna entre tidal y DeaDBeeF (todas las barras)
 run="${XDG_RUNTIME_DIR:-/tmp}/waybar-music"
-player='' status='' cls=''
-[ -r "$run/state" ] && { read -r player; read -r status; read -r cls; } < "$run/state"
+player='' cls=''
+[ -r "$run/state" ] && { read -r player; read -r _; read -r cls; } < "$run/state"
 
 case "$1" in
 menu)

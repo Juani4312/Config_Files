@@ -8,5 +8,7 @@
 *.bak*
 # resolución/posición/scale de cada máquina (lo genera install.sh)
 config/hypr/monitors.lua
+# laptop: menú de modos de energía (LOCAL_FILES; update.sh tampoco lo sube)
+config/rofi/power-menu.sh
 # backups locales que crea install.sh (propios de cada máquina)
 backups/

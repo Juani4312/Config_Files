@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034  # las variables las usan install/update/revert, que sourcean este archivo
 # Definiciones compartidas por update.sh e install.sh (solo usa tar y cp, sin rsync).
 
 # Carpetas de ~/.config que se sincronizan (cada una es ~/.config/<nombre>)
@@ -62,7 +63,8 @@ SYSTEM_FILES=(
 DCONF_PATH=/org/gnome/desktop/interface/
 
 # Nunca copiar esto, aunque aparezca dentro de una carpeta de arriba
-EXCLUDE_PATTERNS=('.git' '*cache*' 'Cache*' '*.log' '*.key' '*.pem' '*token*' '*secret*' '.env' '*.bak*')
+EXCLUDE_PATTERNS=('.git' '*cache*' 'Cache*' '*.log' '*.key' '*.pem' '*token*' '*secret*' '.env' '*.bak*'
+                  '*.orig' '*.save' '*(Copy)*' '*.pre-classfix' 'old-conf')   # backups viejos
 TAR_EX=(); for p in "${EXCLUDE_PATTERNS[@]}"; do TAR_EX+=(--exclude="$p"); done
 
 DRY=0

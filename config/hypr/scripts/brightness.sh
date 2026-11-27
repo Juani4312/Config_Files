@@ -3,7 +3,6 @@
 # Script for Monitor backlights (if supported) using brightnessctl
 
 iDIR="$HOME/.config/swaync/icons"
-notification_timeout=1000
 step=10  # INCREASE/DECREASE BY THIS VALUE
 
 # Get brightness
