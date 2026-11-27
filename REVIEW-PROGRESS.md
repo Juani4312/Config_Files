@@ -46,11 +46,13 @@ La review terminó. Lo que queda depende del usuario:
 3. La prueba con un usuario nuevo (REVIEW-REPORT §8) y las dudas de §6. Si pide aplicar alguna duda, va en commits nuevos en esta branch.
 
 ## Pendientes para el usuario (necesitan sudo, no los hago yo)
-- Migrar LibreWolf: `sudo pacman -Rdd librewolf-bin librewolf-bin-debug && sudo pacman -S librewolf`
+- ~~Migrar LibreWolf~~ HECHO 2026-11-27: librewolf 160 (extra), mismo perfil ~/.librewolf/l1vipx6v.default-default.
+  (antes: `sudo pacman -Rdd librewolf-bin librewolf-bin-debug && sudo pacman -S librewolf`)
   (librewolf-bin ya no existe en AUR; mismas rutas, el perfil sigue igual). Hacerlo ANTES de `install.sh -p`.
 - `./install.sh` después de mergear: instala la regla udev nueva (uinput) y /etc/sddm.conf con sudo.
 
 ## Log
+- 2026-11-27: LibreWolf migrado. Próximo: prueba de instalación desde cero con un usuario nuevo (la hace el usuario).
 - 2026-11-27: review cerrada; reporte final. Test: `tests/install-e2e.sh` → OK.
 - 2026-11-27: fixes del plan + instalación desde cero + prueba e2e en HOME falso.
 - 2026-11-27: review inicial terminada; borrador de `REVIEW-REPORT.md`. Pusheaste los 5 commits de main.
