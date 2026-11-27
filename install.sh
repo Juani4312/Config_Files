@@ -57,7 +57,7 @@ review() {
       case $st in new) n=1;; same) s=1;; changed) c=1; changed+=("$(basename "$dst")");; local) kept+=("$(basename "$dst")");; esac
     fi
     t_new=$((t_new+n)); t_chg=$((t_chg+c)); t_same=$((t_same+s))
-    printf '  %-48s %3d nuevos  %3d cambiados  %3d iguales\n' "${dst/#$HOME/~}" "$n" "$c" "$s"
+    printf '  %-48s %3d nuevos  %3d cambiados  %3d iguales\n' "${dst/#"$HOME"/\~}" "$n" "$c" "$s"
     [ -L "$dst" ] && echo "      (es un symlink a $(readlink -f "$dst"): se reemplaza por una copia real, el original queda intacto)"
     local shown=0 f
     for f in "${changed[@]}"; do
@@ -140,7 +140,7 @@ if [ "$YES" -ne 1 ]; then
 fi
 
 backup
-echo; echo "Backup guardado en: ${BACKUP/#$HOME/~}"
+echo; echo "Backup guardado en: ${BACKUP/#"$HOME"/\~}"
 
 if [ "$PKG" -eq 1 ]; then
   sudo pacman -S --needed - < "$REPO/packages/pacman.txt" || true
@@ -167,7 +167,7 @@ if [ ! -e "$MON" ]; then
     printf 'hl.monitor({\n    output   = "",\n    mode     = "preferred",\n    position = "auto",\n    scale    = "auto",\n})\n'
   } > "$MON"
   echo "${MON#"$HOME"/}" >> "$BACKUP/created.txt"
-  echo "ok    creado ${MON/#$HOME/~} (editá ahí el scale de esta máquina)"
+  echo "ok    creado ${MON/#"$HOME"/\~} (editá ahí el scale de esta máquina)"
 fi
 
 # LOCAL_FILES que ya existen: se apartan antes de copiar y se reponen si la copia los cambió
@@ -201,9 +201,11 @@ if [ -n "$LW_PROFILE" ] && [ -f "$HOME/.config/matugen/config.toml" ]; then
     "$HOME/.config/matugen/config.toml"
 fi
 
-# Rutas absolutas a la home de la PC de origen (tema GTK, marcadores): apuntarlas a esta home
-sed -i -E "s#file:///home/[^/]+/#file://$HOME/#g" \
-  "$HOME"/.local/share/themes/Matugen-{a,b}/gtk-3.0/gtk*.css "$HOME/.config/gtk-3.0/bookmarks" 2>/dev/null || true
+# Rutas absolutas a la home de la PC de origen (tema GTK 3/4, marcadores, lanzador de LibreWolf, ZapZap):
+# apuntarlas a esta home. shortcut: con una HOME más profunda que /home/<usuario> repetir el sed la anida.
+sed -i -E "s#/home/[^/]+/#$HOME/#g" \
+  "$HOME"/.local/share/themes/Matugen-{a,b}/gtk-{3,4}.0/gtk*.css "$HOME/.config/gtk-3.0/bookmarks" \
+  "$HOME/.local/share/applications/librewolf.desktop" "$HOME/.config/ZapZap/ZapZap.conf" 2>/dev/null || true
 
 # Nemo: el override solo cambia Exec (env -u GIO_USE_VFS: si lo abre el portal, Borrar no hace nada).
 # Se rehace desde el .desktop del sistema para que coincida con la versión de nemo de esta máquina.
@@ -258,7 +260,7 @@ if [ -f "$HOME/.config/systemd/user/autoscroll.service" ] && command -v systemct
 fi
 
 chmod +x "$HOME"/.local/bin/wivrn-dashboard-avahi 2>/dev/null || true
-chmod +x "$HOME"/.config/hypr/scripts/* "$HOME"/.config/hypr/UserScripts/* \
+chmod +x "$HOME"/.config/hypr/scripts/* \
          "$HOME"/.config/rofi/*.sh "$HOME"/.config/viegphunt/*.sh "$HOME"/.config/steam-theme/*.sh \
          "$HOME"/.config/matugen/scripts/*.sh "$HOME"/.config/waybar/scripts/* 2>/dev/null || true
 
