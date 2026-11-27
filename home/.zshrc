@@ -68,12 +68,12 @@ fi
 '
 
 # ─── Aliases ─────────────────────────────────────────────────────
-alias ls='eza --icons --color=always'
-alias ll='eza --icons --color=always -l'
-alias la='eza --icons --color=always -a'
-alias lla='eza --icons --color=always -la'
-alias lt='eza --icons --color=always -a --tree --level=1'
-alias grep='grep --color=always'
+alias ls='eza --icons --color=auto'
+alias ll='eza --icons --color=auto -l'
+alias la='eza --icons --color=auto -a'
+alias lla='eza --icons --color=auto -la'
+alias lt='eza --icons --color=auto -a --tree --level=1'
+alias grep='grep --color=auto'
 alias vim='nvim'
 alias vk='NVIM_APPNAME=nvim-kickstart nvim'   # Neovim con kickstart.nvim (para aprender)
 alias lzg='lazygit'
