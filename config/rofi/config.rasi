@@ -6,7 +6,6 @@
  * waybar menus, wallpaper picker) use this same look with the list visible.
  * Colors come from matugen (colors.rasi). Open/close animation is a Hyprland
  * layer rule (configs/windowrules.lua, namespace "rofi").
- * Previous theme: config.rasi.bak-spotlight
  */
 @theme "/dev/null"
 @import "colors.rasi"

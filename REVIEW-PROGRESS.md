@@ -52,6 +52,8 @@ La review terminó. Lo que queda depende del usuario:
 - `./install.sh` después de mergear: instala la regla udev nueva (uinput) y /etc/sddm.conf con sudo.
 
 ## Log
+- 2026-11-27: música con volumen por stream (3697417), `OBSOLETE_FILES` en install (a7c21aa); backups sueltos
+  limpiados (ver REVIEW-REPORT §6).
 - 2026-11-27: LibreWolf migrado. Próximo: prueba de instalación desde cero con un usuario nuevo (la hace el usuario).
 - 2026-11-27: review cerrada; reporte final. Test: `tests/install-e2e.sh` → OK.
 - 2026-11-27: fixes del plan + instalación desde cero + prueba e2e en HOME falso.

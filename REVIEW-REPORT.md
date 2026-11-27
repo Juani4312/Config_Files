@@ -149,11 +149,11 @@ El único cambio de la branch es `SUPER+B`: misma acción, ruta con `~`.
 - **`spicetify/`:** hay tema de matugen para Spotify, pero `spicetify-cli` no está instalado, así que no se aplica.
 - **`ghostty/`:** está configurado pero no instalado. Lo dejé fuera de `deps.txt`.
 - **Paquetes (#25):** `dunst`, `hyprpaper`, `xdg-desktop-portal-wlr`. ¿Los sacás con `sudo pacman -Rns`?
-- **En tu `~/.config` hay 170 `*.bak*` (1.7 MB)** de sesiones anteriores de Claude. No interfieren: update.sh los
-  excluye y Hyprland no los carga. Para verlos:
-  `find ~/.config/{waybar,hypr,swaync,matugen,rofi,wlogout,kitty,steam-theme,tidal-hifi} \( -name '*.bak*' -o -name '*.pre-*' \) -print`
-  (y después `-delete`). Los de `google-chrome`, `zen`, `ghidra` y `Code` los crean esas apps.
-  `~/.config/hypr/old-conf/` también se puede borrar.
+- ~~**En tu `~/.config` hay 170 `*.bak*` (1.7 MB)**~~ HECHO 2026-11-27: se borraron los 184 backups sueltos de lo
+  que sincroniza el repo (`*.bak*`, `*.orig`, `*.save`, `*.pre-*`, `(Copy)`, `hypr/old-conf/`) y
+  `backups/20261025-205927` (la primera instalación). 126 tenían el mismo contenido en el historial de git
+  (`git log --all --find-object=<hash>` los encuentra). Los otros 58 y el backup de la instalación quedaron en
+  `~/Laptop/backups-viejos-2026-11-27.tar.gz` (140 KB, fuera del repo; se puede borrar).
 - **`~/dotfiles` NO es un backup:** varias carpetas de `~/.config` y `.zshrc`/`.tmux` son symlinks ahí. La primera
   instalación los convierte en copias reales y revert te dice cómo re-enlazarlos.
 
