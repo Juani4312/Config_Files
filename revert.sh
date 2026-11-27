@@ -29,6 +29,10 @@ read -rp "¿Revertir? [s/N] " ans
   mkdir -p "$HOME/$(dirname "$f")"
   cp -a "$B/files/$f" "$HOME/$f"
 done
+# servicios de usuario que habilitó install.sh (antes de borrar su .service)
+if [ -s "$B/enabled.txt" ]; then
+  while IFS= read -r u; do systemctl --user disable --now "$u" || true; done < "$B/enabled.txt"
+fi
 # borrar lo que no existía antes
 while IFS= read -r f; do [ -n "$f" ] && rm -f "$HOME/$f"; done < "$B/created.txt"
 
@@ -51,6 +55,9 @@ if [ $((${#sys_restore[@]} + ${#sys_remove[@]})) -gt 0 ]; then
       sudo install -D -o root -g root -m "$(stat -c %a "$B/system$f")" "$B/system$f" "$f" && echo "ok    $f"
     done
     for f in "${sys_remove[@]}"; do [ -n "$f" ] && sudo rm -f "$f" && echo "rm    $f"; done
+    case " ${sys_restore[*]} ${sys_remove[*]} " in *udev/rules.d*) sudo udevadm control --reload && sudo udevadm trigger ;; esac
+    case " ${sys_remove[*]} " in *tidal-hifi-userscripts*)
+      echo "tidal-hifi sigue parcheado: para sacarlo, reinstalalo (yay -S tidal-hifi-bin)." ;; esac
   fi
 fi
 

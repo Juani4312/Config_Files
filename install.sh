@@ -256,7 +256,10 @@ fi
 
 # Servicios de usuario (autoscroll): habilitarlos si vinieron en el repo
 if [ -f "$HOME/.config/systemd/user/autoscroll.service" ] && command -v systemctl >/dev/null; then
-  systemctl --user daemon-reload && systemctl --user enable --now autoscroll.service && echo "ok    autoscroll.service"
+  systemctl --user daemon-reload || true
+  # anotarlo si no estaba habilitado, así revert.sh lo deshabilita
+  systemctl --user is-enabled -q autoscroll.service 2>/dev/null || echo autoscroll.service >> "$BACKUP/enabled.txt"
+  systemctl --user enable --now autoscroll.service && echo "ok    autoscroll.service"
 fi
 
 chmod +x "$HOME"/.local/bin/wivrn-dashboard-avahi 2>/dev/null || true
