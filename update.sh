@@ -73,9 +73,9 @@ if command -v pacman >/dev/null; then
 fi
 
 cd "$REPO"
-git add -A
 git status --short | head -20
 if [ "$PUSH" -eq 1 ]; then
+  git add -A   # solo con -p: sin -p no deja nada staged
   if git diff --cached --quiet; then echo "Sin cambios."; else
     git commit -m "Sync $(date +%F)"
     git push
