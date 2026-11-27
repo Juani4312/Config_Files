@@ -157,8 +157,8 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
   Se ignoran los pedidos de maximizar de las apps.
 - **Workspaces especiales** (scratchpads): "magic" con `SUPER+S` y "claude" (para Claude Code) con `SUPER+Z`;
   `SUPER+SHIFT+S` / `SUPER+SHIFT+Z` mandan la ventana ahí recordando su workspace de origen, y si ya está ahí la
-  devuelven (`scripts/special-move.sh [nombre]`). En la waybar: burbuja 特 a la izquierda de los workspaces
-  (magic) o 智 a la derecha (claude); con un especial abierto la isla se vuelve más translúcida y sube el blur.
+  devuelven (`scripts/special-move.sh [nombre]`). En la waybar: burbuja 智 a la izquierda de los workspaces
+  (claude) o 特 a la derecha (magic); con un especial abierto la isla se vuelve más translúcida y sube el blur.
 - **Animaciones:** popin para rofi y el menú de música, fade (ease-out al entrar, ease-in al salir) para las capas
   que cubren la pantalla: pronóstico del clima, panel de swaync, wlogout (`configs/animations.lua` + `layer_rule`s en
   `configs/windowrules.lua`).
@@ -174,7 +174,7 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
 - **Waybar** (`config/waybar`): `config` y `style.css` apuntan a la variante elegida en `configs/` y `style/`
   (actual: "bintang default"; `SUPER+CTRL+B` / `SUPER+ALT+B` cambian estilo y layout).
   - Isla de workspaces por monitor con animaciones (el foco crece a una píldora con glow; urgente parpadea en
-    `@tertiary`), burbujas de los workspaces especiales a los costados (特 magic / 智 claude) con un halo en
+    `@tertiary`), burbujas de los workspaces especiales a los costados (智 claude a la izquierda / 特 magic a la derecha) con un halo en
     `@secondary` que respira y glow `@primary` al pasar el mouse. Con un especial abierto en ese monitor la isla se
     vuelve más translúcida y el foco pasa a un tinte suave (`custom/special-flag`: módulo de ancho cero que corre la
     isla a `:nth-child(3)`). Al pasar el mouse, cada workspace se enmarca en un cuadradito redondeado (borde fino +

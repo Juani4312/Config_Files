@@ -526,8 +526,8 @@ box:hover > #custom-ws.focused {
 
 
 /*-----workspace especial: burbuja 特 al costado de la isla----*/
-/* custom/special-pad (derecha) = burbuja 智 del especial "claude" (SUPER+Z); la
-   izquierda 特 es "magic" (SUPER+S). Cerradas son transparentes pero ocupan lugar.
+/* custom/special (izquierda) = burbuja 智 del especial "claude" (SUPER+Z); la
+   derecha (custom/special-pad) 特 es "magic" (SUPER+S). Cerradas son transparentes pero ocupan lugar.
    custom/special (izquierda) y custom/special-pad (derecha) ocupan
    SIEMPRE el mismo lugar (con el especial cerrado son transparentes), así la isla
    de workspaces nunca se mueve. Al abrir: aparece con fade y después se enciende
