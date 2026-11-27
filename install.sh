@@ -39,12 +39,17 @@ LW_PROFILE=$(librewolf_profile || true)
 
 # Archivos (rutas relativas) de una carpeta origen, separados por NUL
 list_rel() { (cd "$1" && find . \( -type f -o -type l \) -printf '%P\0'); }
+# Archivos con rutas absolutas a la home de la PC de origen: después de copiar, /home/<usuario>/ -> esta $HOME
+HOMEPATH_FILES=("$HOME"/.local/share/themes/Matugen-{a,b}/gtk-{3,4}.0/gtk{,-dark}.css
+                "$HOME/.config/gtk-3.0/bookmarks" "$HOME/.local/share/applications/librewolf.desktop"
+                "$HOME/.config/ZapZap/ZapZap.conf" "$HOME/.config/hypr/colors.conf" "$HOME/.config/QtProject.conf")
+is_homepath() { local f; for f in "${HOMEPATH_FILES[@]}"; do [ "$1" = "$f" ] && return 0; done; return 1; }
 # estado de un archivo respecto al destino: new | same | changed | local (LOCAL_FILES: no se toca)
-# "same" también si solo difiere en /home/<usuario>/ (install.sh lo reescribe a esta $HOME al final)
+# En HOMEPATH_FILES, "same" también si solo difiere en /home/<usuario>/ (se reescribe al final)
 state() {
   if is_local "$2"; then echo local
   elif [ ! -e "$2" ] && [ ! -L "$2" ]; then echo new
-  elif cmp -s "$1" "$2" || cmp -s <(sed -E "s#/home/[^/]+/#$HOME/#g" "$1") "$2"; then echo same
+  elif cmp -s "$1" "$2" || { is_homepath "$2" && cmp -s <(sed -E "s#/home/[^/]+/#$HOME/#g" "$1") "$2"; }; then echo same
   else echo changed; fi
 }
 
@@ -160,7 +165,7 @@ if [ "$PKG" -eq 1 ]; then
     rm -rf "$tmp"
   fi
   # 1) Lo que necesitan las configs y scripts del repo (repos oficiales + AUR)
-  read -ra deps <<<"$(grep -v '^#' "$REPO/packages/deps.txt" | tr '\n' ' ')"
+  read -ra deps <<<"$(sed 's/#.*//' "$REPO/packages/deps.txt" | tr '\n' ' ')"
   yay -S --needed "${deps[@]}" || echo "!! falló la instalación de packages/deps.txt"
   # 2) Todo lo de la PC de origen: kernel, drivers y apps personales incluidos. Por eso pregunta (con -y no).
   #    Uno que ya no exista no frena al resto: pacman solo recibe los que están en los repos y AUR va de a uno.
@@ -240,14 +245,6 @@ if v=$(readlink "$REPO/config/waybar/style.css") && [ -e "$HOME/.config/waybar/$
   ln -sfn "$v" "$HOME/.config/waybar/style.css"
 fi
 
-for e in "${HISTORY_KEYS[@]}"; do
-  f="$HOME/.config/${e%%|*}" h="$HKEEP/$(tr / _ <<<"${e%%|*}")"
-  [ -s "$h" ] && [ -f "$f" ] || continue
-  # van después del primer encabezado ([General] / [FileDialog]), donde las guardan las apps
-  sed -i "0,/^\[/{/^\[/r $h
-}" "$f" && echo "keep  historial de ~/.config/${e%%|*}"
-done
-
 for f in "${LOCAL_FILES[@]}"; do
   [ -e "$KEEP/$f" ] || [ -L "$KEEP/$f" ] || continue
   cmp -s "$KEEP/$f" "$HOME/.config/$f" && continue
@@ -266,11 +263,18 @@ if [ -n "$LW_PROFILE" ] && [ -f "$HOME/.config/matugen/config.toml" ]; then
     "$HOME/.config/matugen/config.toml"
 fi
 
-# Rutas absolutas a la home de la PC de origen (tema GTK 3/4, marcadores, lanzador de LibreWolf, ZapZap):
-# apuntarlas a esta home. shortcut: con una HOME más profunda que /home/<usuario> repetir el sed la anida.
-sed -i -E "s#/home/[^/]+/#$HOME/#g" \
-  "$HOME"/.local/share/themes/Matugen-{a,b}/gtk-{3,4}.0/gtk*.css "$HOME/.config/gtk-3.0/bookmarks" \
-  "$HOME/.local/share/applications/librewolf.desktop" "$HOME/.config/ZapZap/ZapZap.conf" 2>/dev/null || true
+# Rutas absolutas a la home de la PC de origen (HOMEPATH_FILES): apuntarlas a esta home.
+# shortcut: con una HOME más profunda que /home/<usuario> repetir el sed la anida.
+sed -i -E "s#/home/[^/]+/#$HOME/#g" "${HOMEPATH_FILES[@]}" 2>/dev/null || true
+
+# Historial apartado (después del sed: es de esta máquina, sus rutas no se tocan)
+for e in "${HISTORY_KEYS[@]}"; do
+  f="$HOME/.config/${e%%|*}" h="$HKEEP/$(tr / _ <<<"${e%%|*}")"
+  [ -s "$h" ] && [ -f "$f" ] || continue
+  # van después del primer encabezado ([General] / [FileDialog]), donde las guardan las apps
+  sed -i "0,/^\[/{/^\[/r $h
+}" "$f" && echo "keep  historial de ~/.config/${e%%|*}"
+done
 
 # Nemo: el override solo cambia Exec (env -u GIO_USE_VFS: si lo abre el portal, Borrar no hace nada).
 # Se rehace desde el .desktop del sistema para que coincida con la versión de nemo de esta máquina.

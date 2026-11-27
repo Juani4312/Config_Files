@@ -43,7 +43,7 @@ def update():
     # cuál: "magic" (SUPER+S, burbuja 特 izquierda) / "claude" (SUPER+Z, 智 derecha)
     state["special_name"] = {m["name"]: (m.get("specialWorkspace", {}).get("name") or "")
                              .removeprefix("special:") for m in mons}
-    tmp = STATE + ".tmp"
+    tmp = f"{STATE}.{os.getpid()}.tmp"   # con varias barras corre un listener por barra
     with open(tmp, "w") as f:
         json.dump(state, f)
     os.replace(tmp, STATE)
