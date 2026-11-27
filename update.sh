@@ -34,14 +34,12 @@ fi
 # Tema GTK / íconos / cursor / fuentes
 command -v dconf >/dev/null && dconf dump "$DCONF_PATH" > "$REPO/extra/dconf-interface.ini"
 
-# qalculate guarda el historial de cuentas en el mismo cfg: no se sube (el repo es público).
-# Se borran solo las entradas, no las opciones (history_expression_type, history_height, ...).
-qcfg="$REPO/config/qalculate/qalculate-gtk.cfg"
-[ -f "$qcfg" ] && sed -i -E '/^(expression_history|history_time|history_expression|history_parse|history_result[a-z_]*|history_warning|history_message|history_bookmark[a-z_]*)=/d' "$qcfg"
-
-# QtProject.conf: el historial del diálogo de archivos (carpetas visitadas) no se sube (repo público).
-qtcfg="$REPO/config/QtProject.conf"
-[ -f "$qtcfg" ] && sed -i -E '/^(history|lastVisited)=/d' "$qtcfg"
+# Historial de qalculate y del diálogo de archivos de Qt (HISTORY_KEYS): no se sube (repo público).
+# Se borran solo esas entradas, no las opciones (history_expression_type, history_height, ...).
+for e in "${HISTORY_KEYS[@]}"; do
+  f="$REPO/config/${e%%|*}"
+  if [ -f "$f" ]; then sed -i -E "/${e#*|}/d" "$f"; fi
+done
 
 # .gitconfig: la identidad va en ~/.gitconfig.local (no se sube). `git config --global user.*` la
 # escribe en ~/.gitconfig, así que se saca acá por las dudas.

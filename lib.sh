@@ -60,6 +60,12 @@ SYSTEM_FILES=(
   /etc/pacman.d/hooks/tidal-hifi-userscripts.hook
   /etc/sddm.conf                              # tema del login: sddm-astronaut-theme
 )
+# Archivos de ~/.config que mezclan historial con opciones: update.sh borra esas líneas antes de subirlos
+# (repo público) e install.sh conserva las de esta máquina. <archivo relativo a ~/.config>|<regex de las claves>
+HISTORY_KEYS=(
+  "qalculate/qalculate-gtk.cfg|^(expression_history|history_time|history_expression|history_parse|history_result[a-z_]*|history_warning|history_message|history_bookmark[a-z_]*)="
+  "QtProject.conf|^(history|lastVisited)="      # diálogo de archivos de Qt: carpetas visitadas
+)
 # Claves de dconf (tema GTK, íconos, cursor, fuentes) que se guardan en extra/dconf-interface.ini
 DCONF_PATH=/org/gnome/desktop/interface/
 

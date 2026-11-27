@@ -216,9 +216,24 @@ if [ ! -e "$GLOCAL" ] && [ -f "$HOME/.gitconfig" ]; then
   if [ -e "$GLOCAL" ]; then echo "${GLOCAL#"$HOME"/}" >> "$BACKUP/created.txt"; echo "ok    ~/.gitconfig.local (user.name/email)"; fi
 fi
 
+# Historial de qalculate / Qt (HISTORY_KEYS): el repo no lo tiene, así que se aparta y se repone
+HKEEP="$BACKUP/history"
+for e in "${HISTORY_KEYS[@]}"; do
+  f="$HOME/.config/${e%%|*}"
+  if [ -f "$f" ]; then mkdir -p "$HKEEP"; grep -E "${e#*|}" "$f" > "$HKEEP/$(tr / _ <<<"${e%%|*}")" || true; fi
+done
+
 for pair in "${PAIRS[@]}"; do
   IFS='|' read -r kind src dst <<<"$pair"
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi
+done
+
+for e in "${HISTORY_KEYS[@]}"; do
+  f="$HOME/.config/${e%%|*}" h="$HKEEP/$(tr / _ <<<"${e%%|*}")"
+  [ -s "$h" ] && [ -f "$f" ] || continue
+  # van después del primer encabezado ([General] / [FileDialog]), donde las guardan las apps
+  sed -i "0,/^\[/{/^\[/r $h
+}" "$f" && echo "keep  historial de ~/.config/${e%%|*}"
 done
 
 for f in "${LOCAL_FILES[@]}"; do
