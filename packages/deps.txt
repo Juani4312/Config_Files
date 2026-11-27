@@ -1,0 +1,30 @@
+# Paquetes que necesitan las configs y scripts de ESTE repo (repo oficial + AUR, se instalan con yay).
+# Mantenida a mano: update.sh NO la toca (pacman.txt / aur.txt son el volcado completo de la PC de origen).
+# Si agregás una config o script que usa un programa nuevo, sumalo acá.
+# Verificada el 2026-11-27: los 90 nombres existen (repos oficiales / AUR).
+
+# Hyprland y su ecosistema
+hyprland hypridle hyprlock hyprpicker hyprpolkitagent hyprcursor
+xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+# Barra, notificaciones, menús, fondo, tema
+waybar swaync wlogout rofi rofi-emoji awww matugen
+# Terminal, archivos, audio
+kitty nemo yazi pavucontrol
+pipewire pipewire-pulse pipewire-alsa wireplumber libpulse pamixer playerctl brightnessctl
+# Capturas y portapapeles
+grim slurp wl-clipboard cliphist
+# Red, bluetooth, energía (menú wifi, módulos de waybar, power-menu de la laptop)
+networkmanager bluez bluez-utils blueman power-profiles-daemon
+# Login
+sddm sddm-astronaut-theme
+# Lo que usan los scripts (popups de waybar, autoscroll, cursor, wlogout, theme-reload)
+python python-gobject python-cairo python-evdev gtk3 gtk4 gtk-layer-shell gtk4-layer-shell
+librsvg imagemagick jq openbsd-netcat libnotify xdg-utils glib2 dconf
+# Tema GTK, íconos y fuentes
+adw-gtk-theme whitesur-icon-theme
+ttf-jetbrains-mono-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-segoe-ui-variable adwaita-fonts
+# Shell y editor (zsh + zinit, oh-my-posh, nvim con lazy.nvim/mason/telescope)
+zsh fzf eza bat zoxide fastfetch oh-my-posh git tmux neovim ripgrep fd nodejs npm unzip
+# Apps con tema de matugen o binds propios
+librewolf google-chrome tidal-hifi-bin zapzap steam millennium prismlauncher vesktop
+visual-studio-code-bin qalculate-gtk btop cava deadbeef

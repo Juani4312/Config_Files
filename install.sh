@@ -11,8 +11,11 @@
 # Uso: ./install.sh [-n] [-y] [-p]
 #   -n   solo revisión (no copia ni respalda nada)
 #   -y   no pedir confirmación
-#   -p   además instala los paquetes (pacman + yay) de packages/
+#   -p   además: instala yay si falta, los paquetes de packages/deps.txt (lo que usa el repo),
+#        opcionalmente todo pacman.txt + aur.txt (la PC de origen), y habilita NetworkManager,
+#        bluetooth y sddm
 set -euo pipefail
+[ "$(id -u)" -ne 0 ] || { echo "Corré install.sh con tu usuario, no como root (usa sudo solo donde hace falta)."; exit 1; }
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib.sh
 source "$REPO/lib.sh"
@@ -143,9 +146,33 @@ backup
 echo; echo "Backup guardado en: ${BACKUP/#"$HOME"/\~}"
 
 if [ "$PKG" -eq 1 ]; then
-  sudo pacman -S --needed - < "$REPO/packages/pacman.txt" || true
-  if command -v yay >/dev/null; then yay -S --needed - < "$REPO/packages/aur.txt" || true
-  else echo "yay no está instalado: instalalo y corré: yay -S --needed - < packages/aur.txt"; fi
+  # -Syu: en Arch no se instala sin actualizar el sistema (partial upgrade)
+  sudo pacman -Syu --needed git base-devel || echo "!! falló pacman -Syu"
+  if ! command -v yay >/dev/null; then
+    tmp=$(mktemp -d)
+    git clone --depth 1 https://aur.archlinux.org/yay-bin.git "$tmp/yay-bin" && (cd "$tmp/yay-bin" && makepkg -si --noconfirm)
+    rm -rf "$tmp"
+  fi
+  # 1) Lo que necesitan las configs y scripts del repo (repos oficiales + AUR)
+  read -ra deps <<<"$(grep -v '^#' "$REPO/packages/deps.txt" | tr '\n' ' ')"
+  yay -S --needed "${deps[@]}" || echo "!! falló la instalación de packages/deps.txt"
+  # 2) Todo lo de la PC de origen: kernel, drivers y apps personales incluidos. Por eso pregunta (con -y no).
+  #    Uno que ya no exista no frena al resto: pacman solo recibe los que están en los repos y AUR va de a uno.
+  ans=n; [ "$YES" -eq 1 ] || read -rp "¿Instalar también TODO packages/pacman.txt + aur.txt (PC de origen: drivers, kernel, apps personales)? [s/N] " ans
+  if [[ "$ans" =~ ^[sSyY]$ ]]; then
+    comm -12 <(sort -u "$REPO/packages/pacman.txt") <(pacman -Slq | sort -u) | sudo pacman -S --needed - || true
+    missing=$(comm -23 <(sort -u "$REPO/packages/pacman.txt") <(pacman -Slq | sort -u) | tr '\n' ' ')
+    [ -z "$missing" ] || echo "!! no están en los repos (se saltearon): $missing"
+    failed=()
+    while IFS= read -r p; do
+      [ -n "$p" ] && { yay -S --needed --noconfirm "$p" </dev/null || failed+=("$p"); }
+    done < "$REPO/packages/aur.txt"
+    [ ${#failed[@]} -eq 0 ] || echo "!! no se pudieron instalar de AUR: ${failed[*]}"
+  fi
+  # Servicios del sistema que usa el escritorio (sddm solo si no hay otro display manager)
+  svc=(NetworkManager.service bluetooth.service)
+  [ -e /etc/systemd/system/display-manager.service ] || svc+=(sddm.service)
+  if sudo systemctl enable "${svc[@]}"; then echo "ok    habilitados: ${svc[*]}"; fi
 fi
 
 # Monitores / scale (zoom): ~/.config/hypr/monitors.lua es propio de cada máquina y nunca se pisa.
@@ -223,6 +250,34 @@ sed -i -E "s#/home/[^/]+/#$HOME/#g" \
 NEMO_SYS=/usr/share/applications/nemo.desktop NEMO_USR="$HOME/.local/share/applications/nemo.desktop"
 if [ -f "$NEMO_SYS" ] && [ -f "$NEMO_USR" ]; then
   sed -E 's/^Exec=nemo( |$)/Exec=env -u GIO_USE_VFS nemo\1/' "$NEMO_SYS" > "$NEMO_USR" && echo "ok    nemo.desktop"
+fi
+
+# Temas que se eligen en archivos que NO se sincronizan (perfil del navegador, o configs con tokens):
+# se escribe solo esa clave, con backup, y solo si la app está instalada.
+if [ -n "$LW_PROFILE" ] && ! grep -qs 'legacyUserProfileCustomizations.stylesheets", true' "$LW_PROFILE/prefs.js" "$LW_PROFILE/user.js"; then
+  # LibreWolf: userChrome.css / userContent.css solo se cargan con esta pref
+  if [ -f "$LW_PROFILE/user.js" ]; then save "$LW_PROFILE/user.js"; else echo "${LW_PROFILE#"$HOME"/}/user.js" >> "$BACKUP/created.txt"; fi
+  echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);' >> "$LW_PROFILE/user.js"
+  echo "ok    librewolf: user.js (habilita userChrome.css)"
+fi
+TCFG="$HOME/.config/tidal-hifi/config.json"   # tiene el token de ListenBrainz
+if command -v tidal-hifi >/dev/null && command -v jq >/dev/null; then
+  if [ ! -e "$TCFG" ]; then
+    echo '{"theme": "matugen.css"}' > "$TCFG"; echo "${TCFG#"$HOME"/}" >> "$BACKUP/created.txt"; echo "ok    tidal-hifi: tema matugen"
+  elif [ "$(jq -r '.theme // ""' "$TCFG")" != matugen.css ]; then
+    save "$TCFG"; jq '.theme = "matugen.css"' "$TCFG" > "$TCFG.tmp" && mv "$TCFG.tmp" "$TCFG" && echo "ok    tidal-hifi: tema matugen"
+  fi
+fi
+PCFG="$HOME/.local/share/PrismLauncher/prismlauncher.cfg"   # tiene tokens (Modrinth, proxy)
+if command -v prismlauncher >/dev/null && ! grep -qsx 'ApplicationTheme=matugen' "$PCFG"; then
+  if [ -f "$PCFG" ]; then
+    save "$PCFG"
+    if grep -q '^ApplicationTheme=' "$PCFG"; then sed -i 's/^ApplicationTheme=.*/ApplicationTheme=matugen/' "$PCFG"
+    else sed -i '/^\[General\]/a ApplicationTheme=matugen' "$PCFG"; fi
+  else
+    mkdir -p "$(dirname "$PCFG")"; printf '[General]\nApplicationTheme=matugen\n' > "$PCFG"; echo "${PCFG#"$HOME"/}" >> "$BACKUP/created.txt"
+  fi
+  echo "ok    prismlauncher: tema matugen"
 fi
 
 # Hyprland lee el wallpaper actual de ~/.config/hypr/current_wallpaper.

@@ -58,6 +58,7 @@ SYSTEM_FILES=(
   # tidal-hifi: patcher del app.asar (carga ~/.config/tidal-hifi/userscripts/*.js) + hook que lo re-aplica al actualizar
   /usr/local/lib/tidal-hifi-userscripts/patch-asar.py
   /etc/pacman.d/hooks/tidal-hifi-userscripts.hook
+  /etc/sddm.conf                              # tema del login: sddm-astronaut-theme
 )
 # Claves de dconf (tema GTK, íconos, cursor, fuentes) que se guardan en extra/dconf-interface.ini
 DCONF_PATH=/org/gnome/desktop/interface/
