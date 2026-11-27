@@ -1,6 +1,5 @@
 -- Hyprland config basada en https://github.com/binnewbs/arch-hyprland
 -- (traducida de hyprlang a Lua para Hyprland 0.55+)
--- Backup de la config original: ~/.config/hypr.bak-20261025-005229
 
 
 ------------------
