@@ -102,18 +102,21 @@
     //"format": " {:%H:%M:%S}",// 24H
 	"format-alt": " {:%H:%M   %Y, %d %B, %A}",
 	"tooltip-format": "<tt><small>{calendar}</small></tt>",
+	// sin colores fijos (el markup no puede usar @vars de matugen): hereda el color del tooltip
 	"calendar": {
 		"mode": "month",
 		"weeks-pos": "right",
 		"on-scroll": 1,
 		"format": {
-			"months": "<span color='#ffead3'><b>{}</b></span>",
-			"days": "<span color='#ecc6d9'><b>{}</b></span>",
-			"weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-			"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-			"today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+			"months": "<b>{}</b>",
+			"days": "{}",
+			"weeks": "<span alpha='55%'>W{}</span>",
+			"weekdays": "<span alpha='70%'><b>{}</b></span>",
+			"today": "<b><u>{}</u></b>"
 		}
 	},
+	// click derecho: calendario grande (navegar meses y años) centrado en la pantalla
+	"on-click-right": "setsid -f ~/.config/waybar/scripts/calendar-popup.py",
 	// rueda sobre la hora: cambia de mes; click del medio: vuelve al mes actual
 	"actions": {
 		"on-click-middle": "shift_reset",

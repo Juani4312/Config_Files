@@ -35,6 +35,7 @@ hl.layer_rule({ match = { namespace = "^autoscroll-indicator$" }, no_anim = true
 --  un popin escalaría la pantalla entera)
 hl.layer_rule({ match = { namespace = "^waybar-music$" }, animation = "popin 90%" })
 hl.layer_rule({ match = { namespace = "^weather-popup$" }, animation = "fade" })
+hl.layer_rule({ match = { namespace = "^calendar-popup$" }, animation = "fade" })
 hl.layer_rule({ match = { namespace = "^swaync-control-center$" }, animation = "fade" })
 hl.layer_rule({ match = { namespace = "^logout_dialog$" }, animation = "fade" })
 

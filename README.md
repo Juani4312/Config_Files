@@ -198,6 +198,11 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     En esta PC hay uno por barra (`custom/music#dp3` / `#hdmi`, el argumento resalta solo el ícono del monitor
     con el menú abierto); en otra máquina agregá `"custom/music"` al principio de `modules-right` de `config`.
     Usa `playerctl`, `gtk-layer-shell` (dependencias de waybar) y `python-gobject`.
+  - **Reloj:** click derecho = calendario (`scripts/calendar-popup.py`, GTK3 + layer-shell) que baja desde la
+    esquina, debajo de la hora: mes con números de semana ISO (la semana empieza según el locale), hoy resaltado en
+    `@primary`; `‹ ›` / `← →` / rueda cambian de mes (con deslizamiento), `« »` / `↑ ↓` de año, y tocando el mes
+    o el año se abre una grilla para elegirlos (`m` / `y`); `Home` / "Today" vuelve a hoy. Se cierra con `Esc`,
+    click afuera o alejando el mouse. El tooltip de la hora (calendario chico) ya no usa colores fijos.
   - **Clima** (`custom/weather#ba`, `scripts/weather*.py`): a la derecha del reloj, ícono según el tiempo +
     temperatura actual de la ciudad elegida ([Open-Meteo](https://open-meteo.com), sin API key, cada 15 min; sin red
     muestra el último valor guardado, atenuado). Tooltip con condición, sensación térmica, mín/máx, humedad y viento.
@@ -217,7 +222,7 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     botón de apagado con glow en `@primary`. Micro-animaciones de hover (una vez): la nota de música salta, la
     tecla del idioma se hunde y el wifi emite dos ondas de brillo.
   - **Una ventana de la barra a la vez:** `scripts/popups.sh close-except <x>` cierra las demás (menú de música,
-    clima, buscador, panel de swaync, menú wifi, wlogout). `scripts/popups-daemon.py` (`custom/popups-daemon`, lo
+    clima, buscador, calendario, panel de swaync, menú wifi, wlogout). `scripts/popups-daemon.py` (`custom/popups-daemon`, lo
     lanza waybar) cierra el resto cuando se abre el panel de swaync —aunque sea con un atajo— y lo cierra si el
     mouse se aleja 0,7 s (solo después de haber pasado por encima). Click afuera lo cierra el propio swaync.
     En otra máquina agregá `"custom/popups-daemon"` (y `custom/special-flag#…` si usás las burbujas) a `config`.
