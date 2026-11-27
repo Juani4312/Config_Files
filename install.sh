@@ -40,7 +40,13 @@ LW_PROFILE=$(librewolf_profile || true)
 # Archivos (rutas relativas) de una carpeta origen, separados por NUL
 list_rel() { (cd "$1" && find . \( -type f -o -type l \) -printf '%P\0'); }
 # estado de un archivo respecto al destino: new | same | changed | local (LOCAL_FILES: no se toca)
-state() { if is_local "$2"; then echo local; elif [ ! -e "$2" ] && [ ! -L "$2" ]; then echo new; elif cmp -s "$1" "$2"; then echo same; else echo changed; fi; }
+# "same" también si solo difiere en /home/<usuario>/ (install.sh lo reescribe a esta $HOME al final)
+state() {
+  if is_local "$2"; then echo local
+  elif [ ! -e "$2" ] && [ ! -L "$2" ]; then echo new
+  elif cmp -s "$1" "$2" || cmp -s <(sed -E "s#/home/[^/]+/#$HOME/#g" "$1") "$2"; then echo same
+  else echo changed; fi
+}
 
 # ---------- 1. REVISIÓN ----------
 review() {
