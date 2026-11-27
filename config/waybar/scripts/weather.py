@@ -139,7 +139,9 @@ def same_loc(data, loc=None):
 
 
 def save_cache(data):
-    tmp = CACHE + ".tmp"
+    # .tmp propio: corre una instancia por barra a la vez y con un .tmp compartido
+    # una pisaba a la otra (os.replace fallaba y esa barra quedaba "stale")
+    tmp = f"{CACHE}.{os.getpid()}.tmp"
     with open(tmp, "w") as f:
         json.dump(data, f)
     os.replace(tmp, CACHE)
@@ -182,11 +184,21 @@ def render(data, stale=False):
 
 
 def main():
-    try:
-        data = fetch()
-        save_cache(data)
+    data = None
+    for wait in (0, 3):                     # un reintento (ej. recién arranca y no hay red)
+        time.sleep(wait)
+        try:
+            data = fetch()
+            break
+        except Exception:
+            pass
+    if data is not None:
+        try:
+            save_cache(data)
+        except OSError:
+            pass                            # no poder guardar el cache no es "sin red"
         out = render(data)
-    except Exception:
+    else:
         try:
             data = load_cache()
             if not same_loc(data):          # cambió de ciudad y no hay red
