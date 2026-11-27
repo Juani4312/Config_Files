@@ -1,3 +1,5 @@
 # Give the logged-in seat user access to mouse event nodes (for autoscroll.py).
 # Mice only - keyboards stay root:input.
 SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_MOUSE}=="1", TAG+="uaccess"
+# /dev/uinput (el mouse virtual de autoscroll.py). El paquete steam trae la misma regla; esta evita depender de él.
+KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"

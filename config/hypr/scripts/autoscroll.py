@@ -84,7 +84,8 @@ def is_mouse(dev):
     caps = dev.capabilities()
     rel = caps.get(e.EV_REL, [])
     keys = caps.get(e.EV_KEY, [])
-    return e.REL_X in rel and e.REL_Y in rel and e.BTN_MIDDLE in keys
+    # combos teclado+touchpad: no agarrarlos, el uinput virtual no tiene teclas y el teclado dejaría de andar
+    return e.REL_X in rel and e.REL_Y in rel and e.BTN_MIDDLE in keys and e.KEY_A not in keys
 
 
 def speed(d):
