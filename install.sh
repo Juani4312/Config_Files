@@ -234,6 +234,12 @@ for pair in "${PAIRS[@]}"; do
   if [ "$kind" = d ]; then copy_tree "$src" "$dst"; else copy_file "$src" "$dst"; fi
 done
 
+# waybar: en el repo style.css es un symlink a style/<variante>. tar -h lo copia como archivo, y eso rompía el
+# enlace de la máquina (editar la variante dejaba de cambiar la barra): se rehace como symlink (igual que SUPER+CTRL+B)
+if v=$(readlink "$REPO/config/waybar/style.css") && [ -e "$HOME/.config/waybar/$v" ]; then
+  ln -sfn "$v" "$HOME/.config/waybar/style.css"
+fi
+
 for e in "${HISTORY_KEYS[@]}"; do
   f="$HOME/.config/${e%%|*}" h="$HKEEP/$(tr / _ <<<"${e%%|*}")"
   [ -s "$h" ] && [ -f "$f" ] || continue
