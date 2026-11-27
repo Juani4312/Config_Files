@@ -81,7 +81,7 @@
 	"tooltip": true,
 	"tooltip-format": "{timeTo} {power}w",
 	"on-click-middle": "$HOME/.config/hypr/scripts/ChangeBlur.sh",
-	"on-click-right": "$HOME/.config/hypr/scripts/Wlogout.sh",
+	"on-click-right": "~/.config/waybar/scripts/popups.sh close-except wlogout; $HOME/.config/hypr/scripts/Wlogout.sh",
 },
 
 "bluetooth": {
@@ -281,7 +281,7 @@
 	"tooltip-format-disconnected": "󰤮 Disconnected",
 	"max-length": 30,
 	"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-	"on-click": "$HOME/.config/rofi/wifi-menu.sh",
+	"on-click": "~/.config/waybar/scripts/popups.sh close-except rofi; $HOME/.config/rofi/wifi-menu.sh",
 	"on-click-right": "kitty --class nmtui -e nmtui"
 },
 

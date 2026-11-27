@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# SUPER+SHIFT+S: manda la ventana activa al workspace especial y recuerda de qué
-# workspace venía. Si la ventana ya está en el especial, la devuelve a ese workspace.
+# special-move.sh [nombre]  (default "magic")
+# SUPER+SHIFT+S (magic) / SUPER+SHIFT+Z (claude): manda la ventana activa a ese
+# workspace especial y recuerda de qué workspace venía. Si la ventana ya está en ese
+# especial, la devuelve; si está en OTRO especial, la pasa a este (conserva el origen).
 # Origen guardado por dirección de ventana en $XDG_RUNTIME_DIR/special-origin.json
 # (se borra al reiniciar, igual que las ventanas).
 set -u
-SPECIAL="special:magic"
+SPECIAL="special:${1:-magic}"
 STATE="${XDG_RUNTIME_DIR:-/tmp}/special-origin.json"
 [ -s "$STATE" ] || echo '{}' > "$STATE"
 
@@ -21,7 +23,10 @@ save() { # <jq filter> — actualiza el estado y olvida ventanas que ya no exist
     "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
 }
 
-if [[ "$ws_name" == special:* ]]; then
+if [[ "$ws_name" == special:* && "$ws_name" != "$SPECIAL" ]]; then
+  # de un especial a otro: el origen guardado sigue valiendo
+  hyprctl dispatch "hl.dsp.window.move({ workspace = \"$SPECIAL\", window = \"address:$addr\" })" >/dev/null
+elif [[ "$ws_name" == "$SPECIAL" ]]; then
   # Volver: workspace guardado, o el workspace normal visible en ese monitor
   dest=$(jq -r --arg a "$addr" '.[$a] // empty' "$STATE")
   if [ -z "$dest" ]; then

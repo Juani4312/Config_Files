@@ -22,6 +22,7 @@ menu)
   # si el mismo click lo acaba de cerrar (perdió el foco), no reabrir
   closed=$(cat "$run/popup.closed" 2>/dev/null)
   [ -n "$closed" ] && [ $(( $(date +%s%3N) - closed )) -lt 400 ] && exit 0
+  "$(dirname "$(readlink -f "$0")")/popups.sh" close-except music   # uno a la vez
   setsid -f "$(dirname "$(readlink -f "$0")")/music-popup.py" >/dev/null 2>&1 ;;
 play-pause|next|previous)
   [ -n "$player" ] && playerctl -p "$player" "$1" ;;

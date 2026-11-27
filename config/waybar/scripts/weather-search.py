@@ -89,6 +89,15 @@ def choose(loc):
     subprocess.Popen(["pkill", "-RTMIN+9", "-x", "waybar"])
 
 
+def close_other_popups(me):
+    """Ventanas de la waybar: solo una abierta a la vez (popups.sh)."""
+    try:
+        subprocess.run([os.path.join(os.path.dirname(os.path.realpath(__file__)), "popups.sh"),
+                        "close-except", me], timeout=3)
+    except Exception:
+        pass
+
+
 def running_pid():
     try:
         pid = int(open(PIDFILE).read().split()[0])
@@ -494,6 +503,7 @@ def main():
     if pid:                         # ya abierto: cerrarlo (toggle)
         os.kill(pid, 15)
         return
+    close_other_popups("weather-search")
     then_forecast = "--then-forecast" in sys.argv[1:]
     os.makedirs(RUN, exist_ok=True)
     with open(PIDFILE, "w") as f:

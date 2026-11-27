@@ -76,6 +76,9 @@ end
 -- si la ventana ya está en el especial, la devuelve a ese workspace.
 bind(mod("S"),         hl.dsp.workspace.toggle_special("magic"))
 bind(mod("SHIFT + S"), hl.dsp.exec_cmd(scripts .. "special-move.sh"))
+-- Segundo especial, para Claude Code (burbuja 智 a la derecha de los workspaces)
+bind(mod("Z"),         hl.dsp.workspace.toggle_special("claude"))
+bind(mod("SHIFT + Z"), hl.dsp.exec_cmd(scripts .. "special-move.sh claude"))
 
 -- Scroll through existing workspaces with mainMod + scroll
 bind(mod("mouse_down"), hl.dsp.focus({ workspace = "e+1" }))

@@ -34,10 +34,12 @@
 	],
 
 "modules-center": [
+	"custom/special-flag#dp3",
 	"custom/special#dp3",
 	"group/ws-dp3",
 	"custom/special-pad#dp3",
 	"custom/ws-listener",
+	"custom/popups-daemon",
 	],
 
 "modules-right": [
@@ -81,6 +83,7 @@
 	],
 
 "modules-center": [
+	"custom/special-flag#hdmi",
 	"custom/special#hdmi",
 	"group/ws-hdmi",
 	"custom/special-pad#hdmi",

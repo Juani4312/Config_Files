@@ -48,6 +48,18 @@ Leé esto antes de ejecutar nada.
     apretada. Para probarlo sin tocar nada, usá un teclado y un mouse virtuales (uinput) en un workspace vacío:
     un clic medio sobre kitty pega el portapapeles.
 
+13. **Colores en waybar/popups:** `@error` de Material es siempre rosado/salmón sin importar el fondo (el usuario lo
+    ve como "otro tema"): usalo solo para alertas críticas; estados "apagado" van en `@outline`. Para un tono más
+    claro usá los `*_fixed` (ej. `@secondary_fixed`), nunca `white`/hex.
+14. **Hyprland 0.57+:** los workspaces especiales no traen `"id"` en `hyprctl -j workspaces` ni en el `.workspace` de
+    los clientes (usá `.get("id")`). `decoration.blur.special = true` dibuja el fondo difuminado ENCIMA de la waybar
+    (layer `bottom`) con el especial abierto: dejalo en `false`. La API Lua (eventos, `hl.get_monitors()`, ...) está
+    en `/usr/share/hypr/stubs/hl.meta.lua`.
+15. **GTK3 en waybar:** las clases de un `custom/*` quedan en el label interno, así que `.clase ~ #grupo` no funciona;
+    `:nth-child` cuenta solo hermanos *visibles* (un custom con texto vacío se oculta), eso se usa para el estado del
+    especial. Un ícono simbólico (`-gtk-icontheme`) se multiplica por el alfa de `color`: no se puede ocultar el
+    glifo con `color: transparent` y seguir viendo el ícono.
+
 ---
 
 ## 1. Requisitos previos

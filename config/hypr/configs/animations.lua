@@ -22,6 +22,8 @@ bezier("bounce",     1.1,  1.6,  0.1,  0.85)
 bezier("sligshot",   1,    -1,   0.15, 1.25)
 bezier("spotIn",     0.2,  1.35, 0.35, 1)      -- rofi: pop con leve rebote
 bezier("spotOut",    0.4,  0,    1,    0.6)
+bezier("fadeIn",     0.25, 1,    0.5,  1)      -- ease-out: aparece rápido y se asienta suave
+bezier("fadeOut",    0.5,  0,    0.75, 0)      -- ease-in: se va acelerando
 
 hl.animation({ leaf = "windowsIn",   enabled = true, speed = 5, bezier = "slow",     style = "popin" })
 hl.animation({ leaf = "windowsOut",  enabled = true, speed = 7, bezier = "been",     style = "popin 70%" })
@@ -34,5 +36,5 @@ hl.animation({ leaf = "windows",     enabled = true, speed = 5, bezier = "bounce
 -- Capas (rofi spotlight, notificaciones, etc). El estilo lo pone cada layer_rule.
 hl.animation({ leaf = "layersIn",      enabled = true, speed = 2.6, bezier = "spotIn" })
 hl.animation({ leaf = "layersOut",     enabled = true, speed = 1.6, bezier = "spotOut" })
-hl.animation({ leaf = "fadeLayersIn",  enabled = true, speed = 2.2, bezier = "linear" })
-hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.4, bezier = "linear" })
+hl.animation({ leaf = "fadeLayersIn",  enabled = true, speed = 2.6, bezier = "fadeIn" })
+hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.6, bezier = "fadeOut" })

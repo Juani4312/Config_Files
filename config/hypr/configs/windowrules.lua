@@ -1,19 +1,22 @@
 -----------------------------
 ---- APPLICATIONS BLUR ----
 -----------------------------
+-- Opacidad sin foco: transparency_dif_low/mid/high (definidas en opacity.lua)
 
-hl.window_rule({ match = { tag = "multimedia_video" }, no_blur = true, opacity = "1.0" })
-hl.window_rule({ match = { tag = "settings" }, opacity = "0.8" })
-hl.window_rule({ match = { class = "^(org.gnome.Nautilus)$" }, opacity = "0.8" })
-hl.window_rule({ match = { class = "^(nemo)$" }, opacity = "0.8" })
-hl.window_rule({ match = { class = "^(gedit|org.gnome.TextEditor|mousepad)$" }, opacity = "0.9" })
-hl.window_rule({ match = { class = "^(org.pulseaudio.pavucontrol)$" }, opacity = "0.9" })
-hl.window_rule({ match = { class = "^(kitty)$" }, opacity = "0.9" })
-hl.window_rule({ match = { class = "^(discord|vesktop)$" }, opacity = "0.9" })
-hl.window_rule({ match = { class = "^(com.rtosta.zapzap)$" }, opacity = "0.9" })
-hl.window_rule({ match = { class = "^(org.telegram.desktop)$" }, opacity = "0.85 override 0.7 override 1 override" })
-hl.window_rule({ match = { class = "^(Spotify)$" }, opacity = "0.8 override 0.6 override 1 override" })
-hl.window_rule({ match = { class = "^(zen)$" }, opacity = "0.9 override 0.7 override 1 override" })
+hl.window_rule({ match = { tag = "multimedia_video" }, no_blur = true, opacity = inactive_opacity_rule(1.0, transparency_dif_high) })
+hl.window_rule({ match = { tag = "settings" }, opacity = inactive_opacity_rule(0.8, transparency_dif_mid) })
+hl.window_rule({ match = { class = "^(org.gnome.Nautilus)$" }, opacity = inactive_opacity_rule(0.8, transparency_dif_mid) })
+hl.window_rule({ match = { class = "^(nemo)$" }, opacity = inactive_opacity_rule(0.8, transparency_dif_mid) })
+hl.window_rule({ match = { class = "^(gedit|org.gnome.TextEditor|mousepad)$" }, opacity = inactive_opacity_rule(0.9, transparency_dif_high) })
+hl.window_rule({ match = { class = "^(org.pulseaudio.pavucontrol)$" }, opacity = inactive_opacity_rule(0.9, transparency_dif_high) })
+hl.window_rule({ match = { class = "^(kitty)$" }, opacity = inactive_opacity_rule(0.9, transparency_dif_high) })
+hl.window_rule({ match = { class = "^(discord|vesktop)$" }, opacity = inactive_opacity_rule(0.9, transparency_dif_high) })
+hl.window_rule({ match = { class = "^(com.rtosta.zapzap)$" }, opacity = inactive_opacity_rule(0.9, transparency_dif_low) })
+hl.window_rule({ match = { class = "^(librewolf)$" }, opacity = inactive_opacity_rule(0.95, transparency_dif_high) })
+hl.window_rule({ match = { class = "^(tidal-hifi)$" }, opacity = inactive_opacity_rule(0.95, transparency_dif_low) })
+hl.window_rule({ match = { class = "^(org.telegram.desktop)$" }, opacity = "0.85 override " .. transparency_dif_mid .. " override 1 override" })
+hl.window_rule({ match = { class = "^(Spotify)$" }, opacity = "0.8 override " .. transparency_dif_low .. " override 1 override" })
+hl.window_rule({ match = { class = "^(zen)$" }, opacity = "0.9 override " .. transparency_dif_mid .. " override 1 override" })
 
 
 ---------------------
@@ -26,6 +29,14 @@ hl.layer_rule({ match = { namespace = "logout_dialog" }, blur = true })
 -- ROFI (spotlight): pop-in rapido con rebote + blur del fondo translucido
 hl.layer_rule({ match = { namespace = "^rofi$" }, animation = "popin 85%", blur = true, ignore_alpha = 0.3 })
 hl.layer_rule({ match = { namespace = "^autoscroll-indicator$" }, no_anim = true })
+
+-- Ventanas que se abren desde la waybar: animación de entrada suave
+-- (el menú de música es chico -> popin; los que cubren la pantalla -> fade,
+--  un popin escalaría la pantalla entera)
+hl.layer_rule({ match = { namespace = "^waybar-music$" }, animation = "popin 90%" })
+hl.layer_rule({ match = { namespace = "^weather-popup$" }, animation = "fade" })
+hl.layer_rule({ match = { namespace = "^swaync-control-center$" }, animation = "fade" })
+hl.layer_rule({ match = { namespace = "^logout_dialog$" }, animation = "fade" })
 
 -- SWAYNC BLUR & XRAY
 hl.layer_rule({

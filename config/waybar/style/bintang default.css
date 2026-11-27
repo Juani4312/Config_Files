@@ -32,11 +32,11 @@ tooltip label{
 }
 /*-----module groups----*/
 .modules-right {
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.55);
 	color: @secondary;
 	border-bottom: 0px;
 	border-style: solid;
-	border-color: white;
+	border-color: @outline;
 	border-radius: 20px;
 	padding-top: 2px;
 	padding-bottom: 2px;
@@ -52,7 +52,8 @@ tooltip label{
 }
 #ws-dp3,
 #ws-hdmi {
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.55);
+	transition: background-color 0.35s ease;
 	border-radius: 20px;
 	padding-top: 2px;
 	padding-bottom: 2px;
@@ -60,11 +61,11 @@ tooltip label{
 	padding-left: 4px;
 }
 .modules-left {
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.55);
 	color: @secondary;
 	border-bottom: 0px;
 	border-style: solid;
-	border-color: white;
+	border-color: @outline;
 	border-radius: 20px;
 	padding-top: 2px;
 	padding-bottom: 2px;
@@ -89,7 +90,7 @@ tooltip label{
 #taskbar button:hover,
 #workspaces button:hover {
     color: @primary;
-    background: rgba(255, 255, 255, 0.06);
+    background: alpha(@on_surface, 0.06);
     border: none;
     box-shadow: none;
     text-shadow: none;
@@ -98,7 +99,7 @@ tooltip label{
 #taskbar button:active,
 #workspaces button:active {
     color: @primary_fixed;
-    background: rgba(255, 255, 255, 0.10);
+    background: alpha(@on_surface, 0.10);
     border: none;
     box-shadow: none;
 }
@@ -272,10 +273,43 @@ box:hover > #custom-music {
 	box-shadow: inset 0 0 0 1px alpha(@primary, 0.25);
 }
 
+/*-----Micro-animaciones de hover (UNA vez por hover, nada en loop)----*/
+/* música: la nota da un saltito (solo se reparte el padding: el tamaño no cambia) */
+#custom-music:hover,
+box:hover > #custom-music {
+	animation: music-hop 0.55s ease-out 1;
+}
+@keyframes music-hop {
+	0%   { padding-top: 4px; padding-bottom: 4px; }
+	35%  { padding-top: 1px; padding-bottom: 7px; }
+	65%  { padding-top: 4px; padding-bottom: 4px; }
+	82%  { padding-top: 3px; padding-bottom: 5px; }
+	100% { padding-top: 4px; padding-bottom: 4px; }
+}
+/* teclado: la tecla se hunde y vuelve */
+#language:hover {
+	animation: key-press 0.4s ease-out 1;
+}
+@keyframes key-press {
+	0%   { padding-top: 4px; padding-bottom: 4px; background-color: alpha(@primary, 0.12); }
+	30%  { padding-top: 6px; padding-bottom: 2px; background-color: alpha(@primary, 0.24); }
+	100% { padding-top: 4px; padding-bottom: 4px; background-color: alpha(@primary, 0.12); }
+}
+/* wifi: dos "ondas" de brillo que salen del ícono */
+#network.wifi:hover {
+	animation: wifi-ping 1.6s ease-out 1;
+}
+@keyframes wifi-ping {
+	0%   { text-shadow: 0 0 2px alpha(@primary, 1),   0 0 3px alpha(@primary, 0.9); }
+	45%  { text-shadow: 0 0 2px alpha(@primary, 0),   0 0 14px alpha(@primary, 0); }
+	46%  { text-shadow: 0 0 2px alpha(@primary, 1),   0 0 3px alpha(@primary, 0.9); }
+	100% { text-shadow: 0 0 2px alpha(@primary, 0),   0 0 14px alpha(@primary, 0); }
+}
+
 /*-----Indicators----*/
 #custom-hypridle.notactive,
 #idle_inhibitor.activated {
-	color: #39FF14;
+	color: @primary;
 }
 
 #network.disconnected,
@@ -290,7 +324,7 @@ box:hover > #custom-music {
 #pulseaudio.muted,
 #pulseaudio.source-muted,
 #custom-volume.muted {
-	color: #cc3436;
+	color: @outline;   /* apagado, como música en pausa / no molestar */
 }
 /* parlante: el script deja un glifo invisible y acá se dibuja el ícono
    simbólico (toma el `color` del tema). Al pasar el mouse, las ondas "suenan". */
@@ -313,7 +347,7 @@ box:hover > #custom-volume.spk-2 {
 	animation: spk-play 0.8s steps(4) 1;
 }
 #temperature.critical {
-	color: red;
+	color: @error;
 }
 
 /* batería: respira mientras carga, parpadea si está crítica */
@@ -325,7 +359,7 @@ box:hover > #custom-volume.spk-2 {
 	color: @tertiary;
 }
 #battery.critical:not(.charging) {
-	color: #f53c3c;
+	color: @error;
 	animation: blink 0.9s steps(12) infinite alternate;
 }
 
@@ -492,7 +526,9 @@ box:hover > #custom-ws.focused {
 
 
 /*-----workspace especial: burbuja 特 al costado de la isla----*/
-/* custom/special (izquierda) y custom/special-pad (derecha, invisible) ocupan
+/* custom/special-pad (derecha) = burbuja 智 del especial "claude" (SUPER+Z); la
+   izquierda 特 es "magic" (SUPER+S). Cerradas son transparentes pero ocupan lugar.
+   custom/special (izquierda) y custom/special-pad (derecha) ocupan
    SIEMPRE el mismo lugar (con el especial cerrado son transparentes), así la isla
    de workspaces nunca se mueve. Al abrir: aparece con fade y después se enciende
    el brillo; al cerrar: fade rápido. La geometría no cambia (animar márgenes da
@@ -505,27 +541,77 @@ box:hover > #custom-ws.focused {
 	border-radius: 20px;
 	color: transparent;
 	background-color: transparent;
-	box-shadow: 0 0 5px 0 alpha(@tertiary, 0), inset 0 0 0 1px alpha(@tertiary, 0);
+	box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0);
+	text-shadow: 0 0 1px alpha(@secondary, 0), 0 0 4px alpha(@secondary, 0), 0 0 9px alpha(@secondary, 0);
 }
 #custom-special     { margin: 0px 8px 0px 6px; }
 #custom-special-pad { margin: 0px 6px 0px 8px; }
-#custom-special {
+#custom-special,
+#custom-special-pad {
 	transition: color 0.25s ease,
 	            background-color 0.3s ease,
-	            box-shadow 0.3s ease;
+	            box-shadow 0.3s ease,
+	            text-shadow 0.25s ease;
 }
-#custom-special.active {
-	color: @tertiary;
-	background-color: rgba(0,0,0,0.5);
-	box-shadow: 0 0 5px 0 alpha(@tertiary, 0.35), inset 0 0 0 1px alpha(@tertiary, 0.5);
+/* 特 abierto: glifo @secondary aclarado + halo de 3 capas que "respira" lento
+   (es lo único del bar con movimiento continuo: marca que hay algo especial) */
+#custom-special.active,
+#custom-special-pad.active {
+	color: @secondary_fixed;
+	background-color: rgba(0,0,0,0.55);
+	box-shadow: 0 0 5px 0 alpha(@primary, 0.35), inset 0 0 0 1px alpha(@primary, 0.5);
+	text-shadow: 0 0 1px alpha(@secondary, 0.9), 0 0 4px alpha(@secondary, 0.75), 0 0 9px alpha(@secondary, 0.45);
+	animation: special-breathe 3.2s ease-in-out 0.8s infinite alternate;
 	transition: color 0.35s ease,
 	            background-color 0.35s ease,
-	            box-shadow 0.6s ease 0.15s;
+	            box-shadow 0.6s ease 0.15s,
+	            text-shadow 0.6s ease 0.15s;
 }
 #custom-special.active:hover,
-box:hover > #custom-special.active {
-	background-color: alpha(@tertiary, 0.20);
-	box-shadow: 0 0 5px 0 alpha(@tertiary, 0.5), inset 0 0 0 1px @tertiary;
+box:hover > #custom-special.active,
+#custom-special-pad.active:hover,
+box:hover > #custom-special-pad.active {
+	color: mix(@secondary_fixed, @on_surface, 0.5);
+	/* mismo fondo que sin hover (antes se aclaraba y parecía transparente): solo brilla */
+	box-shadow: 0 0 5px 0 alpha(@primary, 0.9), inset 0 0 0 1px @primary;
+	animation: special-breathe-hi 1.6s ease-in-out infinite alternate;
+}
+@keyframes special-breathe {
+	from { text-shadow: 0 0 1px alpha(@secondary, 0.9), 0 0 4px alpha(@secondary, 0.75), 0 0 9px alpha(@secondary, 0.45); }
+	to   { text-shadow: 0 0 1px alpha(@secondary, 1),   0 0 5px alpha(@secondary, 0.95), 0 0 12px alpha(@secondary, 0.7); }
+}
+@keyframes special-breathe-hi {
+	from { text-shadow: 0 0 1px alpha(@secondary, 1), 0 0 5px alpha(@secondary, 0.95), 0 0 12px alpha(@secondary, 0.7); }
+	to   { text-shadow: 0 0 1px @secondary_fixed,     0 0 6px @secondary,               0 0 14px alpha(@secondary, 0.9); }
+}
+
+
+/* Con el especial abierto en ESTE monitor la isla de workspaces se vuelve más
+   transparente. Las clases de los custom quedan en el label interno, así que se
+   usa la posición: custom/special-flag (ancho cero) solo es visible con el
+   especial abierto y GTK3 cuenta solo hermanos visibles en :nth-child → la isla
+   pasa de ser el 2º al 3º hijo de .modules-center. */
+#custom-special-flag {
+	min-width: 0;
+	padding: 0;
+	margin: 0;
+	color: transparent;
+	background-color: transparent;
+}
+/* el flag visible suma el "spacing" (3px) de la barra: se lo descuenta la burbuja */
+.modules-center > *:nth-child(2) #custom-special {
+	margin-left: 3px;
+}
+.modules-center > *:nth-child(3) > #ws-dp3,
+.modules-center > *:nth-child(3) > #ws-hdmi {
+	background-color: rgba(0,0,0,0.42);
+}
+/* el focused deja de ser una píldora sólida: tinte translúcido + borde, sin brillo */
+.modules-center > *:nth-child(3) > #ws-dp3 #custom-ws.focused,
+.modules-center > *:nth-child(3) > #ws-hdmi #custom-ws.focused {
+	color: @primary;
+	background-color: alpha(@primary, 0.18);
+	box-shadow: 0 0 5px 0 alpha(@primary, 0), inset 0 0 0 1px alpha(@primary, 0.55);
 }
 
 
@@ -533,3 +619,5 @@ box:hover > #custom-special.active {
 #custom-weather.stale {
 	opacity: 0.55;
 }
+
+

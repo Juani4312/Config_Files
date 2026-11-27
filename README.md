@@ -155,9 +155,18 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
 - **Window rules:** el diálogo de Bitwarden de LibreWolf y la app Bitwarden flotan centrados en vertical; Proton
   Authenticator flota; en Steam flota todo menos la ventana principal ("Steam"), y la lista de amigos es angosta.
   Se ignoran los pedidos de maximizar de las apps.
-- **Workspace especial "magic"** (scratchpad): `SUPER+S` lo muestra; `SUPER+SHIFT+S` manda la ventana ahí recordando
-  su workspace de origen, y si ya está ahí la devuelve (`scripts/special-move.sh`).
-- **Animaciones:** popin para rofi, fades de capas (`configs/animations.lua`); opacidad por app en `configs/opacity.lua`.
+- **Workspaces especiales** (scratchpads): "magic" con `SUPER+S` y "claude" (para Claude Code) con `SUPER+Z`;
+  `SUPER+SHIFT+S` / `SUPER+SHIFT+Z` mandan la ventana ahí recordando su workspace de origen, y si ya está ahí la
+  devuelven (`scripts/special-move.sh [nombre]`). En la waybar: burbuja 特 a la izquierda de los workspaces
+  (magic) o 智 a la derecha (claude); con un especial abierto la isla se vuelve más translúcida y sube el blur.
+- **Animaciones:** popin para rofi y el menú de música, fade (ease-out al entrar, ease-in al salir) para las capas
+  que cubren la pantalla: pronóstico del clima, panel de swaync, wlogout (`configs/animations.lua` + `layer_rule`s en
+  `configs/windowrules.lua`).
+- **Opacidad sin foco por app:** tres niveles en `configs/opacity.lua` (`transparency_dif_low/mid/high` = 0.65 / 0.75 /
+  0.85, con `override`: es el valor final). Default `mid`; `high` para kitty, LibreWolf, Vesktop, editores y
+  pavucontrol; `low` para tidal-hifi y ZapZap. Se asignan en `configs/windowrules.lua` con `inactive_opacity_rule()`.
+- **Blur con un especial abierto:** mientras se ve un workspace especial, el blur pasa de 5×3 a 10×4
+  (`configs/looknfeel.lua`, evento `workspace.special_active`). `blur.special` queda en `false`: en `true` tapa la waybar.
 - **hypridle:** baja el brillo a los 2,5 min (el bloqueo, el apagado de pantalla y la suspensión están comentados).
 - `SUPER+O` (`reload-all.sh`) recarga Hyprland y reinicia swaync y waybar.
 
@@ -165,8 +174,12 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
 - **Waybar** (`config/waybar`): `config` y `style.css` apuntan a la variante elegida en `configs/` y `style/`
   (actual: "bintang default"; `SUPER+CTRL+B` / `SUPER+ALT+B` cambian estilo y layout).
   - Isla de workspaces por monitor con animaciones (el foco crece a una píldora con glow; urgente parpadea en
-    `@tertiary`), burbuja 特 a la izquierda cuando hay ventanas en el workspace especial. Al pasar el mouse, cada
-    workspace se enmarca en un cuadradito redondeado (borde fino + fondo leve en `@primary`) sin mover la isla.
+    `@tertiary`), burbujas de los workspaces especiales a los costados (特 magic / 智 claude) con un halo en
+    `@secondary` que respira y glow `@primary` al pasar el mouse. Con un especial abierto en ese monitor la isla se
+    vuelve más translúcida y el foco pasa a un tinte suave (`custom/special-flag`: módulo de ancho cero que corre la
+    isla a `:nth-child(3)`). Al pasar el mouse, cada workspace se enmarca en un cuadradito redondeado (borde fino +
+    fondo leve en `@primary`) sin mover la isla. `scripts/ws-listener.py` sigue los eventos de Hyprland (tolera los
+    especiales sin `id` de Hyprland 0.57 y se reconecta si falla).
   - Volumen propio (`scripts/volume.py`, con `pactl subscribe`): las ondas del parlante se animan al pasar el mouse.
   - Indicador de idioma del teclado (`hyprland/language#kb` en `UserModules`): muestra `󰌌 US` / `󰌌 LA`, se
     actualiza solo con `SUPER+Space` y al hacer click cambia de idioma (mismo `SwitchLayout.sh`, con notificación).
@@ -175,7 +188,9 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     (MPRIS con lista blanca vía libplayerctl; ignora navegadores, ZapZap y el `chromium.instanceN` de Electron).
     Color del tema mientras suena, apagado en pausa. Click = mini menú (`music-popup.py`, GTK3 + layer-shell):
     carátula, título/artista/álbum, barra de progreso (click/arrastre para saltar), anterior/pausa/siguiente,
-    botón para alternar reproductor y slider de volumen (el mismo que la rueda; con la rueda encima usa los mismos pasos); se cierra al alejar el mouse o con otro click. Click derecho = pausa/play,
+    botón para alternar reproductor y slider de volumen (el mismo que la rueda; con la rueda encima usa los mismos pasos); se cierra al alejar el mouse o con otro click.
+    A la derecha (opuesto al nombre del reproductor) el botón de **salida de audio** (󰓃/󰍹/󰋋 según el tipo):
+    despliega las salidas y la elegida pasa a ser la de por defecto, moviendo lo que ya suena (`pactl`). Click derecho = pausa/play,
     medio = cambiar de reproductor, rueda = volumen **del reproductor** (MPRIS, no el del sistema;
     pasos de 1 % hasta 10, 2 % hasta 30 y 5 % después; el tooltip muestra el nivel; en tidal-hifi el slider
     lo sigue gracias a `userscripts/volume-sync.js`, ver abajo). Muestra el último que empezó a sonar.
@@ -199,7 +214,15 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
       `~/.config` a propósito: no se sube al repo y cada máquina tiene la suya. Sin ese archivo: Buenos Aires.
     - Va en `modules-left` de `config` (local: en otra máquina agregalo después de `"clock"`).
   - Campana de swaync que suena una vez con cada notificación nueva; batería que "respira" cargando y titila crítica;
-    botón de apagado con glow en `@primary`.
+    botón de apagado con glow en `@primary`. Micro-animaciones de hover (una vez): la nota de música salta, la
+    tecla del idioma se hunde y el wifi emite dos ondas de brillo.
+  - **Una ventana de la barra a la vez:** `scripts/popups.sh close-except <x>` cierra las demás (menú de música,
+    clima, buscador, panel de swaync, menú wifi, wlogout). `scripts/popups-daemon.py` (`custom/popups-daemon`, lo
+    lanza waybar) cierra el resto cuando se abre el panel de swaync —aunque sea con un atajo— y lo cierra si el
+    mouse se aleja 0,7 s (solo después de haber pasado por encima). Click afuera lo cierra el propio swaync.
+    En otra máquina agregá `"custom/popups-daemon"` (y `custom/special-flag#…` si usás las burbujas) a `config`.
+  - Todos los colores salen de `colors.css` (matugen): `@error` solo para alertas críticas (batería, temperatura);
+    el volumen muteado se apaga con `@outline` como la música en pausa.
   - En esta PC `style.css` es un **hardlink** a `style/bintang default.css`: editalo en el lugar, no lo reemplaces.
 - **Rofi** (`config/rofi/config.rasi`): estilo Spotlight compartido por todos los menús. Solo el launcher agrega
   `require-input` (la lista aparece al escribir). `wifi-menu.sh` es un menú de redes propio.
@@ -207,7 +230,7 @@ Matugen les genera el tema, pero no figuran en `packages/`; instalalas aparte si
     9 columnas y una fila de categorías bajo la búsqueda (click, `Ctrl+Tab` o `Shift+←/→`). Cada categoría es un modo
     script de rofi (`scripts/emoji.sh`) que lee la lista de `rofi-emoji`; busca por nombre/palabras clave en inglés y
     Enter copia el emoji (`wl-copy`).
-- **SwayNC** (`config/swaync`): colores de waybar, popups de 390 px; el panel se agranda o achica con las flechas
+- **SwayNC** (`config/swaync`): colores de waybar, popups de 390 px con fondo al 96 %; el panel se agranda o achica con las flechas
   ◂▸▴▾ (`scripts/resize.sh`). Reglas: las notificaciones `theme.summary` solo se ven como popup, las `theme.app`
   van directo al panel. Sin el reproductor MPRIS genérico: la música se controla con el ícono 󰝚 de waybar.
   Fila de arriba (`menubar#top`): título + luna 󰽥 (Do Not Disturb, se resalta encendida) y vaciar 󰎟.
@@ -299,7 +322,8 @@ elemento en pausa y saltos de más de 25 % (nunca sube de golpe al 100 %).
 | `SUPER+CTRL+flechas` / `SUPER+ALT+flechas` | mover ventana / redimensionar |
 | `SUPER+rueda` | recorrer workspaces |
 | `SUPER+clic izq.` / `SUPER+clic der.` | arrastrar / redimensionar ventana |
-| `SUPER+S` / `SUPER+SHIFT+S` | mostrar workspace especial / mandar o devolver ventana |
+| `SUPER+S` / `SUPER+SHIFT+S` | mostrar workspace especial "magic" / mandar o devolver ventana |
+| `SUPER+Z` / `SUPER+SHIFT+Z` | mostrar workspace especial "claude" (Claude Code) / mandar o devolver ventana |
 | `SUPER+V` | historial del portapapeles |
 | `SUPER+I` | selector de emojis (Enter copia) |
 | `SUPER+P` | captura de región (se guarda en `~/Pictures/Screenshots` y se copia) |

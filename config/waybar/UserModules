@@ -1,5 +1,11 @@
 // Workspaces kanji clickeables (Hyprland con config Lua)
 {
+	// popups de la barra: uno a la vez + cerrar el centro de notificaciones al irse el mouse
+	"custom/popups-daemon": {
+		"exec": "~/.config/waybar/scripts/popups-daemon.py",
+		"format": "",
+		"tooltip": false
+	},
 	"custom/ws-listener": {
 		"exec": "~/.config/waybar/scripts/ws-listener.py",
 		"format": "",
@@ -80,13 +86,22 @@
 		"return-type": "json",
 		"interval": "once",
 		"signal": 8,
-		"on-click": "~/.config/waybar/scripts/ws-special.sh DP-3 click"
+		"on-click": "~/.config/waybar/scripts/ws-special.sh DP-3 click",
+		"tooltip": false
+	},
+	"custom/special-flag#dp3": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh DP-3 flag",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"tooltip": false
 	},
 	"custom/special-pad#dp3": {
 		"exec": "~/.config/waybar/scripts/ws-special.sh DP-3 pad",
 		"return-type": "json",
 		"interval": "once",
 		"signal": 8,
+		"on-click": "~/.config/waybar/scripts/ws-special.sh DP-3 pad-click",
 		"tooltip": false
 	},
 	"custom/special#hdmi": {
@@ -94,13 +109,22 @@
 		"return-type": "json",
 		"interval": "once",
 		"signal": 8,
-		"on-click": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 click"
+		"on-click": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 click",
+		"tooltip": false
+	},
+	"custom/special-flag#hdmi": {
+		"exec": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 flag",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 8,
+		"tooltip": false
 	},
 	"custom/special-pad#hdmi": {
 		"exec": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 pad",
 		"return-type": "json",
 		"interval": "once",
 		"signal": 8,
+		"on-click": "~/.config/waybar/scripts/ws-special.sh HDMI-A-1 pad-click",
 		"tooltip": false
 	},
 	"group/ws-dp3": {

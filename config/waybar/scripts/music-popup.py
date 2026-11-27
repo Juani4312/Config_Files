@@ -20,6 +20,7 @@ Hyprland se lo da al abrir y se lo saca enseguida, así que en vez de
 import hashlib
 import json
 import os
+import re
 import signal
 import socket
 import subprocess
@@ -68,6 +69,9 @@ I_MUSIC, I_DISK = "\U000f075a", "\U000f02ca"
 I_PREV, I_NEXT = "\U000f04ae", "\U000f04ad"
 I_PLAY, I_PAUSE = "\U000f040a", "\U000f03e4"
 I_SWAP = "\U000f04e1"
+# salida de audio: monitor (HDMI/DP) / auriculares / parlante  (󰍹 󰋋 󰓃) + check 󰄬
+I_OUT = {"hdmi": "\U000f0379", "headphones": "\U000f02cb", "speaker": "\U000f04c3"}
+I_CHECK = "\U000f012c"
 # volumen: 0 / bajo / medio / alto  (󰝟 󰕿 󰖀 󰕾)
 I_VOL = ("\U000f075f", "\U000f057f", "\U000f0580", "\U000f057e")
 VOL_HOLD = 1.5       # s tras cambiarlo nosotros en que se ignora lo que reporta el
@@ -165,6 +169,24 @@ button:active { background-color: alpha(@primary, 0.22); }
 }
 #swap { font-size: 100%%; padding: 2px 8px; color: @outline; }
 #swap:hover { color: @primary; }
+#out { font-size: 100%%; padding: 2px 8px; color: @outline; }
+#out:hover, #out.open { color: @primary; }
+
+/* lista de salidas (se despliega abajo con el botón #out) */
+#out-list {
+    margin-top: 2px;
+    padding-top: 6px;
+    border-top: 1px solid alpha(@outline, 0.18);
+}
+#out-row {
+    font-size: 92%%;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: @on_surface_variant;
+}
+#out-row.current { color: @primary; background-color: alpha(@primary, 0.10); }
+#out-row.current:hover { background-color: alpha(@primary, 0.16); }
+#out-ico { min-width: 20px; }
 
 #vol-icon { color: @secondary; font-size: 115%%; min-width: 22px; }
 #vol-pct  { color: @outline; font-size: 85%%; font-weight: bold; }
@@ -208,6 +230,46 @@ def allowed_players():
         return []
 
 
+def pactl_json(*args):
+    try:
+        out = subprocess.run(["pactl", "-f", "json", *args], capture_output=True,
+                             text=True, timeout=2).stdout
+        return json.loads(out or "[]")
+    except Exception:
+        return []
+
+
+def list_sinks():
+    """[(name, descripción, tipo)] de las salidas + nombre de la salida por defecto."""
+    try:
+        default = subprocess.run(["pactl", "get-default-sink"], capture_output=True,
+                                 text=True, timeout=2).stdout.strip()
+    except Exception:
+        default = ""
+    sinks = []
+    for s in pactl_json("list", "sinks"):
+        ports = {p.get("name"): p.get("type", "") for p in s.get("ports", [])}
+        ptype = (ports.get(s.get("active_port"), "") or "").lower()
+        name = s.get("name", "")
+        if ptype in ("hdmi", "displayport"):
+            kind = "hdmi"
+        elif ptype in ("headphones", "headset") or name.startswith("bluez"):
+            kind = "headphones"
+        else:
+            kind = "speaker"
+        sinks.append((name, s.get("description") or name, kind))
+    return sinks, default
+
+
+def short_desc(d):
+    """Nombre corto para la lista: '... [LG ULTRAGEAR]' -> 'LG ULTRAGEAR',
+    'Starship/Matisse HD Audio Controller Digital Stereo (IEC958)' -> 'Digital Stereo (IEC958)'."""
+    m = re.search(r"\[([^\]]+)\]\s*$", d)
+    if m:
+        return m.group(1)
+    return re.sub(r"^.*?\bHD Audio Controller\s+", "", d) or d
+
+
 def rounded(cr, w, h, r):
     cr.new_sub_path()
     cr.arc(w - r, r, r, -1.5708, 0)
@@ -238,6 +300,8 @@ class Popup(Gtk.Window):
         self.zone = None
         self.away_since = None
         self.ticks = 0
+        self.zone_fast = 0           # ticks en que se recalcula la zona siempre (el alto cambia)
+        self.out_default = None
 
         self.setup_layer()
         self.build()
@@ -250,6 +314,7 @@ class Popup(Gtk.Window):
         self.bind()
         GLib.timeout_add(500, self.tick)
         GLib.timeout_add_seconds(2, self.refresh_swap)
+        GLib.timeout_add_seconds(2, self.refresh_output)
         GLib.timeout_add(200, self.watch_cursor)
 
     # ---- ventana ------------------------------------------------------------
@@ -409,6 +474,11 @@ class Popup(Gtk.Window):
             mid.pack_start(b, False, False, 0)
         ctl.set_center_widget(mid)
 
+        # salida de audio: a la derecha, opuesto al nombre del reproductor
+        self.b_out = self.button(I_OUT["speaker"], "out", "Output device", self.toggle_outputs)
+        self.b_out.set_valign(Gtk.Align.CENTER)
+        ctl.pack_end(self.b_out, False, False, 0)
+
         self.b_swap = self.button(I_SWAP, "swap", "Switch player", self.swap)
         self.b_swap.set_valign(Gtk.Align.CENTER)
         self.b_swap.set_no_show_all(True)
@@ -431,6 +501,15 @@ class Popup(Gtk.Window):
         self.l_vol.set_name("vol-pct")
         self.l_vol.set_width_chars(4)          # "100%": que el slider no se corra
         vol.pack_start(self.l_vol, False, False, 0)
+
+        self.out_rev = Gtk.Revealer()
+        self.out_rev.set_transition_type(Gtk.RevealerTransitionType.SLIDE_DOWN)
+        self.out_rev.set_transition_duration(180)
+        self.out_list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        self.out_list.set_name("out-list")
+        self.out_rev.add(self.out_list)
+        card.pack_start(self.out_rev, False, False, 0)
+        self.refresh_output()
 
     def button(self, glyph, name, tip, fn):
         b = Gtk.Button(label=glyph)
@@ -565,6 +644,66 @@ class Popup(Gtk.Window):
             subprocess.Popen([CTL, "focus"])
             self.quit()
         return True
+
+    # ---- salida de audio ------------------------------------------------------
+    def refresh_output(self):
+        sinks, default = list_sinks()
+        self.out_default = default
+        for name, desc, kind in sinks:
+            if name == default:
+                self.b_out.set_label(I_OUT[kind])
+                self.b_out.set_tooltip_text(f"Output: {short_desc(desc)}")
+                break
+        return True
+
+    def toggle_outputs(self):
+        opening = not self.out_rev.get_reveal_child()
+        if opening:
+            self.fill_outputs()
+        self.out_rev.set_reveal_child(opening)
+        ctx = self.b_out.get_style_context()
+        (ctx.add_class if opening else ctx.remove_class)("open")
+        self.zone_fast = 8           # ~1.6 s: seguir la ventana mientras crece/se achica
+
+    def fill_outputs(self):
+        for ch in self.out_list.get_children():
+            self.out_list.remove(ch)
+        sinks, default = list_sinks()
+        for name, desc, kind in sinks:
+            row = Gtk.Box(spacing=8)
+            ico = Gtk.Label(label=I_OUT[kind], xalign=0)
+            ico.set_name("out-ico")
+            txt = Gtk.Label(label=short_desc(desc), xalign=0)
+            txt.set_ellipsize(3)
+            txt.set_hexpand(True)
+            row.pack_start(ico, False, False, 0)
+            row.pack_start(txt, True, True, 0)
+            if name == default:
+                row.pack_end(Gtk.Label(label=I_CHECK), False, False, 0)
+            b = Gtk.Button()
+            b.add(row)
+            b.set_name("out-row")
+            b.set_tooltip_text(desc)
+            b.set_can_focus(False)
+            b.set_relief(Gtk.ReliefStyle.NONE)
+            if name == default:
+                b.get_style_context().add_class("current")
+            b.connect("clicked", lambda _b, n=name: self.set_output(n))
+            self.out_list.pack_start(b, False, False, 0)
+        self.out_list.show_all()
+
+    def set_output(self, name):
+        """Salida por defecto + mover lo que ya está sonando (como pavucontrol/GNOME)."""
+        try:
+            subprocess.run(["pactl", "set-default-sink", name], timeout=2)
+            for si in pactl_json("list", "sink-inputs"):
+                subprocess.run(["pactl", "move-sink-input", str(si["index"]), name],
+                               timeout=2, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+        self.refresh_output()
+        self.fill_outputs()                              # el check salta a la elegida
+        GLib.timeout_add(350, lambda: self.out_rev.get_reveal_child() and self.toggle_outputs() and False)
 
     def swap(self):
         subprocess.Popen([CTL, "cycle"])
@@ -776,7 +915,8 @@ class Popup(Gtk.Window):
             return False
         self.ticks += 1
         try:
-            if self.zone is None or self.ticks % 5 == 0:   # el alto puede cambiar
+            if self.zone is None or self.ticks % 5 == 0 or self.zone_fast > 0:   # el alto puede cambiar
+                self.zone_fast = max(0, self.zone_fast - 1)
                 self.zone = self.find_zone() or self.zone
             c = hypr("cursorpos")
         except Exception:

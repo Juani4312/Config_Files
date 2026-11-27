@@ -1,27 +1,40 @@
 #!/usr/bin/env bash
-# Indicador del workspace especial para waybar.
-# Uso: ws-special.sh <monitor|any> [pad]
-#   sin "pad": burbuja 特 a la izquierda de los workspaces de <monitor>
-#   con "pad": espaciador invisible del mismo ancho a la derecha (centrado simétrico)
-# Siempre imprime el glifo para que el módulo ocupe su lugar; el CSS lo vuelve
+# Indicadores de los workspaces especiales para waybar (a los costados de la isla).
+# Uso: ws-special.sh <monitor|any> [pad|click|pad-click|flag]
+#   sin arg:   burbuja 特 (izquierda) = especial "magic"  (SUPER+S)
+#   pad:       burbuja 智 (derecha)   = especial "claude" (SUPER+Z, Claude Code)
+#   click / pad-click: cierra ese especial si está abierto ahí
+#   flag:      marcador invisible: visible con CUALQUIER especial abierto (ver abajo)
+# Siempre imprimen el glifo para que el módulo ocupe su lugar; el CSS lo vuelve
 # transparente con la clase "inactive" (así la isla de workspaces nunca se mueve).
-#   ws-special.sh <monitor> click  -> cierra el especial solo si está abierto ahí
 state="${XDG_RUNTIME_DIR:-/tmp}/waybar-ws.json"
 # <monitor> = "any": abierto en cualquier monitor (barra de respaldo, ej. notebook)
 if [ "$1" = any ]; then
   on=$(jq -r '[.special[]?] | any' "$state" 2>/dev/null)
+  names=$(jq -r '[.special_name[]?] | join(" ")' "$state" 2>/dev/null)
 else
   on=$(jq -r --arg m "$1" '.special[$m] // false' "$state" 2>/dev/null)
+  names=$(jq -r --arg m "$1" '.special_name[$m] // ""' "$state" 2>/dev/null)
 fi
-if [ "$2" = click ]; then
-  [ "$on" = true ] && hyprctl dispatch 'hl.dsp.workspace.toggle_special("magic")' >/dev/null
-  exit 0
-fi
-st=inactive; [ "$on" = true ] && st=active
-if [ "$2" = pad ]; then
-  printf '{"text":"特","class":["%s","pad"],"tooltip":""}\n' "$st"
-elif [ "$st" = active ]; then
-  printf '{"text":"特","class":["active"],"tooltip":"Workspace especial (SUPER+S)"}\n'
-else
-  printf '{"text":"特","class":["inactive"],"tooltip":""}\n'
-fi
+is_open() { [[ " $names " == *" $1 "* ]]; }
+
+case "$2" in
+  click)     is_open magic  && hyprctl dispatch 'hl.dsp.workspace.toggle_special("magic")' >/dev/null; exit 0 ;;
+  pad-click) is_open claude && hyprctl dispatch 'hl.dsp.workspace.toggle_special("claude")' >/dev/null; exit 0 ;;
+  # flag: módulo de ancho cero que solo existe (visible) con un especial abierto.
+  # Corre la isla de workspaces a :nth-child(3) y el CSS la hace más transparente
+  # (las clases de los custom quedan en el label interno, no se pueden usar con ~ / +).
+  flag)
+    if [ "$on" = true ]; then
+      printf '{"text":"\\u200b","class":["flag"],"tooltip":""}\n'
+    else
+      printf '{"text":""}\n'
+    fi
+    exit 0 ;;
+  pad)
+    st=inactive; is_open claude && st=active
+    printf '{"text":"智","class":["%s","claude"],"tooltip":""}\n' "$st" ;;
+  *)
+    st=inactive; is_open magic && st=active
+    printf '{"text":"特","class":["%s"],"tooltip":""}\n' "$st" ;;
+esac

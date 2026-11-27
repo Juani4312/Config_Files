@@ -34,6 +34,11 @@ EXTRA_FILES=(
   # Nemo: Exec con "env -u GIO_USE_VFS" (abierto por el portal, Borrar no hacía nada); install.sh lo rehace
   # desde el nemo.desktop del sistema
   ".local/share/applications/nemo.desktop|extra/applications/nemo.desktop"
+  # parlante animado de la waybar (custom/volume): íconos simbólicos, los genera
+  # waybar/scripts/gen-speaker-icons.py; toman el color del tema (CSS `color`)
+  ".local/share/icons/hicolor/scalable/status/waybar-spk-0-symbolic.svg|extra/icons/hicolor/waybar-spk-0-symbolic.svg"
+  ".local/share/icons/hicolor/scalable/status/waybar-spk-1-symbolic.svg|extra/icons/hicolor/waybar-spk-1-symbolic.svg"
+  ".local/share/icons/hicolor/scalable/status/waybar-spk-2-symbolic.svg|extra/icons/hicolor/waybar-spk-2-symbolic.svg"
 )
 EXTRA_DIRS=(
   ".vscode/extensions/local.matugen-theme-1.0.0|extra/vscode-matugen-theme"

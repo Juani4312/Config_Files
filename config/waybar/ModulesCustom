@@ -146,7 +146,7 @@
 
 "custom/power": {
 	"format": "⏻",
-	"on-click": "$HOME/.config/hypr/scripts/Wlogout.sh",
+	"on-click": "~/.config/waybar/scripts/popups.sh close-except wlogout; $HOME/.config/hypr/scripts/Wlogout.sh",
 	"on-click-right": "$HOME/.config/hypr/scripts/ChangeBlur.sh",
 	"tooltip": true,
 	"tooltip-format":"Logout Menu",
