@@ -26,8 +26,8 @@ Leé esto antes de ejecutar nada.
    Preguntá antes de reiniciarlas. Recargar waybar/swaync/Hyprland es inofensivo.
 7. **`hyprctl dispatch` usa sintaxis Lua:** `hyprctl dispatch 'hl.dsp.focus({ workspace = "3" })'`,
    `hyprctl dispatch 'hl.dsp.exec_cmd("kitty")'`. La forma clásica (`dispatch workspace 3`) falla.
-8. **`~/.config/waybar/style.css` puede ser un hardlink** a `style/<variante>.css`. Editalo en el lugar (con Edit);
-   nunca `sed -i` ni reemplazar el archivo, porque rompe el enlace.
+8. **`~/.config/waybar/style.css` es un symlink** (o en máquinas viejas, un hardlink) a `style/<variante>.css`.
+   Editá la variante, o `style.css` en el lugar con Edit; nunca `sed -i` ni reemplazar el archivo, porque rompe el enlace.
    Desde **waybar 0.16** los módulos `custom/*` son `eventbox > box > label#custom-x` y el hover queda en el `box`
    sin nombre: `#custom-x:hover` no matchea nunca, hay que escribir `box:hover > #custom-x`. Un error de CSS al
    recargar (SIGUSR2) cierra waybar (ej. `/*` dentro de un comentario): validalo antes con `Gtk.CssProvider`.

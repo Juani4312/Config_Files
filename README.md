@@ -356,6 +356,7 @@ elemento en pausa y saltos de más de 25 % (nunca sube de golpe al 100 %).
 ./install.sh -p     # igual + yay si falta + packages/deps.txt (+ opcional todo pacman.txt/aur.txt) + servicios
 ./update.sh [-n] [-p]   # copia esta máquina al repo (-p: commit "Sync <fecha>" + push)
 ./revert.sh -l | [fecha] # lista backups / deshace una instalación
+tests/install-e2e.sh    # prueba install x2 + revert en un HOME falso (sin red ni sudo): correla al tocar los scripts
 ```
 `update.sh` no sube el historial de qalculate ni el del diálogo de archivos de Qt (`QtProject.conf`), porque el repo es
 público. Qué se sincroniza se define en los arrays de `lib.sh` (`CONFIG_DIRS`, `CONFIG_FILES`, `HOME_FILES`, `HOME_DIRS`,
